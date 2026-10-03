@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T06:55:21.641Z",
+  "updatedAt": "2026-10-03T06:19:41.722Z",
   "sources": [
     {
       "id": "qbitai",
@@ -123,34 +123,504 @@
   },
   "items": [
     {
-      "title": "极狐阿尔法 T5 汽车迎 OTA：部分车型新增苹果 CarPlay / 华为 HiCar 手机互联、端到端 4.0 辅助驾驶模型",
-      "link": "https://www.ithome.com/1/009/288.htm",
-      "date": "2026-10-02T06:53:09.000Z",
-      "summary": "IT之家 10 月 2 日消息，极狐汽车宣布为旗下阿尔法 T5 推送新一轮 OTA 升级包，本次更新包含 5 项新增功能与 1 项功能优化，围绕手机互联、高阶辅助驾驶、泊车能力、车辆安防、HUD 显示以及座舱音效进行迭代，不同版本车型可获得对应专属功能。 据官方介绍，阿尔法 T5 新增手机互联能力，支持 CarLink、苹果 CarPlay 与华为 HiCar。…",
+      "title": "旗下智能体频繁“闯祸”，OpenAI 每天要烧掉超 50 万美元来调查",
+      "link": "https://www.ithome.com/1/009/444.htm",
+      "date": "2026-10-03T06:18:38.000Z",
+      "summary": "IT之家 10 月 3 日消息，据英国《卫报》今天（3 日）报道，OpenAI 披露，为调查旗下 AI 智能体攻击澳大利亚 Medicare 医疗保险系统和 Hugging Face 等事件，公司每天投入超过 50 万美元（IT之家注：现汇率约合 335.7 万元人民币）。 由于需要筛查的数据规模极大，OpenAI 还动用 AI 参与审查。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "7.56 亿票房超《星际穿越》：电影《奥德赛》刷新诺兰导演中国内地票房纪录",
-      "link": "https://www.ithome.com/1/009/285.htm",
-      "date": "2026-10-02T06:49:10.000Z",
-      "summary": "IT之家 10 月 2 日消息，@环球影业 今天（10 月 2 日）发布微博，称电影《奥德赛》已超过《星际穿越》首轮放映票房，刷新诺兰导演中国内地票房纪录。 据灯塔专业版，《奥德赛》总票房 7.56 亿（含预售），已超过《星际穿越》首轮放映票房，成为诺兰导演内地首轮票房最高影片。…",
+      "title": "中国联通上线“eSIM 业务首次线上办理资格抽取”限时活动，抽中用户可使用 App 办理相关业务",
+      "link": "https://www.ithome.com/1/009/442.htm",
+      "date": "2026-10-03T06:13:26.000Z",
+      "summary": "IT之家 10 月 3 日消息，据多名IT之家读者投稿，中国联通现已上线“eSIM 业务首次线上办理资格抽取”限时活动。 IT之家测试发现，点击“立即抽奖”，页面显示为“活动太火爆了，请稍后再试 ~”。 页面提示显示，资格有效期 72 小时，逾期失效需重新抽取；正式提交后仍需规则校验与人工审核，能否成功以审核结果为准。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "绿联推出彩色墨水屏手机壳：3.7 英寸面板，适配苹果 iPhone 17/18 Pro 及 Max 机型，278.8 元",
-      "link": "https://www.ithome.com/1/009/284.htm",
-      "date": "2026-10-02T06:48:05.000Z",
-      "summary": "IT之家 10 月 2 日消息，绿联现已在京东上架一款 Magic 彩色墨水屏手机壳，适用于苹果 iPhone 17/18 Pro 及 Max 机型，兼具机身防护与自定义图案显示功能，首发价 278.8 元。 京东绿联 Magic 墨水屏手机壳 278.8 元直达链接 系列手机壳产品提供磨砂黑、雾白色、酒红色三款配色，采用 TPU、PC 与超纤等材质制成，背部嵌入 3.…",
+      "title": "首次并排呈现：三星 Galaxy S27 系列 4 款机型手机贴膜曝光",
+      "link": "https://www.ithome.com/1/009/441.htm",
+      "date": "2026-10-03T06:13:25.000Z",
+      "summary": "IT之家 10 月 3 日消息，科技媒体 sammyguru 今天（10 月 3 日）发布博文，分享了一组渲染图，称首次并排呈现了适用于三星 Galaxy S27、Galaxy S27+、Galaxy S27 Pro 以及 Galaxy S27 Ultra 四款机型的屏幕贴膜。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
+    },
+    {
+      "title": "将语音与音乐作为单一连贯音轨共同生成，AI 音乐制作平台 Suno 推出 Speech 语音功能",
+      "link": "https://www.ithome.com/1/009/440.htm",
+      "date": "2026-10-03T06:01:12.000Z",
+      "summary": "IT之家 10 月 3 日消息，当地时间 10 月 1 日，AI 音乐制作平台 Suno 宣布推出 Speech，Suno 宣称这是业界首个能够将语音与音乐作为单一连贯音轨共同生成的音频模型。 据悉，该模型并非像传统工作流那样先做 TTS（文本转语音）再拼接 BGM，而是端到端一体化生成，是首个能单次生成完整融合“语音朗读 + 原创 BGM”的端到端闭源音频模型。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "路透社：AI 正竞相在资金耗尽之前改变世界",
+      "link": "https://www.ithome.com/1/009/439.htm",
+      "date": "2026-10-03T05:52:46.000Z",
+      "summary": "IT之家 10 月 3 日消息，路透社今天（3 日）发表题为《人工智能竞相在资金耗尽之前改变世界（AI's race to transform the world before the money runs out）》的长篇文章，其中提到，从未有何种新技术像 AI 这样吸引如此巨额的资金。铁路建设和互联网兴起都曾掀起资本热潮，但当年的投入规模已被 AI 超过。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "Turbo GT 版保时捷电动卡宴 Coupe 曝光，动力有望破 1200 马力",
+      "link": "https://www.ithome.com/1/009/438.htm",
+      "date": "2026-10-03T05:48:50.000Z",
+      "summary": "IT之家 10 月 3 日消息，汽车媒体 CarScoops 今天（10 月 3 日）发布博文，分享了一组在装卸过程中抓拍的图片，展示了保时捷正在研发的 Turbo GT 版电动卡宴 Coupe。 IT之家援引博文介绍，保时捷今年早些时候推出电动 Cayenne Coupe 家族，包含入门级 Coupe（435 马力）、S Coupe（657 马力）与 Turbo Coupe（…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "2026 国庆假期第三天，全国铁路预计发送旅客 1890 万人次、加开列车 910 列",
+      "link": "https://www.ithome.com/1/009/437.htm",
+      "date": "2026-10-03T05:36:21.000Z",
+      "summary": "IT之家 10 月 3 日消息，据央视新闻，今天（10 月 3 日）是 2026 国庆假期的第三天，全国公路、铁路、民航、水路客流持续高位运行。旅游出行热度居高不下，景区观光、城市漫游、短途度假等出行需求集中释放，交通部门持续增加热门旅游线路运力投放。 全国铁路今天预计发送旅客 1890 万人次，预计加开列车 910 列。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "如何用好 GPT-6 系列 AI 模型？OpenAI 放出指南，教你选模型、优化提示词等",
+      "link": "https://www.ithome.com/1/009/436.htm",
+      "date": "2026-10-03T05:33:25.000Z",
+      "summary": "IT之家 10 月 3 日消息，OpenAI 昨日（10 月 2 日）发布博文，分享了 GPT‑6 系列模型指南，介绍了诸多使用技巧，让用户控制时间和成本的同时，充分发挥 GPT‑6 系列 AI 模型能力。 官方介绍称： GPT‑6 是我们迄今最先进的模型系列，提供多款模型供你选择，以适应不同类型的工作。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "重塑智能眼镜光学方案：TDK 展示全球首款超构光学镜 DRP 显示屏",
+      "link": "https://www.ithome.com/1/009/434.htm",
+      "date": "2026-10-03T05:11:04.000Z",
+      "summary": "IT之家 10 月 3 日消息，日本电子元器件厂商 TDK 昨日（10 月 2 日）发布公告，展示了全球首款采用超构光学镜（Meta-Optic Mirror）的直接视网膜投影（DRP）智能眼镜显示屏。 全球智能眼镜出货量预计将快速增长，到 2030 年将达到 8,300 万台。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "蔚来充电服务突破 1 亿次，86.67% 充电电量服务于非蔚来公司品牌用户",
+      "link": "https://www.ithome.com/1/009/433.htm",
+      "date": "2026-10-03T04:57:43.000Z",
+      "summary": "IT之家 10 月 3 日消息，蔚来今日宣布，2026 年 10 月 3 日 11:08:41，蔚来充电服务突破 1 亿次。 官方表示，86.67% 充电电量服务于非蔚来公司品牌用户，为所有新能源汽车用户假期出行加电。 截至目前，蔚来已在全国累计建成 9,522 座充换电站，提供充换电服务超过 2.…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "微软向老用户抛橄榄枝：Win10/Win11 新版 Outlook 可换装经典版样式",
+      "link": "https://www.ithome.com/1/009/432.htm",
+      "date": "2026-10-03T04:53:46.000Z",
+      "summary": "IT之家 10 月 3 日消息，科技媒体 Windows Latest 今天（10 月 3 日）发布博文，报道称微软为推动 Windows 10、Windows 11 用户迁移到新版 Outlook，推出“经典版 Outlook 样式”主题，可以复刻 Outlook Classic 的界面外观。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "10 月 9 日起，未订阅用户仅能使用谷歌 Gemini Flash-Lite 模型",
+      "link": "https://www.ithome.com/1/009/431.htm",
+      "date": "2026-10-03T04:53:16.000Z",
+      "summary": "IT之家 10 月 3 日消息，谷歌 Gemini 应用帮助中心显示，自 2026 年 10 月起，使用个人账号访问 Gemini 应用时，模型可用情况将发生变更。 自 2026 年 10 月 9 日起，Gemini Web / App 端免费个人用户不再默认提供完整的 Flash 模型（以及 Pro 模型访问），而是统一调整为体积更小、更轻量的 Flash-Lite 模型。…",
+      "source": "IT 之家",
+      "sourceId": "ithome",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "OpenAI安全团队持续地震！负责人离职，三名员工因泄密被开",
+      "link": "https://www.qbitai.com/2026/10/501368.html",
+      "date": "2026-10-03T04:41:24.000Z",
+      "summary": "又咋啦。。。",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "Jev估值100亿美元！创始人Diogo Almeida回答一切",
+      "link": "https://www.qbitai.com/2026/10/500148.html",
+      "date": "2026-10-03T02:38:19.000Z",
+      "summary": "",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "Meta wants your next gadget to be Muse-infused",
+      "link": "https://techcrunch.com/2026/10/02/meta-wants-you-to-build-your-own-muse-gadget/",
+      "date": "2026-10-03T00:45:39.000Z",
+      "summary": "Meta wants Muse in your TV and your toaster, so it's giving the code away for free.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Apple changes full-disk access permissions to curb abuse from AI agents",
+      "link": "https://arstechnica.com/security/2026/10/apple-changes-full-disk-access-permissions-to-curb-abuse-from-ai-agents/",
+      "date": "2026-10-02T23:03:16.000Z",
+      "summary": "Meta says FDA isn't sufficient to Muse reading messages. Apple begs to differ.",
+      "source": "Ars Technica · AI",
+      "sourceId": "arstechnica-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Sean Parker is rebuilding Stability AI around music",
+      "link": "https://techcrunch.com/2026/10/02/sean-parker-is-rebuilding-stability-ai-around-music/",
+      "date": "2026-10-02T21:09:14.000Z",
+      "summary": "Sean Parker, who once taught the music industry what asking for forgiveness looks like, is now back with the labels' blessing and money.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Meta open sources code to let you make Muse AI gadgets",
+      "link": "https://www.theverge.com/tech/1004330/meta-muse-ai-gadgets-home-link",
+      "date": "2026-10-02T21:08:37.000Z",
+      "summary": "Meta now lets you make your own Muse gadgets that feature the company's new AI agent with code that the company open sourced.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Amazon’s $1B plan to combat data center backlash draws more backlash",
+      "link": "https://arstechnica.com/tech-policy/2026/10/amazons-1b-plan-to-combat-data-center-backlash-draws-more-backlash/",
+      "date": "2026-10-02T20:30:27.000Z",
+      "summary": "Amazon praised for ending NDAs but slammed for downplaying data center pollution.",
+      "source": "Ars Technica · AI",
+      "sourceId": "arstechnica-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Apple will limit Mac disk access as AI agents ‘substantially’ increase risk",
+      "link": "https://www.theverge.com/tech/1004295/apple-limit-mac-disk-access-ai-agents",
+      "date": "2026-10-02T20:08:40.000Z",
+      "summary": "Apple will add new limits for \"full disk access\" on Mac in response to risks posed by AI agents, as reported earlier by TechCrunch.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Show HN: Made an open-source Lego AI generator",
+      "link": "https://github.com/anteloc/ldraw-nova",
+      "date": "2026-10-02T20:00:15.000Z",
+      "summary": "Hi there :-) New on HN, first time posting.Past year, around December, I started experimenting with making ChatGPT and Claude generate source code in LDraw language.…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Affected by layoffs? Don’t miss this $75 deal for your TechCrunch Disrupt 2026 Expo+ Pass",
+      "link": "https://techcrunch.com/2026/10/02/disrupt-2026-layoff-expo-plus-passes-available-for-75-dollars/",
+      "date": "2026-10-02T19:15:51.000Z",
+      "summary": "Your next opportunity could be one conversation away. Get your Expo+ Pass for just $75. Limited to the first 100 qualifying people.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "US arrests tech CEO accused of smuggling $300M in Nvidia chips into China",
+      "link": "https://arstechnica.com/tech-policy/2026/10/us-arrests-tech-ceo-accused-of-smuggling-300m-in-nvidia-chips-into-china/",
+      "date": "2026-10-02T18:39:36.000Z",
+      "summary": "Nvidia’s chip-smuggling problem won’t go away as arrests continue.",
+      "source": "Ars Technica · AI",
+      "sourceId": "arstechnica-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Apple says it’s tightening macOS ‘Full Disk Access’ controls due to new risks from AI agents",
+      "link": "https://techcrunch.com/2026/10/02/apple-says-its-tightening-macos-full-disk-access-controls-due-to-new-risks-from-ai-agents/",
+      "date": "2026-10-02T18:11:27.000Z",
+      "summary": "Apple says it will add new controls around macOS’s Full Disk Access permission, warning that increasingly capable AI agents make broad access to users’ files, messages, mail, and browsing hi…",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "From the creator of Redis; run LLM locally with ds4",
+      "link": "https://dwarfstar.sh/",
+      "date": "2026-10-02T18:01:16.000Z",
+      "summary": "Article URL: https://dwarfstar.sh/ Comments URL: https://news.ycombinator.com/item?id=49936575 Points: 204 # Comments: 56",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "OpenAI’s Dot agent is enterprise software that can also order your dinner",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1004096/openai-chatgpt-dots-hands-on-agent",
+      "date": "2026-10-02T18:00:00.000Z",
+      "summary": "It's a tale as old as last week: OpenAI's new agent platform, called Dots, is full of cute little guys who can do your bidding.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Call it AI, call it Super Intelligence, only 2% of consumers are buying it",
+      "link": "https://techcrunch.com/podcast/call-it-ai-call-it-super-intelligence-only-2-of-consumers-are-buying-it/",
+      "date": "2026-10-02T17:56:00.000Z",
+      "summary": "This week, the White House got nearly every major tech CEO in one room — Zuckerberg, Bezos, Musk, and Anthropic’s Dario Amodei among them — to sign an AI safety pledge that President Donald …",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "It’s not AI anymore, it’s ‘super intelligence’ (according to the White House)",
+      "link": "https://techcrunch.com/video/its-not-ai-anymore-its-super-intelligence-according-to-the-white-house/",
+      "date": "2026-10-02T17:48:16.000Z",
+      "summary": "This week, the White House got nearly every major tech CEO in one room — Zuckerberg, Bezos, Musk, and Anthropic’s Dario Amodei among them — to sign an AI safety pledge that President Donald …",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Breaking up (with Elon Musk) is hard to do",
+      "link": "https://www.theverge.com/tech/1004177/elon-musk-unfollows-shivon-zilis",
+      "date": "2026-10-02T17:37:36.000Z",
+      "summary": "In a throwback to MySpace-style internet drama, Shivon Zilis announced that she and the father of her four children, Elon Musk, had broken up on X.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "TechCrunch Disrupt 2026: Blackstone’s Jas Khaira on building the next generation of AI giants",
+      "link": "https://techcrunch.com/2026/10/02/techcrunch-disrupt-2026-blackstones-jas-khaira-on-building-the-next-generation-of-ai-giants/",
+      "date": "2026-10-02T17:32:05.000Z",
+      "summary": "Blackstone's Jas Khaira will take the Builders Stage at TechCrunch Disrupt 2026 on building next-gen AI. Register for your pass and get 50% off a second.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Circuit Breaker Labs hopes to make AI safer for your kids (and you)",
+      "link": "https://techcrunch.com/2026/10/02/circuit-breaker-labs-hopes-to-make-ai-safer-for-your-kids-and-you/",
+      "date": "2026-10-02T17:00:00.000Z",
+      "summary": "With all the talk about how AI might one day kill us all, it's easy to forget that AI has already harmed some people psychologically.…",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "A model guide for the GPT-6 family",
+      "link": "https://openai.com/index/practical-guide-building-gpt-6",
+      "date": "2026-10-02T16:15:00.000Z",
+      "summary": "Learn how startups can choose GPT-6 models, tune reasoning effort, improve prompts and skills, coordinate tools, and prepare workflows for production.",
+      "source": "OpenAI",
+      "sourceId": "openai",
+      "lang": "English",
+      "topic": "model"
+    },
+    {
+      "title": "Redefining enterprise intelligence with autonomous AI",
+      "link": "https://www.technologyreview.com/2026/10/02/1143774/redefining-enterprise-intelligence-with-autonomous-ai/",
+      "date": "2026-10-02T15:49:04.000Z",
+      "summary": "Enterprise AI is no longer a future ambition. It is in full operational flight. Model capabilities are advancing faster than most organizations can absorb, while the cost of performance cont…",
+      "source": "MIT Tech Review · AI",
+      "sourceId": "mittr-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Pope Leo XIV is not a fan of AI-generated art",
+      "link": "https://techcrunch.com/2026/10/02/pope-leo-xiv-is-not-a-fan-of-ai-generated-art/",
+      "date": "2026-10-02T15:39:41.000Z",
+      "summary": "\"There is an ontological difference, even before an aesthetic one, between art and what a machine can generate through statistical calculation based on millions of images created by others,\"…",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "AI Makes Me Sad",
+      "link": "https://mondobe.com/ai-makes-me-sad",
+      "date": "2026-10-02T15:18:00.000Z",
+      "summary": "Article URL: https://mondobe.com/ai-makes-me-sad Comments URL: https://news.ycombinator.com/item?id=49934487 Points: 182 # Comments: 220",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "The latest AI news we announced in September 2026",
+      "link": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-september-2026/",
+      "date": "2026-10-02T15:00:00.000Z",
+      "summary": "Here are Google’s latest AI updates from September 2026",
+      "source": "Google · AI Blog",
+      "sourceId": "blog-google-ai",
+      "lang": "English",
+      "topic": "model"
+    },
+    {
+      "title": "The 7-year-old Nvidia Shield TV is now $100 more expensive due to AI",
+      "link": "https://arstechnica.com/gadgets/2026/10/the-7-year-old-nvidia-shield-tv-is-now-100-more-expensive-thanks-to-ai/",
+      "date": "2026-10-02T14:52:16.000Z",
+      "summary": "Initially launched in 2019, the Nvidia Shield TV Pro now retails for $299.99.",
+      "source": "Ars Technica · AI",
+      "sourceId": "arstechnica-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "TechCrunch Disrupt 2026: Clay’s Kareem Amin on the rise of the GTM engineer",
+      "link": "https://techcrunch.com/2026/10/02/techcrunch-disrupt-2026-clays-kareem-amin-on-the-rise-of-the-gtm-engineer/",
+      "date": "2026-10-02T14:30:00.000Z",
+      "summary": "Clay Co-founder and CEO Kareem Amin joins the AI Stage to discuss the rise of GTM engineer at TechCrunch Disrupt 2026. Register for your ticket and get a second pass at 50% off.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "With most information hidden, the game Stratego had stumped AI until now",
+      "link": "https://arstechnica.com/science/2026/10/ai-finally-beat-the-best-stratego-player-in-history-and-did-it-on-a-budget/",
+      "date": "2026-10-02T14:11:24.000Z",
+      "summary": "https://www.nature.com/articles/s41586-026-11036-yhttps://arxiv.org/abs/2511.07312 Comments URL: https://news.ycombinator.com/item?id=49933740 Points: 204 # Comments: 97",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Inside-Out AI: Rebuilding Airbnb Behind the Scenes and Across the Guest Experience",
+      "link": "https://www.latent.space/p/airbnb",
+      "date": "2026-10-02T14:04:49.000Z",
+      "summary": "After leading Meta’s Llama models, Ahmad Al-Dahle is now transforming Airbnb with AI — from how its teams develop products to how it serves guests.",
+      "source": "Latent Space",
+      "sourceId": "latentspace",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "Last 24 hours: Exhibit at TechCrunch Disrupt 2026 and reach 10,000+ tech leaders",
+      "link": "https://techcrunch.com/2026/10/02/last-24-hours-exhibit-at-techcrunch-disrupt-2026-and-reach-10000-tech-leaders/",
+      "date": "2026-10-02T14:00:00.000Z",
+      "summary": "Today is the last day to book your exhibit table at TechCrunch Disrupt 2026. From October 13–15, 10,000+ founders, investors, operators, and tech leaders will arrive at San Francisco’s Mosco…",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "AI hallucinations are making entitled customers even worse",
+      "link": "https://www.theverge.com/report/1002963/ai-hallucinations-customer-service-jobs-agents",
+      "date": "2026-10-02T12:00:00.000Z",
+      "summary": "Madison, a server in New York City, greets every table by asking about each diner's allergies. Lately, there have been some close calls.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "If a data center is camouflaged in the woods, will anyone hate it?",
+      "link": "https://www.theverge.com/tech/1003681/microsoft-data-centers-ai-environment-biomimicry",
+      "date": "2026-10-02T12:00:00.000Z",
+      "summary": "San Antonio City Councilmember Ric Galvan remembers when data centers first arrived in his city in the 2000s, looking like relatively unassuming office buildings.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Amazon writes scary blog warning communities not to block data centers",
+      "link": "https://www.theverge.com/tech/1003929/amazon-ai-data-center-blog-warning",
+      "date": "2026-10-02T11:52:20.000Z",
+      "summary": "Amazon is calling for people to support AI data center projects, or risk irreparable harm to the US economy and national security.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "AI music maker Suno now generates spoken words",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1003925/suno-speech-ai-voice-feature-beta-availability",
+      "date": "2026-10-02T09:42:19.000Z",
+      "summary": "Suno is branching out from the world of AI music, launching a new feature that generates spoken voices based on scripts or prompted descriptions.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "本周看什么 | 最近值得一看的 8 部作品",
+      "link": "https://sspai.com/post/115211",
+      "date": "2026-10-02T09:30:00.000Z",
+      "summary": "📅本周新预告《泥面人》终极预告9月24日，DC新片《泥面人》发布了终极预告，将于10月23日在北美上映。詹姆斯·瓦特金斯执导，汤姆·里斯·哈里斯主演，隆重介绍哥谭市的新面孔，一位意外毁容的演员在注射了 ...查看全文",
+      "source": "少数派",
+      "sourceId": "sspai",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "Don’t be fooled—LLMs don’t reason",
+      "link": "https://www.technologyreview.com/2026/10/02/1145639/dont-be-fooled-llms-dont-reason/",
+      "date": "2026-10-02T08:00:00.000Z",
+      "summary": "On an afternoon in Seoul in March 2016, I watched a program I helped build put a stone on the fifth line of a Go board in what looked like a gift to its human opponent.…",
+      "source": "MIT Tech Review · AI",
+      "sourceId": "mittr-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "openJiuwen X-Router自演进模型路由技术首发，昇腾亲和，Agent越跑越省，实测减少50+%Token消耗",
+      "link": "https://www.qbitai.com/2026/10/500098.html",
+      "date": "2026-10-02T07:34:15.000Z",
+      "summary": "让每一次请求选对模型，让每一次反馈都成为下一次更优、更省的选择",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "丘成桐新论文致谢了GPT和Claude",
+      "link": "https://www.qbitai.com/2026/10/499991.html",
+      "date": "2026-10-02T07:27:03.000Z",
+      "summary": "44年前被亲自列入问题清单",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "arXiv最严新规！每人每月最多提交2篇，拒稿不退额度",
+      "link": "https://www.qbitai.com/2026/10/499958.html",
+      "date": "2026-10-02T06:46:32.000Z",
+      "summary": "换区也没用",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
     },
     {
       "title": "[AINews] Pi 1.0, Pi Durable, and AIE NYC",
@@ -163,82 +633,12 @@
       "topic": "product"
     },
     {
-      "title": "英特尔 Arc 显卡驱动 32.0.101.9034 Beta 版发布：支持《战争机器：事变日》游戏",
-      "link": "https://www.ithome.com/1/009/245.htm",
-      "date": "2026-10-02T06:38:40.000Z",
-      "summary": "IT之家 10 月 2 日消息，英特尔 Graphics Software 32.0.101.9034 显卡驱动（适用于 Arc）今日发布，本次为 Non-WHQL 测试版，针对英特尔 Arc B 系列、A 系列显卡以及集成 Arc 核显的英特尔 Core Ultra 处理器更新，新增对两款新游戏的支持。 IT之家附官方公告链接（https://www.intel.…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "富士 X-T6 无反相机设计草图曝光，配 X-Processor 6 图像处理器",
-      "link": "https://www.ithome.com/1/009/283.htm",
-      "date": "2026-10-02T06:34:49.000Z",
-      "summary": "IT之家 10 月 2 日消息，科技媒体 dailycameranews 今天（10 月 2 日）发布博文，爆料称富士（Fujifilm）计划 2026 年年底或者 2027 年年初发布 X-T6 无反相机，并透露了相关规格参数。 IT之家此前报道，富士原本计划在秋季发布 X-T6，并同步推出 2 款新定焦镜头，不过当前产品节奏已转向镜头发布，机身则等待下一场 X Summit…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "Steam 喜加一：地下城 RPG《Endor Awakens：Roguelite DRPG》转付费前免费领",
-      "link": "https://www.ithome.com/1/009/282.htm",
-      "date": "2026-10-02T06:34:41.000Z",
-      "summary": "IT之家 10 月 2 日消息，开发者 Javier Hernández Torres 宣布旗下 Roguelite 地下城 RPG《Endor Awakens：Roguelite DRPG》将于 10 月 8 日起结束免费游玩，转为一次买断制付费游戏，同时移除 Steam 版本中的游戏内购机制。…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "宝马升级 X3 M50：最大功率提升至 443 马力，新增黑色特别版车型",
-      "link": "https://www.ithome.com/1/009/281.htm",
-      "date": "2026-10-02T06:29:09.000Z",
-      "summary": "IT之家 10 月 2 日消息，当地时间 1 日，宝马宣布将对 X3 M50 进行一系列升级，直列六缸发动机的最大功率提升至 443 马力，同时推出一款采用赛车运动风格设计的 Black Package。 IT之家查询获悉，现款 X3 M50 搭载 3.0L 双涡轮增压直列六缸轻混动力系统，最大功率 398 马力。…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
       "title": "你的下一台「泡面盖」，何必是塑料的？",
       "link": "https://www.ifanr.com/1682870?utm_source=rss&utm_medium=rss&utm_campaign=",
       "date": "2026-10-02T06:10:00.000Z",
       "summary": "铝合金 Kindle 来了！压泡面更稳#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
       "source": "爱范儿",
       "sourceId": "ifanr",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "AI 灌水稿激增：预印本平台 arXiv 出台新规，每人每月限投 2 篇",
-      "link": "https://www.ithome.com/1/009/279.htm",
-      "date": "2026-10-02T06:09:02.000Z",
-      "summary": "IT之家 10 月 2 日消息，预印本开放获取平台 arXiv 发布博文，宣布于昨日（10 月 1 日）开始实施全新速率限制政策，将所有投稿者每月提交上限设为 2 篇、同时在审活跃稿件上限设为 3 篇。 IT之家注：arXiv 于 1991 年 8 月 14 日由理论物理学家 Paul Ginsparg 在洛斯阿拉莫斯国家实验室（LANL）创建，是一个面向物理学、数学、计算机科…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "加州通过新法：Robotaxi 阻碍警察或消防任务将面临罚款",
-      "link": "https://www.ithome.com/1/009/278.htm",
-      "date": "2026-10-02T06:06:57.000Z",
-      "summary": "IT之家 10 月 2 日消息，据外媒 TechCrunch 今天（2 日）上午报道，加州州长加文 · 纽森签署了加州参议院第 1246 号法案。法案要求，Robotaxi 一旦发生故障或妨碍应急处置，必须安排本地人员赶到现场，协助警察、消防员等应急人员。如果车辆阻碍警察或消防员执行任务超过 30 分钟，运营企业还可能被处罚。…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "影目科技回应 INMO AIR3 智能眼镜海外版过热：与部分第三方应用有关、已全部下架，国内版不受相关影响",
-      "link": "https://www.ithome.com/1/009/277.htm",
-      "date": "2026-10-02T06:04:27.000Z",
-      "summary": "IT之家 10 月 2 日消息，当地时间 9 月 24 日，美国消费品安全委员会和加拿大卫生部门发布召回信息，影目科技 INMO AIR3 智能眼镜因长时间使用时左侧镜腿可能出现过热，被要求停止使用。 影目科技于 9 月 30 日发布声明就此事件进行回应，IT之家附影目科技声明如下： 关于 INMO AIR3 海外版应用的声明 尊敬的影目用户及合作伙伴： 近期，我们关注到有部分…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
@@ -253,24 +653,14 @@
       "topic": "product"
     },
     {
-      "title": "发射距今约 12 年：日本“隼鸟 2”探测器最后一台工作离子发动机发生故障",
-      "link": "https://www.ithome.com/1/009/275.htm",
-      "date": "2026-10-02T05:48:10.000Z",
-      "summary": "IT之家 10 月 2 日消息，japantimes 昨日（10 月 1 日）报道，经日本宇宙航空研究开发机构（JAXA）确认，超期服役的小行星探测器“隼鸟 2”（Hayabusa2）最后一台工作离子发动机已发生故障。 隼鸟 2 号于 2014 年 12 月发射，该探测器于 2020 年 12 月将小行星龙宫样本带回地球。…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "10 月 1 日全国铁路发送旅客 2520.4 万人次，创单日旅客发送量历史新高",
-      "link": "https://www.ithome.com/1/009/274.htm",
-      "date": "2026-10-02T05:44:09.000Z",
-      "summary": "IT之家 10 月 2 日消息，据新华社今日从中国国家铁路集团有限公司获悉，10 月 1 日全国铁路发送旅客 2520.4 万人次，创单日旅客发送量历史新高，运输安全平稳有序。 IT之家获悉，10 月 2 日，全国铁路预计发送旅客 2039 万人次，加开列车 1462 列。 今年中秋国庆假期邻近，旅游、探亲与休闲需求旺盛，铁路总体客流预计高位运行。…",
-      "source": "IT 之家",
-      "sourceId": "ithome",
-      "lang": "中文",
-      "topic": "product"
+      "title": "Greg Kroah-Hartman – Security in the LLM Age [video]",
+      "link": "https://www.youtube.com/watch?v=NnV_cWeoo5Q",
+      "date": "2026-10-02T02:51:27.000Z",
+      "summary": "Article URL: https://www.youtube.com/watch?v=NnV_cWeoo5Q Comments URL: https://news.ycombinator.com/item?id=49929391 Points: 216 # Comments: 56",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
     },
     {
       "title": "Academia is for Ambition — Alex Zhang, MIT",
@@ -281,6 +671,16 @@
       "sourceId": "latentspace",
       "lang": "English",
       "topic": "product"
+    },
+    {
+      "title": "Chatham scales its capital markets expertise with OpenAI",
+      "link": "https://openai.com/index/chatham-financial",
+      "date": "2026-10-02T00:00:00.000Z",
+      "summary": "Chatham Financial uses Codex and GPT-5.6 to build technology and redesign workflows, cutting trade validation from 30 minutes to under 4.",
+      "source": "OpenAI",
+      "sourceId": "openai",
+      "lang": "English",
+      "topic": "model"
     },
     {
       "title": "Musk’s AI chatbot Grok reportedly encouraged Trump to capture Venezuela’s president",
@@ -313,50 +713,10 @@
       "topic": "industry"
     },
     {
-      "title": "ChatGPT can now virtually try on clothes for you",
-      "link": "https://techcrunch.com/2026/10/01/chatgpt-can-now-virtually-try-on-clothes-for-you/",
-      "date": "2026-10-01T19:21:53.000Z",
-      "summary": "OpenAI is rolling out new shopping features for ChatGPT that let users virtually try on clothing and accessories using their own photos and save products they like to a Favorites library.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Google thinks SpaceX’s Starship has to launch 1,800 times before space data centers get off the ground",
-      "link": "https://techcrunch.com/2026/10/01/google-thinks-spacexs-starship-has-to-launch-1600-times-before-space-data-centers-get-off-the-ground/",
-      "date": "2026-10-01T19:18:03.000Z",
-      "summary": "Google launched its first advanced chip into orbit to pave the way for space data centers.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "OpenAI cuts ties with 3 safety researchers, WSJ reports",
-      "link": "https://techcrunch.com/2026/10/01/openai-cuts-ties-with-three-safety-researchers-wsj-reports/",
-      "date": "2026-10-01T18:14:42.000Z",
-      "summary": "OpenAI has parted ways with three safety researchers after an internal investigation found they mishandled sensitive company information, report says.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Opus 5.5 loves to tell you ‘this matters’ (and other AI writing tells)",
-      "link": "https://techcrunch.com/2026/10/01/opus-5-5-loves-to-tell-you-this-matters-and-other-ai-writing-tells/",
-      "date": "2026-10-01T17:50:19.000Z",
-      "summary": "Opus 5.5’s biggest tell is the word “dependable,” which pops up 23 times more often than in human samples.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "Vote on which of Hacker News' challenges for AI have been met",
       "link": "https://stoppels.ch/goalposts/",
       "date": "2026-10-01T17:32:43.000Z",
-      "summary": "Article URL: https://stoppels.ch/goalposts/ Comments URL: https://news.ycombinator.com/item?id=49924618 Points: 130 # Comments: 127",
+      "summary": "Article URL: https://stoppels.ch/goalposts/ Comments URL: https://news.ycombinator.com/item?id=49924618 Points: 196 # Comments: 259",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -383,36 +743,6 @@
       "topic": "model"
     },
     {
-      "title": "Amazon releases its own Jev clone as decision models flood the web",
-      "link": "https://techcrunch.com/2026/10/01/amazon-releases-its-own-jev-clone-as-decision-models-flood-the-web/",
-      "date": "2026-10-01T16:49:22.000Z",
-      "summary": "Amazon Web Services' Strand Labs has released the latest Jevalike decision model, Strands Decider 2B.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Shopify debuts Canvas, a way to build online stores by chatting with AI",
-      "link": "https://techcrunch.com/2026/10/01/shopify-debuts-canvas-a-way-to-build-online-stores-by-chatting-with-ai/",
-      "date": "2026-10-01T16:44:35.000Z",
-      "summary": "Shopify’s new Canvas site builder lets merchants create and customize their online stores by chatting with its AI agent Sidekick, while watching the changes happen in real time.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "With most information hidden, the game Stratego had stumped AI—until now",
-      "link": "https://arstechnica.com/science/2026/10/ai-finally-beat-the-best-stratego-player-in-history-and-did-it-on-a-budget/",
-      "date": "2026-10-01T16:28:04.000Z",
-      "summary": "Adding in a second neural network that guesses the identity of hidden pieces was key.",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "How Albertsons Companies is reimagining retail from the inside out",
       "link": "https://openai.com/index/albertsons-reimagining-retail",
       "date": "2026-10-01T16:00:00.000Z",
@@ -423,20 +753,10 @@
       "topic": "model"
     },
     {
-      "title": "Brian Chesky interview: AI agents need their own operating system",
-      "link": "https://techcrunch.com/2026/10/01/brian-chesky-interview-ai-agents-need-their-own-operating-system/",
-      "date": "2026-10-01T15:12:00.000Z",
-      "summary": "Brian Chesky on making Airbnb agent-friendly, the state of consumer AI, and why the world needs an AI-native operating system.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "Identity Management for Agentic AI [pdf] (2025)",
       "link": "https://openid.net/wp-content/uploads/2025/10/Identity-Management-for-Agentic-AI.pdf",
       "date": "2026-10-01T15:11:10.000Z",
-      "summary": "Article URL: https://openid.net/wp-content/uploads/2025/10/Identity-Management-for-Agentic-AI.pdf Comments URL: https://news.ycombinator.com/item?id=49922736 Points: 70 # Comments: 23",
+      "summary": "Article URL: https://openid.net/wp-content/uploads/2025/10/Identity-Management-for-Agentic-AI.pdf Comments URL: https://news.ycombinator.com/item?id=49922736 Points: 78 # Comments: 28",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -463,16 +783,6 @@
       "topic": "industry"
     },
     {
-      "title": "OpenAI’s new agent is a shot at Meta — but can it compete with free?",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/1003399/meta-openai-ai-agents-muse-dots-battle",
-      "date": "2026-10-01T14:36:50.000Z",
-      "summary": "At OpenAI's annual DevDay conference, the company pulled out all the stops to compete with its rivals - primarily Meta, whose Muse AI agent platform has seen early runaway success.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "团队使用 Codex 和 Claude Code，API Key 和模型权限怎么管？我开源了 Zentrola",
       "link": "https://www.oschina.net/news/502836",
       "date": "2026-10-01T14:28:31.000Z",
@@ -483,30 +793,10 @@
       "topic": "opensource"
     },
     {
-      "title": "Inside our months-long investigation into Kevin O’Leary’s Utah data center debacle",
-      "link": "https://www.theverge.com/podcast/1002851/utah-ai-data-center-stratos-kevin-oleary-investigation-backlash",
-      "date": "2026-10-01T14:00:00.000Z",
-      "summary": "Today I’m talking with Josh Dzieza, a longtime features writer here at The Verge, about Kevin O’Leary’s plans to build a massive data center in Utah.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Photon held a funeral for mobile apps. Now it has $4.5M to help replace them with agents.",
-      "link": "https://techcrunch.com/2026/10/01/photon-held-a-funeral-for-mobile-apps-now-it-has-4-5m-to-help-replace-them-with-agents/",
-      "date": "2026-10-01T14:00:00.000Z",
-      "summary": "The startup helps developers build AI agents that work over iMessage, SMS/RCS, email, and other messaging platforms.…",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "An AI sovereign wealth fund isn't progressive – it's techno-imperialism",
       "link": "https://www.ft.com/content/bc178357-793b-45d8-ae3b-d5929159c243",
       "date": "2026-10-01T13:01:02.000Z",
-      "summary": "Article URL: https://www.ft.com/content/bc178357-793b-45d8-ae3b-d5929159c243 Comments URL: https://news.ycombinator.com/item?id=49921051 Points: 89 # Comments: 60",
+      "summary": "Article URL: https://www.ft.com/content/bc178357-793b-45d8-ae3b-d5929159c243 Comments URL: https://news.ycombinator.com/item?id=49921051 Points: 90 # Comments: 64",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -516,31 +806,11 @@
       "title": "FTC is investigating OpenAI, Anthropic and other AI companies over product risks",
       "link": "https://www.cnbc.com/2026/09/30/ftc-ai-probe-openai-anthropic.html",
       "date": "2026-10-01T13:00:55.000Z",
-      "summary": "Article URL: https://www.cnbc.com/2026/09/30/ftc-ai-probe-openai-anthropic.html Comments URL: https://news.ycombinator.com/item?id=49921050 Points: 202 # Comments: 153",
+      "summary": "Article URL: https://www.cnbc.com/2026/09/30/ftc-ai-probe-openai-anthropic.html Comments URL: https://news.ycombinator.com/item?id=49921050 Points: 209 # Comments: 159",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
       "topic": "opensource"
-    },
-    {
-      "title": "Hearing tech startup Legato launches its AI hearing glasses",
-      "link": "https://techcrunch.com/2026/10/01/hearing-tech-startup-legato-launches-its-ai-hearing-glasses/",
-      "date": "2026-10-01T13:00:00.000Z",
-      "summary": "The glasses stem from the startup’s goal of making hearing care more accessible by addressing the cost, comfort, and stigma associated with traditional hearing aids.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Satlyt, founded by a former Google and SpaceX product manager, raises $8M to run AI on satellites",
-      "link": "https://techcrunch.com/2026/10/01/satlyt-founded-by-a-former-google-and-spacex-product-manager-raises-8m-to-run-ai-on-satellites/",
-      "date": "2026-10-01T12:00:00.000Z",
-      "summary": "Satlyt wants to be the Android of orbital computing, offering open software that works on many companies' satellites, versus SpaceX's closed, all-in-one iPhone-style approach.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "[AINews] Gemini 4 Argon: GDM’s answer to Astra/Fable, with 1M output",
@@ -593,16 +863,6 @@
       "topic": "product"
     },
     {
-      "title": "Elon Musk’s Grokipedia has a ‘newly refreshed’ design",
-      "link": "https://www.theverge.com/tech/1003068/elon-musk-grokipedia-v-0-3-spacexai",
-      "date": "2026-10-01T00:23:45.000Z",
-      "summary": "Grokipedia, SpaceXAI's AI-powered competitor to Wikipedia, recently started incorporating edits again, and today, it got some design tweaks as part of a v0.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "The Den frees up 10-15 hours a week to grow with ChatGPT Work",
       "link": "https://openai.com/index/the-den-family-social",
       "date": "2026-10-01T00:00:00.000Z",
@@ -611,16 +871,6 @@
       "sourceId": "openai",
       "lang": "English",
       "topic": "model"
-    },
-    {
-      "title": "Google releases Gemini 4 Argon, called its most powerful model yet",
-      "link": "https://techcrunch.com/2026/09/30/google-releases-gemini-4-argon-called-its-most-powerful-model-yet/",
-      "date": "2026-09-30T23:43:07.000Z",
-      "summary": "Google has released its latest Gemini model, marketing it as a workhorse for coding and cybersecurity work.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "Why Dwarkesh is Wrong about Computer Use + How OpenAI shipped its Jev competitor in 1 Week",
@@ -641,16 +891,6 @@
       "sourceId": "simonw",
       "lang": "English",
       "topic": "product"
-    },
-    {
-      "title": "Google announces Gemini 4 and says it’s so capable that only ‘trusted cyber defenders’ can have it right now",
-      "link": "https://www.theverge.com/tech/1002980/google-gemini-4-argon",
-      "date": "2026-09-30T20:41:41.000Z",
-      "summary": "Google today revealed its next AI frontier model, which it's calling Gemini 4 Argon. The new model delivers \"frontier performance in complex workflows across real-world software engineering,…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "Google announces Gemini 4 Argon AI model, but you can't use it yet",
@@ -676,7 +916,7 @@
       "title": "CS240 AI Cheating Retrospective",
       "link": "https://turkeyland.net/thoughts/ai.php",
       "date": "2026-09-30T19:54:29.000Z",
-      "summary": "Article URL: https://turkeyland.net/thoughts/ai.php Comments URL: https://news.ycombinator.com/item?id=49913458 Points: 116 # Comments: 103",
+      "summary": "Article URL: https://turkeyland.net/thoughts/ai.php Comments URL: https://news.ycombinator.com/item?id=49913458 Points: 118 # Comments: 104",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -713,26 +953,6 @@
       "topic": "industry"
     },
     {
-      "title": "The AI Tamagotchis are coming",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/1002779/openai-dots-meta-muse-ai-agents-hardware-devices",
-      "date": "2026-09-30T18:07:38.000Z",
-      "summary": "While AI has made plenty of inroads on people's phones and computers, it's largely failed in dedicated devices. But over the next year, two major AI companies, Meta and OpenAI, will attempt …",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Here’s what AI leaders are saying about Trump’s new safety plan",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/1002636/ai-execs-trump-self-policing-deal-comments",
-      "date": "2026-09-30T17:15:49.000Z",
-      "summary": "After hosting a meal with Big Tech leaders on Tuesday, President Donald Trump responded to journalist questions about his artificial intelligence announcements in typical fashion.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "Google's early attempt to pay websites for AI answers is struggling",
       "link": "https://arstechnica.com/google/2026/09/google-is-paying-100-websites-for-contributions-to-ai-overviews-but-the-amounts-are-tiny/",
       "date": "2026-09-30T16:03:48.000Z",
@@ -756,21 +976,11 @@
       "title": "The AI Race Just Got Awkward",
       "link": "https://insufferable.dev/posts/the-ai-race-just-got-awkward/",
       "date": "2026-09-30T15:50:11.000Z",
-      "summary": "Article URL: https://insufferable.dev/posts/the-ai-race-just-got-awkward/ Comments URL: https://news.ycombinator.com/item?id=49910553 Points: 409 # Comments: 455",
+      "summary": "Article URL: https://insufferable.dev/posts/the-ai-race-just-got-awkward/ Comments URL: https://news.ycombinator.com/item?id=49910553 Points: 412 # Comments: 461",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
       "topic": "opensource"
-    },
-    {
-      "title": "All the latest news on Meta’s cute, creepy Muse AI agent",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/1002671/meta-muse-ai",
-      "date": "2026-09-30T15:18:49.000Z",
-      "summary": "Meta launched a new Muse AI agent it claims can help you with everything from firing off emails to buying stuff online.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "突发！苹果全新产品线曝光，Siri AI 进家门",
@@ -793,16 +1003,6 @@
       "topic": "model"
     },
     {
-      "title": "Google reportedly tests paying publishers for AI search results",
-      "link": "https://www.theverge.com/tech/1002665/google-paying-publishers-ai-search-features",
-      "date": "2026-09-30T14:51:49.000Z",
-      "summary": "Google has launched a pilot program that pays publishers for their contributions to its AI-powered search features, according to a report from The Information.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "Show HN: Lathoa, a math app for kids where the AI is wrong on purpose",
       "link": "https://lathoa.ai/en",
       "date": "2026-09-30T14:38:57.000Z",
@@ -821,16 +1021,6 @@
       "sourceId": "sspai",
       "lang": "中文",
       "topic": "product"
-    },
-    {
-      "title": "OpenAI delays IPO over AI safety concerns",
-      "link": "https://arstechnica.com/ai/2026/09/openai-delays-ipo-over-ai-safety-concerns/",
-      "date": "2026-09-30T14:06:15.000Z",
-      "summary": "OpenAI is seeking another $30 billion privately as its IPO plans slip.",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "OpenAI推理之父最新访谈！数学只是多智能体时代的开胃菜",
@@ -963,26 +1153,6 @@
       "topic": "opensource"
     },
     {
-      "title": "Manus 2.0回来了！给AI配手机号和钱包，还能拉群干活",
-      "link": "https://www.qbitai.com/2026/09/499592.html",
-      "date": "2026-09-30T07:58:37.000Z",
-      "summary": "给Agent配上手机号，再拉个群",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "刚刚，GPT-6 Astra接上宇树G1，把厨房收拾了！",
-      "link": "https://www.qbitai.com/2026/09/499493.html",
-      "date": "2026-09-30T07:54:54.000Z",
-      "summary": "让GPT把机器人技能当工具调用",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
       "title": "dummyscheme，另一个 lisp/scheme 方言，支持 r5rs",
       "link": "https://www.oschina.net/news/502825",
       "date": "2026-09-30T07:19:25.000Z",
@@ -1073,26 +1243,6 @@
       "topic": "product"
     },
     {
-      "title": "DeepSeek知乎独家发文，首次公开V4.1 Agent训练“大本营”DSec",
-      "link": "https://www.qbitai.com/2026/09/499308.html",
-      "date": "2026-09-30T05:18:05.000Z",
-      "summary": "DeepSeek在知乎独家发布技术长文，首次系统阐释了DeepSeek弹性计算（DeepSeek Elastic Compute，DSec）",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "36家敲钟的机器人公司：赚钱能力差距巨大，商业化也不玩花架子了",
-      "link": "https://www.qbitai.com/2026/09/499280.html",
-      "date": "2026-09-30T04:42:22.000Z",
-      "summary": "机器人上市，风向有变",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
       "title": "别再把攻略全甩给 AI：国庆七天河南自驾，我是这样用 Agent 的",
       "link": "https://sspai.com/post/114945",
       "date": "2026-09-30T03:02:18.000Z",
@@ -1101,26 +1251,6 @@
       "sourceId": "sspai",
       "lang": "中文",
       "topic": "product"
-    },
-    {
-      "title": "DeepSeek官方开源昇腾基础组件，与昇腾共建高效易用的AI芯片软件生态",
-      "link": "https://www.qbitai.com/2026/09/499263.html",
-      "date": "2026-09-30T02:53:17.000Z",
-      "summary": "",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "Responsible Release of AI-Generated Mathematics",
-      "link": "https://agmai.org/general-sep29/",
-      "date": "2026-09-30T02:36:12.000Z",
-      "summary": "Article URL: https://agmai.org/general-sep29/ Comments URL: https://news.ycombinator.com/item?id=49903713 Points: 119 # Comments: 176",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
     },
     {
       "title": "ChatGPT 一夜抄完半个 AI 圈，现场演示频频翻车",
@@ -1173,46 +1303,6 @@
       "topic": "product"
     },
     {
-      "title": "Protests against OpenAI get increasingly creative",
-      "link": "https://arstechnica.com/ai/2026/09/what-iceberg-bay-area-artists-target-openai-with-titanic-themed-protest-art/",
-      "date": "2026-09-29T21:52:58.000Z",
-      "summary": "New sculpture depicts AI leaders escaping a sinking ship.",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "AMD acquires World Labs AI startup, upping the ante against Nvidia",
-      "link": "https://arstechnica.com/ai/2026/09/amd-acquires-world-labs-ai-pioneer-fei-fei-lis-world-models-startup/",
-      "date": "2026-09-29T21:14:49.000Z",
-      "summary": "The deal, which is expected to close by year's end, is worth $8.2 billion.",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "McDonald's push to have AI price your Big Mac",
-      "link": "https://www.cnbc.com/2026/09/29/inside-mcdonalds-push-ai-price-big-mac.html",
-      "date": "2026-09-29T19:58:50.000Z",
-      "summary": "Article URL: https://www.cnbc.com/2026/09/29/inside-mcdonalds-push-ai-price-big-mac.html Comments URL: https://news.ycombinator.com/item?id=49899453 Points: 61 # Comments: 37",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
-      "title": "AI needs $6T in annual revenue to justify data centre boom",
-      "link": "https://www.thenationalnews.com/future/technology/2026/09/29/ai-industry-needs-to-earn-6-trillion-by-2031-to-justify-data-centres/",
-      "date": "2026-09-29T19:21:25.000Z",
-      "summary": "Article URL: https://www.thenationalnews.com/future/technology/2026/09/29/ai-industry-needs-to-earn-6-trillion-by-2031-to-justify-data-centres/ Comments URL: https://news.ycombinator.…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
       "title": "GPT 6.1 Sol: Near-Astra intelligence for a fifth of the price",
       "link": "https://simonwillison.net/2026/Sep/29/hn-49898129/",
       "date": "2026-09-29T18:27:48.000Z",
@@ -1221,16 +1311,6 @@
       "sourceId": "simonw",
       "lang": "English",
       "topic": "product"
-    },
-    {
-      "title": "Here's what actually happened in OpenAI's Australian gov't server hack",
-      "link": "https://arstechnica.com/ai/2026/09/heres-what-actually-happened-in-openais-australian-govt-server-hack/",
-      "date": "2026-09-29T18:11:09.000Z",
-      "summary": "Without a \"full set of safeguards,\" agent accessed \"system information and source code.\"",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "Photo Scrubber — local face blur & metadata removal",
@@ -1243,16 +1323,6 @@
       "topic": "product"
     },
     {
-      "title": "DraftKings is using AI to behaviorally target chronic gamblers",
-      "link": "https://www.eff.org/deeplinks/2026/09/draftkings-using-ai-supercharge-harms-online-behavioral-advertising",
-      "date": "2026-09-29T16:30:48.000Z",
-      "summary": "Article URL: https://www.eff.org/deeplinks/2026/09/draftkings-using-ai-supercharge-harms-online-behavioral-advertising Comments URL: https://news.ycombinator.com/item?…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
       "title": "OpenAI DevDay 2026 live blog",
       "link": "https://simonwillison.net/2026/Sep/29/openai-devday-2026-live-blog/",
       "date": "2026-09-29T15:55:13.000Z",
@@ -1261,16 +1331,6 @@
       "sourceId": "simonw",
       "lang": "English",
       "topic": "product"
-    },
-    {
-      "title": "Unsurprisingly, Meta's new Muse AI agent blatantly ignores users permissions",
-      "link": "https://appleinsider.com/articles/26/09/28/metas-new-ai-agent-blatantly-ignores-users-permissions",
-      "date": "2026-09-29T14:15:24.000Z",
-      "summary": "Article URL: https://appleinsider.com/articles/26/09/28/metas-new-ai-agent-blatantly-ignores-users-permissions Comments URL: https://news.ycombinator.com/item?…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
     },
     {
       "title": "Making AI an asset, not an expense",
@@ -1283,20 +1343,20 @@
       "topic": "industry"
     },
     {
-      "title": "Introducing GPT-6.1 Sol",
-      "link": "https://openai.com/index/introducing-gpt-6-1-sol",
+      "title": "DevDay 2026 Recap",
+      "link": "https://openai.com/index/devday-2026-recap",
       "date": "2026-09-29T10:00:00.000Z",
-      "summary": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
+      "summary": "Explore more than 20 announcements from OpenAI DevDay 2026, including GPT-6 Astra, ChatGPT, Codex, APIs, security, and new tools for builders.",
       "source": "OpenAI",
       "sourceId": "openai",
       "lang": "English",
       "topic": "model"
     },
     {
-      "title": "DevDay 2026 Recap",
-      "link": "https://openai.com/index/devday-2026-recap",
+      "title": "Introducing GPT-6.1 Sol",
+      "link": "https://openai.com/index/introducing-gpt-6-1-sol",
       "date": "2026-09-29T10:00:00.000Z",
-      "summary": "Explore more than 20 announcements from OpenAI DevDay 2026, including GPT-6 Astra, ChatGPT, Codex, APIs, security, and new tools for builders.",
+      "summary": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
       "source": "OpenAI",
       "sourceId": "openai",
       "lang": "English",
@@ -1460,66 +1520,6 @@
       "source": "少数派",
       "sourceId": "sspai",
       "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "基于 Termux 的 Android 手机开发服务器实操",
-      "link": "https://sspai.com/prime/story/dev-env-on-android-with-termux",
-      "date": "2026-09-28T09:33:03.000Z",
-      "summary": "不 root、不刷机，在随身设备上跑通 AI Agent 与微型 Linux 环境。查看全文本文为会员文章，出自《单篇文章》，订阅后可阅读全文。",
-      "source": "少数派",
-      "sourceId": "sspai",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "Who’s liable when AI agents go rogue?",
-      "link": "https://www.technologyreview.com/2026/09/28/1145197/whos-liable-when-ai-agents-go-rogue/",
-      "date": "2026-09-28T08:06:22.000Z",
-      "summary": "MIT Technology Review Explains: Let our writers untangle the complex, messy world of technology to help you understand what’s coming next. You can read more from the series here.…",
-      "source": "MIT Tech Review · AI",
-      "sourceId": "mittr-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "The Lenfest Institute grows landmark program with expanded OpenAI support",
-      "link": "https://openai.com/index/lenfest-ai-collaborative-expansion",
-      "date": "2026-09-28T07:00:00.000Z",
-      "summary": "OpenAI is expanding the Lenfest AI Collaborative and Fellowship Program with $5 million in funding and up to $5 million in software credits and engineering support.",
-      "source": "OpenAI",
-      "sourceId": "openai",
-      "lang": "English",
-      "topic": "model"
-    },
-    {
-      "title": "Quoting Muse AI Agent",
-      "link": "https://simonwillison.net/2026/Sep/28/muse-ai-agent/",
-      "date": "2026-09-28T04:01:30.000Z",
-      "summary": "Bad news on the MX Keys Mini pickup. Usman showed up at your building around 9:15 and waited, messaged a bunch of times, and nobody came down.…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
-      "topic": "product"
-    },
-    {
-      "title": "Are you a Codex Original?",
-      "link": "https://openai.com/form/codex-originals",
-      "date": "2026-09-28T00:00:00.000Z",
-      "summary": "We’re collecting real stories of builders, tinkerers, researchers, and creators who are using Codex to do incredible things.…",
-      "source": "OpenAI",
-      "sourceId": "openai",
-      "lang": "English",
-      "topic": "model"
-    },
-    {
-      "title": "2026 in LLMs (so far)",
-      "link": "https://simonwillison.net/2026/Sep/27/2026-in-llms-so-far/",
-      "date": "2026-09-27T23:54:15.000Z",
-      "summary": "On Friday I gave the closing keynote at the WeAreDevelopers World Congress North America in San Jose. I tied together the key trends from the past year into a chronological exploration of ev…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
       "topic": "product"
     }
   ]
