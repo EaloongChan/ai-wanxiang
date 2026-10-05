@@ -35,7 +35,9 @@
     "indexnow:seed": "node scripts/indexnow.mjs --seed",
     "check:outbound": "node scripts/check-outbound.mjs",
     "check:sitemap": "node scripts/check-sitemap.mjs --canonical",
-    "trending": "node scripts/trending.mjs"
+    "trending": "node scripts/trending.mjs",
+    "og": "node scripts/og-images.mjs",
+    "og:force": "node scripts/og-images.mjs --force"
   },
   "engines": {
     "node": ">=18"

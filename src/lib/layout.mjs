@@ -1,5 +1,19 @@
 import { esc, jsonEmbed, metaExcerpt } from './utils.mjs';
 import { icon, iconSprite } from './icons.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+/* 每页专属分享图：public/og/<slug>.png（由 scripts/og-images.mjs 生成）。
+   约定是「路径里的 / 换成 -」，例如 /playbooks/pb-ai-video/ → playbooks-pb-ai-video.png。
+   找不到就回落到全站那张 /og.png —— 分享图缺失不该让页面出错。
+   为什么在这里 stat 而不是让每个页面自己传：新增页面时没人会记得传，
+   而这一层兜底能让「以后新增的页面」自动享受同样的待遇。 */
+const OG_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'public', 'og');
+const perPageOg = (p) => {
+  const slug = String(p || '/').replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || 'home';
+  return fs.existsSync(path.join(OG_DIR, slug + '.png')) ? `/og/${slug}.png` : '';
+};
 
 /** og:locale 要写成 zh_CN / en_US 这种带地区的格式，光写 en 不规范 */
 const ogLocale = (lang) => ({ 'zh-CN': 'zh_CN', zh: 'zh_CN', en: 'en_US', 'en-US': 'en_US' }[lang] || lang);
@@ -69,7 +83,10 @@ export function layout(o) {
   const base = (site.baseUrl || '').replace(/\/$/, '');
   const canonical = base ? base + path : path;
   const theme = site.theme?.default || 'light';
-  const og = ogImage || (base ? `${base}/og.png` : '/og.png');
+  const own = ogImage || perPageOg(path);
+  const og = own
+    ? (/^https?:/.test(own) ? own : base + own)
+    : (base ? `${base}/og.png` : '/og.png');
   const pageLang = lang || site.locale || 'zh-CN';
   /* altLang 默认按当前页语言反推，而不是留空。
      踩过的坑（2026-09-21）：中文页加了 altPath 但忘了传 altLang，结果输出
