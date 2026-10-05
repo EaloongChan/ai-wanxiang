@@ -45,6 +45,64 @@ const BUDGET = {
   'en/glossary/index.html': 36,
 };
 
+/* ---------- 内容驱动的列表页：预算随条目数增长，而不是写死一个数 ----------
+   写死的预算**一定会被「内容正常增长」撞破**（工具从 236 条长到 300 条本来就会变重），
+   然后被当成「又是这个假警报」而一次次放宽 —— 那之后就再也抓不到真正的体积回归了。
+
+   下面这些系数不是拍脑袋：是拿**同一套模板、不同条目数**的页面反推出来的
+   （斜率 = 每条成本，截距 = 与条目数无关的固定开销）：
+     /tools/     16 条 9.0KB → 34 条 13.9KB → 246 条 49.3KB   ⇒ 6.2 + 0.18×n
+     /en/tools/  16 条 7.3KB → 34 条 11.6KB → 246 条 48.8KB   ⇒ 4.4 + 0.18×n
+     /prompts/    9 条 11.5KB → 12 条 13.2KB → 86 条 56.7KB   ⇒ 6.3 + 0.59×n（提示词整段内嵌，重得多）
+     /en/prompts/ 9 条 9.6KB → 12 条 11.2KB → 86 条 49.3KB    ⇒ 5.0 + 0.51×n
+     搜索/收藏页内嵌整份索引（609 条 ≈ 68.7KB）               ⇒ 10 + 0.10×n
+   三个点连成直线且互相吻合，所以线性模型是站得住的。统一留 10% 余量。 */
+const countIn = (f, key) => {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'data', f), 'utf8'));
+    return (key ? j[key] : j).length;
+  } catch { return 0; }
+};
+const indexCount = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(DIST, 'api', 'search.json'), 'utf8')).length; } catch { return 0; }
+})();
+const nTools = countIn('tools.json');
+const nPrompts = countIn('prompts.json');
+const head = (kb) => Math.round(kb * 1.1);
+if (nTools) {
+  BUDGET['tools/index.html'] = head(6.2 + 0.18 * nTools);
+  BUDGET['en/tools/index.html'] = head(4.4 + 0.18 * nTools);
+}
+if (nPrompts) {
+  BUDGET['prompts/index.html'] = head(6.3 + 0.59 * nPrompts);
+  BUDGET['en/prompts/index.html'] = head(5.0 + 0.51 * nPrompts);
+}
+if (indexCount) {
+  BUDGET['search/index.html'] = head(10 + 0.10 * indexCount);
+  BUDGET['saved/index.html'] = head(10 + 0.10 * indexCount);
+  BUDGET['en/search/index.html'] = head(8 + 0.09 * indexCount);
+}
+/* 取不到计数就别覆盖（否则预算会算成个位数，立刻全是假警报） */
+if (!nTools || !nPrompts || !indexCount) {
+  console.log('  ! 有数据文件读不到（tools / prompts / 搜索索引），这几个页面的预算沿用写死值');
+}
+
+/* 预算平时只在超标时才露出来，加个开关方便核对「这页现在到底被卡在多少」 */
+if (process.argv.includes('--budgets')) {
+  console.log('');
+  console.log('  生效中的预算（gzip KB）');
+  console.log(`    条目数：工具 ${nTools} · 提示词 ${nPrompts} · 搜索索引 ${indexCount}`);
+  console.log('');
+  for (const [k, v] of Object.entries(BUDGET)) {
+    const f = path.join(DIST, k);
+    let now = '';
+    try { now = `（当前 ${(zlib.gzipSync(fs.readFileSync(f)).length / 1024).toFixed(1)}）`; } catch { /* 文件不在就算了 */ }
+    console.log(`    ${k.padEnd(30)} ${String(v).padStart(4)} KB  ${now}`);
+  }
+  console.log('');
+  process.exit(0);
+}
+
 if (!fs.existsSync(DIST)) { console.error('  dist/ 不存在，请先构建'); process.exit(1); }
 
 /* 静态资源带内容哈希（main.3edd4fc.css），文件名不能写死。

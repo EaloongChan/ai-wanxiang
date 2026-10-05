@@ -88,11 +88,30 @@ L.push(`| 未能验证 | ${unknown.length} | 403 / 429 / 超时 —— 是反爬
 L.push('');
 
 if (dead.length) {
+  /* 升级提醒：连续多次检查都失败，说明这条已经被看过好几周却一直没处理。
+     光说「失效 1 条」是不会有人动手的 —— 每次周报都长一样，读者就学会跳过它了。
+     把「连续 N 次」摆到最前面，并明确写出两条出路（改 URL / 写进 caveat），
+     否则这种条目会永远挂在失效列表里，慢慢把整份报告变成噪音。 */
+  const stale = dead.filter((r) => (r.failCount || 0) >= 3).sort((a, b) => (b.failCount || 0) - (a.failCount || 0));
+  if (stale.length) {
+    L.push('## ⚠️ 长期未处理（连续 ≥3 次检查失败）');
+    L.push('');
+    for (const r of stale) {
+      L.push(`- **${r.name}** —— 已连续 ${r.failCount} 次检查失败${r.firstFailedAt ? `，自 ${String(r.firstFailedAt).slice(0, 10)} 起就没通过` : ''}`);
+      L.push(`  \`${r.url}\``);
+      L.push('  → 二选一：查到新地址就更新 `url`；确认停运就把结论写进 `caveat` 并从失效名单里移出，');
+      L.push('    这样它不会再每周出现一次占着版面（条目本身照旧保留，用户搜索仍能找到）。');
+    }
+    L.push('');
+    L.push('> 说明：已知停运且故意保留历史地址的条目（例如 Tome）属于**已处理**状态，');
+    L.push('> 如果它出现在这里，是提醒信息不够 —— 应该改进 caveat 的措辞，而不是重复处理。');
+    L.push('');
+  }
   L.push('## 明确失效（需要在页面/数据上处理）');
   L.push('');
-  L.push('| 名称 | 状态 | URL | 处理建议 |');
-  L.push('|---|---:|---|---|');
-  for (const r of dead) L.push(`| ${r.name} | HTTP ${r.status} | ${r.url} | 查到新域名就更新 URL；确认停运就把结论写进 caveat |`);
+  L.push('| 名称 | 状态 | 连续失败 | URL | 处理建议 |');
+  L.push('|---|---:|---:|---|---|');
+  for (const r of dead) L.push(`| ${r.name} | HTTP ${r.status} | ${r.failCount || 1} 次 | ${r.url} | 查到新域名就更新 URL；确认停运就把结论写进 caveat |`);
   L.push('');
 }
 

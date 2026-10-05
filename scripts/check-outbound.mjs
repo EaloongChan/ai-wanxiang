@@ -245,6 +245,10 @@ async function main() {
       verdict,
       checkedAt: new Date().toISOString(),
       failCount: ok ? 0 : (prev[it.id]?.failCount || 0) + 1,
+      /* 从什么时候开始坏的。周报要靠它把「连续 4 次失败」说成「从 8 月起就一直不通」——
+         没有这个时间点，升级提醒只能干说一个次数，读者还是不知道该不该管。
+         成功一次就清掉，下次再坏才是新的一轮。 */
+      firstFailedAt: ok ? '' : (prev[it.id]?.firstFailedAt || new Date().toISOString()),
     };
 
     if (ok) {
