@@ -4687,7 +4687,12 @@
     "url": "https://zcode.z.ai",
     "cat": "coding",
     "desc": "智谱出品的桌面 AI 编程工具，对标 Claude Code，配 GLM 系列模型使用。",
-    "tags": ["Agent", "代码", "国产", "桌面端"],
+    "tags": [
+      "Agent",
+      "代码",
+      "国产",
+      "桌面端"
+    ],
     "pricing": "freemium",
     "cn": true,
     "official": true,
@@ -4702,7 +4707,12 @@
     "url": "https://github.com/MiniMax-AI/minimax-code",
     "cat": "coding",
     "desc": "MiniMax 开源的终端编程智能体（MIT），支持 BYOK 接任意兼容模型的 API。",
-    "tags": ["CLI", "Agent", "开源", "代码"],
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "代码"
+    ],
     "pricing": "open",
     "cn": true,
     "open": true,
@@ -4711,5 +4721,42 @@
     "caveat": "工具本体开源免费，但算力按 MiniMax 套餐或自有 API 计费；评测数字（76.7%）来自第三方 30 题小样本，别当排行榜看。",
     "descEn": "MiniMax's open-source (MIT) terminal coding agent. BYOK-friendly: bring any OpenAI- or Anthropic-compatible API.",
     "caveatEn": "The tool is free and open, but compute bills through a MiniMax plan or your own API. Its 76.7% eval number comes from a small 30-task third-party run — not a leaderboard."
+  },
+  {
+    "id": "moneyprinter-turbo",
+    "name": "MoneyPrinterTurbo",
+    "url": "https://github.com/harry0703/MoneyPrinterTurbo",
+    "cat": "video",
+    "desc": "给一个主题或关键词，自动写脚本、配素材、上字幕和配乐，直接合成竖屏短视频。",
+    "tags": [
+      "开源",
+      "短视频",
+      "自动化"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "added": "2026-10-05",
+    "caveat": "素材取自公开库，成片偏模板化，平台原创度审核容易不通过；配乐与画面素材的商用版权要自己核。想精细控画面，最后还是得手动剪。",
+    "descEn": "Give it a topic and it writes the script, sources footage, adds subtitles and music, then renders a vertical short video.",
+    "caveatEn": "Footage comes from public libraries, so the output looks templated and may fail platform originality checks. Clear the commercial rights on music and clips yourself; for fine control you still edit by hand."
+  },
+  {
+    "id": "voicestudio",
+    "name": "VoiceStudio",
+    "url": "https://github.com/debpalash/VoiceStudio",
+    "cat": "audio",
+    "desc": "本地跑的开源语音工具：音色克隆、声音设计、视频配音、听写与有声书，覆盖 646 种语言。",
+    "tags": [
+      "开源",
+      "配音",
+      "克隆",
+      "本地"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "added": "2026-10-05",
+    "caveat": "要自己部署、吃显存，换来的是音频不出本机；克隆他人音色涉及声音权，商用前必须确认授权。只想快速出活，云端服务更省事。",
+    "descEn": "A local, open-source voice toolkit: cloning, voice design, video dubbing, dictation and audiobooks, across 646 languages.",
+    "caveatEn": "You deploy it yourself and it wants VRAM — the payoff is that your audio never leaves your machine. Cloning a voice needs that person's consent for commercial use; for quick jobs a cloud service is less work."
   }
 ]
