@@ -741,5 +741,23 @@
       "官方",
       "合规"
     ]
+  },
+  {
+    "id": "l-opus55-videos",
+    "title": "Awesome Opus 5.5 Videos：475 条爆款视频与它们的提示词",
+    "track": "prompt",
+    "type": "docs",
+    "level": "进阶",
+    "lang": "英文",
+    "free": true,
+    "url": "https://github.com/yihui-dev/awesome-opus5-5-videos",
+    "source": "yihui-dev · GitHub（MIT 协议）",
+    "desc": "475 条用 Claude Opus 5.5 写代码生成的动效视频，每条都附创作者公开的原始提示词并回链原帖。由商业产品 skillry.dev 维护，但提示词本身是真实可复用的样本，不是宣传文案。",
+    "tags": [
+      "动效",
+      "AI 视频",
+      "提示词样本",
+      "案例库"
+    ]
   }
 ]
