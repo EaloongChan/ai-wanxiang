@@ -19,7 +19,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const ARCHIVE = 'archive/listingboost-ai-v1';
+const ARCHIVE = 'archive/ai-wanxiang-v1';
 const KEY_PATH = '~/.ssh/id_ed25519_github.pub';
 const DRY = process.argv.includes('--dry');
 const BACKUP = process.argv.includes('--backup');
@@ -71,7 +71,7 @@ async function main() {
   line(`  远端        ${remote}`);
   if (!/^git@/.test(remote)) {
     line('  ! 远端不是 SSH 地址。HTTPS 在国内必须走代理且不稳定，建议改成 SSH：');
-    line('    git remote set-url origin git@github.com:EaloongChan/listingboost-ai.git');
+    line('    git remote set-url origin git@github.com:EaloongChan/ai-wanxiang.git');
   }
 
   const dirty = git(['status', '--porcelain']).trim();

@@ -228,7 +228,7 @@ async function main() {
         console.log(`    已检查 ${i + 1} / ${all.length}，结果未写入（避免用错误数据覆盖上次的好结果）。`);
         console.log('');
         console.log('    这个检查本来就设计成在 GitHub Actions 上跑（那边网络通畅，结果才可信）：');
-        console.log('    https://github.com/EaloongChan/listingboost-ai/actions');
+        console.log('    https://github.com/EaloongChan/ai-wanxiang/actions');
         console.log('');
         process.exit(2);
       }

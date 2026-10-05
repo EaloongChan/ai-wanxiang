@@ -1,7 +1,24 @@
 # AI 万象 · AI WANXIANG
 
+**线上站点：<https://www.ealoongchan.top>**
+
 一个长期维护的 AI 收录站：工具 / 提示词 / 术语 / 学习资源 / 资讯解读。
 **零依赖**静态站生成器，产出纯静态文件，可部署到任意静态托管。
+
+## 你可以直接拿走的
+
+`data/` 目录是一份**可以直接用的开源数据集**，每条都带中英双语字段：
+
+| 目录 | 数量 | 内容 |
+|---|---|---|
+| `tools.json` | 246 | AI 工具，含价格档位、是否国内可直连、**「什么时候别用它」的编辑点评** |
+| `prompts.json` | 86 | 提示词，含变量定义、适用模型、使用要点 |
+| `glossary.json` | 92 | AI 术语，含英文名、缩写、相关术语 |
+| `playbooks.json` | 43 | 场景手册，按「想做的事」组织的流程 + 工具 + 提示词 + 避坑 |
+| `models.json` | 78 | 模型家族，只比稳定维度（擅长什么、什么坑、是否开源、国内能否用） |
+
+内容与代码是分离的 —— 改 `data/*.json` 就能重塑整个站，不用碰模板。
+也可以把整个仓库当成一个**静态站生成器**用：换成自己的数据、跑 `node scripts/build.mjs`。
 
 ---
 
@@ -108,7 +125,7 @@ scripts/
   check.mjs            数据自检（重复 id、未知分类、缺字段、交叉引用、分类撞车、feed 数据）
   links.mjs            内部链接与锚点检查（直接扫 dist，不需要服务器）
   audit.mjs            页面审计（横向溢出、控制台报错、SEO 元信息），--shot 出截图
-  selftest.mjs         交互自测（真实浏览器点击，52 个用例）
+  selftest.mjs         交互自测（真实浏览器点击，107 个用例）
   new.mjs              新增条目脚手架
 
 public/                原样拷贝到 dist/（fonts / favicon / og.png 等）
@@ -272,13 +289,16 @@ Vercel 只做两件事：跑 `node scripts/build.mjs`，然后把 `dist/` 当静
 
 `framework: null` 是关键——不写的话 Vercel 会按仓库里的框架特征去构建。
 
-`dist/` 不进 git（看 `.gitignore`）。635 个产物文件每次构建都变，提交进去会让仓库历史迅速膨胀。
+`dist/` 不进 git（看 `.gitignore`）。735 个产物文件每次构建都变，提交进去会让仓库历史迅速膨胀。
 
 ### 推送
 
 双击根目录 **`推送到线上.bat`**，或者 `node scripts/deploy-push.mjs`。
 
 **走 SSH，不走 HTTPS。** 实测国内 SSH 22 端口直连可用；HTTPS 必须走代理，而代理经常 502。
+
+> 代理切成 fake-IP/TUN 模式后，22 端口会被接管（连上就被切断）。脚本检测到这种情况会
+> **自动改走 GitHub 的 443 备用通道**，不用动你的 `~/.ssh/config`。
 
 首次要加一次公钥（一次性，之后永久免密）。不知道公钥是哪个就直接跑脚本，
 它会检测到未授权并把**要复制的那一整行**打出来：
@@ -293,9 +313,10 @@ https://github.com/settings/ssh/new   ← 粘贴进去，Save
 
 | 参数 | 作用 |
 |---|---|
-| 无 | 直接覆盖远端 main |
+| 无 | 推送（远端领先时会中止，不会覆盖） |
 | `--dry` | 只做检查，不动远端 |
-| `--backup` | 覆盖前先把远端 main 存成归档分支 `archive/listingboost-ai-v1` |
+| `--force` | 明确要求覆盖远端 main（会丢掉远端独有的提交） |
+| `--backup` | 覆盖前先把远端 main 存成归档分支 `archive/ai-wanxiang-v1` |
 
 默认**不做归档**。真正的回滚安全网是 Vercel 自己——它保留每一次部署记录，
 面板上一键就能回到旧版本，比 git 分支好用。
@@ -334,7 +355,7 @@ node scripts/audit.mjs            # 页面层：三档视口 × 27 页面
 node scripts/audit.mjs --shot     # 顺带把截图存到 .audit/
 node scripts/a11y.mjs             # 无障碍审计：对比度/可访问名称/标题层级/点击区域
 node scripts/perf.mjs             # 体积预算：关键资源与最大页面的 gzip 上限
-node scripts/selftest.mjs         # 交互层：81 个真实点击用例
+node scripts/selftest.mjs         # 交互层：107 个真实点击用例
 node scripts/verify                # check + build + links + audit 一把过
 ```
 
@@ -368,6 +389,20 @@ node scripts/verify                # check + build + links + audit 一把过
 - `vercel.json`（Vercel 同等配置）
 - `_redirects`（留给未来改 URL 结构时加 301）
 - `sitemap.xml` / `robots.txt` / `feed.xml`
+
+---
+
+## 许可
+
+代码与内容分开授权，因为它们的性质不一样：
+
+| 部分 | 许可 | 你可以 |
+|---|---|---|
+| 代码（`scripts/`、`src/`） | **MIT**（见 [LICENSE](LICENSE)） | 随便用、改、商用，保留版权声明即可 |
+| 内容与数据（`data/`） | **CC BY 4.0** | 随便用、改、商用，**署名并链回站点**即可 |
+
+`data/` 里也含第三方内容：工具名称与官网链接归各自所有者；
+学习资源、资讯条目来自第三方，我们只做整理与点评，并在 `source` 字段标注出处。
 
 ---
 
