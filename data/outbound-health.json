@@ -1142,14 +1142,14 @@
       "failCount": 0
     },
     "bing-image": {
-      "name": "Bing 图像创建器",
-      "url": "https://www.bing.com/images/create",
-      "status": 404,
-      "finalUrl": "https://cn.bing.com/images/create",
+      "name": "Microsoft Designer（原 Bing 图像创建器）",
+      "url": "https://designer.microsoft.com/",
+      "status": 200,
+      "finalUrl": "https://designer.microsoft.com/",
       "error": "",
-      "verdict": "dead",
-      "checkedAt": "2026-09-21T14:30:14.870Z",
-      "failCount": 4
+      "verdict": "ok",
+      "checkedAt": "2026-09-26T01:16:30.000Z",
+      "failCount": 0
     },
     "removebg": {
       "name": "remove.bg",

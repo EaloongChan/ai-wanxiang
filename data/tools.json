@@ -2169,22 +2169,22 @@
   },
   {
     "id": "bing-image",
-    "name": "Bing 图像创建器",
-    "url": "https://www.bing.com/images/create",
+    "name": "Microsoft Designer",
+    "url": "https://designer.microsoft.com/",
     "cat": "image",
-    "desc": "微软提供的免费 DALL·E 入口，额度大方。",
+    "desc": "微软的图像生成入口，原名 Bing 图像创建器。DALL·E 驱动，免费额度大方。",
     "tags": [
       "免费",
       "DALL·E"
     ],
     "pricing": "free",
-    "cn": false,
+    "cn": true,
     "hot": false,
     "official": true,
     "added": "2026-06-01",
-    "caveat": "免费额度大方但排队慢，且内容过滤较严，商业素材容易触发限制。另一个要考虑的点：这个入口在国内网络下已经访问不到（2026-09 自动检查返回 404），国内用户基本指望不上。",
-    "descEn": "Microsoft's free DALL·E entry point, with a generous quota.",
-    "caveatEn": "Generous but slow queues, and content filtering is strict — commercial material often trips the limits. It is also unreachable from mainland China as of our Sept 2026 check (404), so don't plan around it if that's where you are."
+    "caveat": "免费额度大方但排队慢、内容过滤偏严，商业素材容易触发限制。入口已从 bing.com/images/create 迁到 Designer（旧地址 2026-09 实测 404），生成能力并入 Copilot；新地址 2026-09 直连实测可打开。",
+    "descEn": "Microsoft's image generation entry point, formerly Bing Image Creator. Powered by DALL·E with a generous free quota.",
+    "caveatEn": "Generous but slow queues, and content filtering is strict — commercial material often trips the limits. The entry moved from bing.com/images/create to Designer (the old address 404s as of our Sept 2026 check) and generation now sits inside Copilot; the new address did respond on a direct check in Sept 2026."
   },
   {
     "id": "removebg",
@@ -2746,7 +2746,7 @@
     "name": "Tome",
     "url": "https://tome.app",
     "cat": "writing",
-    "desc": "叙事型演示文稿生成，比传统 PPT 更强调故事线。",
+    "desc": "叙事型演示文稿生成，强调故事线而非版式（2025-04 已停运）。",
     "tags": [
       "演示",
       "叙事"
@@ -2756,9 +2756,9 @@
     "hot": false,
     "official": true,
     "added": "2026-06-01",
-    "caveat": "叙事化演示有特色，但严谨的商务汇报反而需要更朴素的版式。2026-09 起官网已返回 404，看起来是停掉了——建议先别在上面投入时间。",
-    "descEn": "Narrative-style presentation generation, emphasising storyline over slide layout.",
-    "caveatEn": "Narratives are its thing, but a rigorous business report often needs a plainer layout. Its site has returned 404 since our Sept 2026 check and looks discontinued — don't invest time in it before confirming."
+    "caveat": "叙事化演示有特色，但严谨的商务汇报反而需要更朴素的版式。产品已于 2025-04-30 正式停运（官方公告「Goodbye, Tome」），未导出的演示文稿一并删除；团队转型做企业销售/CRM 产品 Lightfield，Tome 品牌于 2025-08 被 AngelList 收购。需要做演示文稿请改用 Gamma 或 Beautiful.ai。",
+    "descEn": "Narrative-style presentation generation, emphasising storyline over slide layout (shut down April 2025).",
+    "caveatEn": "Its narrative style is distinctive, but rigorous business reporting often needs a plainer layout. The product was formally shut down on 30 April 2025 (official \"Goodbye, Tome\" announcement) and decks that were never exported went with it; the team moved on to an enterprise sales/CRM product called Lightfield, and the Tome brand was acquired by AngelList in Aug 2025. Use Gamma or Beautiful.ai for decks instead."
   },
   {
     "id": "napkin",

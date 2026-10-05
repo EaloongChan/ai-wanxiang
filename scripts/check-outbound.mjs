@@ -5,6 +5,7 @@
  *   node scripts/check-outbound.mjs --dry      只检查不写文件
  *   node scripts/check-outbound.mjs --only tools
  *   node scripts/check-outbound.mjs --limit 30 只查前 N 个（快速冒烟）
+ *   node scripts/check-outbound.mjs --self-test 不联网，只验证能正常启动（check.mjs 会跑）
  *
  * 为什么需要它：目录站最容易腐烂的地方就是外链。工具改域名、停售、被收购是常态，
  * 而我们全站有 1000+ 个外链，人工点不过来。
@@ -44,6 +45,14 @@ const BREAKER = Number(process.env.LINK_BREAKER || 12);
    上面那个熔断不会触发，还是会一路磨下去。所以再加一道硬天花板：
    超时就停下，把已经查到的部分如实报告为「部分结果」。 */
 const MAX_MS = Number(process.env.LINK_MAX_MS || 240000); // 默认 4 分钟
+
+/* 不联网的启动自测：只跑「读 JSON → 收集条目 → 打印表头」就退出。
+   为什么需要它：2026-09-26 发现表头里引用了后面才 `let` 声明的 kept，于是脚本
+   每次运行都在第一行 console.log 抛 "Cannot access 'kept' before initialization"
+   —— 整套外链检查其实一次都没跑成过，而 `node --check` 只查语法，查不出 TDZ。
+   熔断保护又让它「安静地失败」，所以这个 bug 藏了很久。check.mjs 监听自测输出，
+   把「启动即崩」变成能被守卫抓到的问题。 */
+const SELFTEST = process.argv.includes('--self-test');
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const read = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
@@ -147,6 +156,22 @@ async function main() {
   let all = groups.flatMap((g) => g.items);
   if (LIMIT) all = all.slice(0, LIMIT);
 
+  const next = {};
+  /* 局部检查（--only / --limit）必须保留没被选中的旧记录。
+     踩过一次：`next` 一律从空对象开始，一次 `--only tools` 就把 learn / 资讯源
+     / RSS 的检查结果整批抹掉，而周报会照着这份残缺数据说话 —— 看起来像"其他链接都健康"。
+     全量跑时 selected 覆盖全部条目，自然没有任何旧数据被留下（下线的内容会被清理）。 */
+  const selected = new Set(all.map((x) => x.id));
+  /* kept 必须在下面的表头打印之前算好：这里曾把 `let kept = 0` 放在表头之后，
+     于是每次(含无参全量跑)都在第一行 console.log 处抛
+     "Cannot access 'kept' before initialization"，整套外链检查直接不执行。 */
+  let kept = 0;
+  if (ONLY || LIMIT) {
+    for (const [id, v] of Object.entries(prev)) {
+      if (!selected.has(id)) { next[id] = v; kept++; }
+    }
+  }
+
   console.log('');
   console.log('  外链健康检查');
   console.log('  ' + '─'.repeat(60));
@@ -154,18 +179,12 @@ async function main() {
   if (state.checkedAt) console.log(`  上次检查 ${String(state.checkedAt).slice(0, 16).replace('T', ' ')}`);
   console.log('');
 
-  const next = {};
-  /* 局部检查（--only / --limit）必须保留没被选中的旧记录。
-     踩过一次：`next` 一律从空对象开始，一次 `--only tools` 就把 learn / 资讯源
-     / RSS 的检查结果整批抹掉，而周报会照着这份残缺数据说话 —— 看起来像"其他链接都健康"。
-     全量跑时 selected 覆盖全部条目，自然没有任何旧数据被留下（下线的内容会被清理）。 */
-  const selected = new Set(all.map((x) => x.id));
-  let kept = 0;
-  if (ONLY || LIMIT) {
-    for (const [id, v] of Object.entries(prev)) {
-      if (!selected.has(id)) { next[id] = v; kept++; }
-    }
+  if (SELFTEST) {
+    console.log(`  自测通过：收集到 ${all.length} 个链接，未发起任何网络请求。`);
+    console.log('');
+    return;
   }
+
   const okList = [];
   const softFail = [];   // 第一次失败
   const hardFail = [];   // 连续两次失败 → 待核验

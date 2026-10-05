@@ -93,7 +93,7 @@
       "lang": "English",
       "topic": "model",
       "enabled": true,
-      "note": "2026-09 新增，补 Google 官方 AI 动态。实测稳定（0.6~1.6s，20 条）。"
+      "note": "2026-09 新增，补 Google 官方 AI 动态。注意：本机 Node fetch 常报 fetch failed / 超时（UND_ERR_CONNECT_TIMEOUT），但 curl 直连稳定 200 + 合法 RSS（31KB）——源本身正常，属本机网络路径问题，**不要禁用**，重跑即可（2026-09-28 实测：连跑 5 轮 Node 失败，curl 每次 200）。"
     },
     {
       "id": "arxiv-ai",

@@ -530,6 +530,33 @@ const playbookIds = new Set();
   else ok.push(`脚本语法: ${files.length} 个文件全部通过 node --check`);
 }
 
+/* ---- 脚本「启动即崩」预检 ----
+   node --check 只查语法，查不出 TDZ 这类运行时错误。真实案例（2026-09-26）：
+   check-outbound.mjs 的表头 console.log 引用了后面才 `let` 声明的 kept，
+   于是脚本每次都在第一行抛 "Cannot access 'kept' before initialization" ——
+   整套外链检查其实一次都没跑成过，而熔断保护让它「安静地失败」，藏了很久都没人发现。
+   所以这些脚本提供 --self-test：只读本地 JSON、不发任何网络请求，跑通即算启动健康。 */
+{
+  const probes = [
+    { file: 'check-outbound.mjs', args: ['--self-test'], expect: /自测通过/ },
+  ];
+  let ran = 0;
+  for (const p of probes) {
+    const fp = path.join(ROOT, 'scripts', p.file);
+    if (!fs.existsSync(fp)) continue;
+    const r = spawnSync(process.execPath, [fp, ...p.args], { encoding: 'utf8', timeout: 60000 });
+    const out = `${r.stdout || ''}${r.stderr || ''}`;
+    if (r.status !== 0 || !p.expect.test(out)) {
+      const msg = out.split('\n').map((l) => l.trim()).filter(Boolean).slice(-2).join(' / ') || `退出码 ${r.status}`;
+      errors.push(`启动自测 ${p.file}: 跑不起来或输出不符（${msg}）`);
+    }
+    ran++;
+  }
+  if (ran && !errors.some((e) => e.startsWith('启动自测'))) {
+    ok.push(`启动自测: ${ran} 个脚本可正常启动（不联网）`);
+  }
+}
+
 
     /* 模型条的完整度：时效标注 + 官方模型列表链接。
        这两个字段是「读者能不能自己核对时效」的关键，不能漏。 */
