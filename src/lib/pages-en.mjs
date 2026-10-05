@@ -551,8 +551,10 @@ ${pageHead('About', '', '', 'ABOUT')}
       </p>
       <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:10px">Source &amp; license</h2>
       <p style="color:var(--fg-2);line-height:1.85;margin:0">
-        All data on this site is public. Take it, remix it, build on it — no permission needed.
-        Machine-readable at <a href="/api/index.json" style="color:var(--accent-text)">/api/index.json</a>.
+        All data on this site is public: take it, remix it, build on it. Machine-readable at
+        <a href="/api/index.json" style="color:var(--accent-text)">/api/index.json</a>, or browse the whole
+        source on <a href="https://github.com/EaloongChan/ai-wanxiang" target="_blank" rel="noopener" style="color:var(--accent-text)">GitHub</a>.
+        Code is MIT; the data is CC BY 4.0 — attribution is all we ask for.
       </p>
     </div>
   </div>

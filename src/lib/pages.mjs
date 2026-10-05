@@ -1621,9 +1621,12 @@ ${pageHead('关于 AI 万象', '一个打算长期做下去的 AI 资料站。',
           <p style="color:var(--fg-2);font-size:.87rem;line-height:1.85">
             格式随意，能看懂就行。说明一下「你为什么觉得它好用」会大大增加被收录的概率——因为这说明你真的用过，而不是从别处抄来的。
           </p>
+          <p style="color:var(--fg-3);font-size:.84rem;line-height:1.85;margin-top:10px">
+            本站的代码与数据都在 GitHub 上开源：代码 MIT，数据 CC BY 4.0（可自由使用，署名即可）。
+          </p>
           <div class="row" style="gap:10px;margin-top:16px">
-            <a class="btn btn-primary" href="mailto:">${icon('mail', 14)} 邮件提交</a>
-            <a class="btn" href="/api/index.json">${icon('external', 14)} 直接提 PR</a>
+            <a class="btn btn-primary" href="https://github.com/EaloongChan/ai-wanxiang/issues" target="_blank" rel="noopener">${icon('inbox', 14)} 在 GitHub 提 Issue</a>
+            <a class="btn" href="https://github.com/EaloongChan/ai-wanxiang" target="_blank" rel="noopener">${icon('code', 14)} 直接提 PR</a>
           </div>
         </div>
       </div>
