@@ -53,7 +53,7 @@ const enNav = [
 
 const enFooter = [
   { label: '中文版', href: '/' },
-  { label: 'Open data', href: '/api/index.json' },
+  { label: 'Open data', href: '/en/open-data/' },
   { label: 'RSS (Chinese)', href: '/feed.xml' },
 ];
 
@@ -97,7 +97,7 @@ const shell = (o) =>
     footerNavTitle: 'Site navigation',
     footerMore: [{ label: '中文版', href: '/' }, { label: 'RSS (Chinese)', href: '/feed.xml' }],
     footerData: [
-      { label: 'Open data', href: '/api/index.json' },
+      { label: 'Open data', href: '/en/open-data/' },
       { label: 'Tools JSON', href: '/api/tools.json' },
       { label: 'Search index', href: '/api/search.json' },
     ],
@@ -263,6 +263,12 @@ export function enToolDetail(ctx, i18n, t) {
   const en = i18n.en;
   const { catName } = nameMaps(i18n);
   const c = hashColor(t.cat);
+  /* 核验说明：中文工具页一直有这一块，英文页原来完全没有 ——
+     246 个英文工具页因此少了「这条信息是怎么来的」这一层交代，
+     而这恰好是 AI 内容站最需要交代的东西。现在两边一致，文案从配置读。 */
+  const reviewStatus = (t.review && t.review.status) || site.review?.defaultStatus || 'editorial';
+  const statusLabelEn = (site.review?.statusLabelsEn || {})[reviewStatus] || reviewStatus;
+  const reviewedAt = (t.review && t.review.reviewedAt) || t.reviewed || (site.contentDates && site.contentDates.tools) || '';
   /* 英文名必须走映射表，不能直接用 t.name。
      踩过的坑：详情页的 <title> / <h1> / 面包屑用的都是 t.name，
      结果 244 个英文工具页里有 100 多个标题还是中文（如「腾讯混元 3D · 中文分类」）。
@@ -418,6 +424,21 @@ ${relatedPb.length ? `<section class="section" style="padding-top:30px;padding-b
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="review-note">
+      <div class="rn-head">
+        <a class="rn-status" href="/en/about/#editorial" title="What these labels mean">${esc(statusLabelEn)}</a>
+        ${reviewedAt ? `<span class="rn-date">Updated ${esc(reviewedAt)}</span>` : ''}
+      </div>
+      <p>${esc(site.review?.policyEn || '')}
+        Spotted something wrong or out of date?
+        <a href="https://github.com/EaloongChan/ai-wanxiang/issues" target="_blank" rel="noopener">Open an issue</a>
+        — corrections are welcome.</p>
+    </div>
+  </div>
+</section>
+
 ${siblings.length ? `<section class="section">
   <div class="container">
     ${sec(`More in ${catName(t.cat)}`, '', `/en/tools/${esc(t.cat)}/`, 'View all')}
@@ -526,6 +547,93 @@ ${pageHead(title, desc, `<div class="ph-meta">${summary}</div>`, 'MODELS / Model
   });
 }
 
+/* ---------------- Open data ---------------- */
+export function enOpenData(ctx, i18n) {
+  const { site, tools, prompts, models, playbooks, glossary, learn, news, searchIndex, enSearchIndex, queryMap, feed } = ctx;
+  const en = i18n.en;
+  const n = (x) => (Array.isArray(x) ? x.length : 0);
+  const rows = [
+    ['/api/index.json', 'Site info, item counts, category list', '1 object'],
+    ['/api/tools.json', 'AI tools: pricing tier, China reachability, editor’s caveat', n(tools) + ' items'],
+    ['/api/prompts.json', 'Prompt templates: variables, models, both languages', n(prompts) + ' items'],
+    ['/api/models.json', 'Model families: only the dimensions that stay stable', n(models) + ' items'],
+    ['/api/playbooks.json', 'Playbooks: steps + tools + prompts + failure modes', n(playbooks) + ' items'],
+    ['/api/glossary.json', 'AI terms: full name, abbreviation, related terms', n(glossary) + ' items'],
+    ['/api/learn.json', 'Learning resources with a credited source', n(learn) + ' items'],
+    ['/api/news.json', 'News commentary, sources and a timeline', n(news.items) + ' + ' + n(news.sources) + ' sources'],
+    ['/api/feed.json', 'Live feed (RSS aggregation, rebuilt daily)', n(feed && feed.items) + ' items'],
+    ['/api/search.json', 'Search index, Chinese site', n(searchIndex) + ' entries'],
+    ['/api/search-en.json', 'Search index, English site', n(enSearchIndex) + ' entries'],
+    ['/api/query-map.json', 'Colloquial phrasing → canonical term map', n(queryMap) + ' entries'],
+  ];
+  const crumbItems = [{ label: 'Home', href: '/en/' }, { label: 'Open data' }];
+  const body = `
+${crumbs(crumbItems, 'Breadcrumb')}
+${pageHead('Open data', 'Everything on this site is published as JSON under /api/: no key, no signup, no rate limit. Build a directory, run an analysis, or train on it.', `<div class="ph-meta">
+  <span class="label">Endpoints <b style="color:var(--fg)">12</b></span>
+  <span class="label">Data date <b style="color:var(--fg)">${esc(String(ctx.updatedAt || '').slice(0, 10))}</b></span>
+</div>`, 'OPEN DATA')}
+
+<section class="section" style="padding-top:0">
+  <div class="container container-narrow">
+    <div class="card" style="padding:28px 30px">
+      <p style="color:var(--fg-2);line-height:1.9;margin:0 0 16px">
+        Just fetch it. The largest payloads are the playbooks and the search index at roughly 250 KB each.
+      </p>
+      <pre style="font-family:var(--font-mono);font-size:.78rem;line-height:1.9;padding:14px;border:var(--bw) solid var(--line);background:var(--code-bg);overflow:auto">curl https://www.ealoongchan.top/api/tools.json</pre>
+      <p style="color:var(--fg-3);font-size:.84rem;line-height:1.85;margin:14px 0 0">
+        Rebuilt daily at 09:00 (UTC+8). <code style="font-family:var(--font-mono)">/api/index.json</code>
+        carries an <code style="font-family:var(--font-mono)">updatedAt</code> field —
+        <strong style="color:var(--fg)">quote that date when you reuse the data</strong>, because pricing and availability move.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    ${shead(1, 'Endpoints', 'Counts are recomputed on every build')}
+    <div class="card" style="padding:22px 24px">
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th>Path</th><th>Contents</th><th style="text-align:right">Size</th></tr></thead>
+        <tbody>${rows.map(([p, d, c]) => `<tr><td><code style="font-family:var(--font-mono);font-size:.8rem">${esc(p)}</code></td><td>${esc(d)}</td><td style="text-align:right;white-space:nowrap">${esc(c)}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p style="color:var(--fg-3);font-size:.84rem;line-height:1.85;margin:14px 0 0">
+        Chinese-only datasets (glossary, learn, news, feed) are the ones this English site doesn’t
+        render — they’re still in the API, and still worth having if you read Chinese.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container container-narrow">
+    ${shead(1, 'Licence and attribution', '')}
+    <div class="card" style="padding:26px 28px">
+      <ul style="color:var(--fg-2);line-height:1.95;margin:0 0 14px;padding-left:20px">
+        <li><strong style="color:var(--fg)">Data (data/ and /api/): CC BY 4.0</strong> — use it, remix it, ship it commercially.
+          <strong style="color:var(--fg)">Attribution and a link back is the only condition.</strong></li>
+        <li>Code (build scripts and templates): MIT, in the
+          <a href="https://github.com/EaloongChan/ai-wanxiang" target="_blank" rel="noopener">GitHub repo</a>.</li>
+      </ul>
+      <p style="color:var(--fg-3);font-size:.85rem;line-height:1.9;margin:0">
+        Some of it is third-party: tool names and links belong to their owners, and learning/news
+        entries are credited in a <code style="font-family:var(--font-mono)">source</code> field.
+        <strong style="color:var(--fg)">We don’t mirror anyone’s articles or images</strong> — so this dataset contains
+        structured facts and our own commentary, not text you could pass off as your own reporting.
+      </p>
+    </div>
+  </div>
+</section>`;
+
+  return shell({
+    site, path: '/en/open-data/', title: 'Open data · 12 JSON endpoints',
+    description: `JSON endpoints for the whole dataset: ${n(tools)} AI tools, ${n(prompts)} prompts, ${n(models)} model families and ${n(playbooks)} playbooks with bilingual fields. No key, no signup, CC BY 4.0.`,
+    body, brandDesc: en['siteDesc'], altPath: '/open-data/',
+    jsonld: breadcrumbLd(site, crumbItems),
+  });
+}
+
 /* ---------------- 关于 ---------------- */
 export function enAbout(ctx, i18n) {
   const { site, tools, models } = ctx;
@@ -559,13 +667,31 @@ ${pageHead('About', '', '', 'ABOUT')}
     </div>
   </div>
 </section>
+<section class="section" id="editorial">
+  <div class="container container-narrow">
+    <div class="card" style="padding:26px 28px">
+      <h2 style="font-size:1.15rem;font-weight:700;margin-bottom:10px">How we compile this</h2>
+      <p style="color:var(--fg-2);line-height:1.85;margin:0 0 18px">${esc(site.review?.policyEn || '')}</p>
+      <p style="color:var(--fg-3);font-size:.85rem;line-height:1.9;margin:0">
+        <strong style="color:var(--fg)">Why we don’t hands-on test all of them:</strong>
+        testing each of ${tools.length} tools properly would drop the update rate to a handful of entries a month,
+        while pricing and availability move weekly. So we spend the effort where it pays instead —
+        an explicit note on <strong style="color:var(--fg)">when not to use it</strong>,
+        and an honest label for <strong style="color:var(--fg)">how each entry was verified</strong>,
+        so you can decide how much to trust it.
+      </p>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container container-narrow">
     <div class="card" style="padding:26px;border-left:3px solid var(--accent)">
       <div class="label label-accent" style="margin-bottom:10px">Looking for the rest?</div>
       <p style="color:var(--fg-2);line-height:1.8;margin:0 0 16px">
-        The Chinese version carries substantially more: 30 step-by-step playbooks, 74 prompt templates,
-        93 glossary terms, 45 learning resources and a live news feed.
+        The Chinese version carries substantially more: ${ctx.playbooks.items.length} step-by-step playbooks,
+        ${ctx.prompts.length} prompt templates, ${ctx.glossary.length} glossary terms,
+        ${ctx.learn.length} learning resources and a live news feed.
       </p>
       <a class="btn btn-primary" href="/">View the Chinese version →</a>
     </div>

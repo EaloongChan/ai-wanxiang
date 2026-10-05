@@ -11,10 +11,10 @@ import { fileURLToPath } from 'node:url';
 
 import {
   homePage, toolsPage, promptsPage, newsPage, newsDetailPage,
-  learnPage, glossaryPage, searchPage, aboutPage, changelogPage, notFoundPage,
+  learnPage, glossaryPage, searchPage, aboutPage, changelogPage, openDataPage, notFoundPage,
   playbooksPage, playbookDetailPage, modelsPage, toolDetailPage, liveNewsPage, comparePage, savedPage,
 } from '../src/lib/pages.mjs';
-import { enHome, enTools, enToolDetail, enModels, enAbout, enPlaybooks, enPlaybookDetail, enPrompts, enGlossary, enSearch, GROUP_EN } from '../src/lib/pages-en.mjs';
+import { enHome, enTools, enToolDetail, enModels, enAbout, enOpenData, enPlaybooks, enPlaybookDetail, enPrompts, enGlossary, enSearch, GROUP_EN } from '../src/lib/pages-en.mjs';
 import { EN, tagList } from '../src/lib/labels.mjs';
 import { toolNameEn, vendorEn, modelNameEn } from '../src/lib/i18n-en-maps.mjs';
 import { countBy, esc } from '../src/lib/utils.mjs';
@@ -81,43 +81,9 @@ function pruneStale() {
 
 const today = () => new Date().toISOString().slice(0, 10);
 
-const CHANGELOG = [
-  { date: '2026-09-21', tag: 'CONTENT', title: '提示词库 74 → 86 条，补齐 3D / 本地部署 / 视频分镜等领域', desc: '新场景里 3D 资产和配乐配音原来一条专属提示词都没有。补齐 12 条，每条都针对那个场景的真实难点：硬件评估会追问「你这个任务用本地模型是不是本来就划不来」、Agent 设计会把「哪些步骤必须人工确认」单列、视频分镜表会用「风险」列标出 AI 大概率做不好的镜头。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '15 个分类的选型要点全部重写，平均 95 字 → 276 字', desc: '原来的要点太短、也不提具体工具，读完还是不知道该怎么选。重写后每篇都有决策框架、什么时候该走哪条路、什么时候别用 AI、以及常被忽略的坑（比如正文对比度要到 4.5:1、深色模式不能直接反色）。英文版原来缺这一块，一并补上。' },
-  { date: '2026-09-21', tag: 'FIX', title: '术语表不再是孤岛：接上 77 个工具链接与 25 篇场景手册', desc: '92 个术语原来是死路——词条之间只是标签不是链接，也不通往任何工具。现在每个词条都有锚点可直达，「相关」变成真链接，有对应工具和场景的直接列出来。顺带发现「知识蒸馏」和「蒸馏」是重复收录，已合并。' },
-  { date: '2026-09-21', tag: 'FIX', title: '工具分类页增加「这些工具怎么用」', desc: '分类页原来只列工具卡片，读者看完还是不知道拿它们做什么。现在按「该分类的工具在某篇手册里出现几次」排序，列出最相关的三篇——出现两次以上才算真相关，只出现一次多半只是顺带提了一句。' },
-  { date: '2026-09-21', tag: 'FIX', title: '修复抓取失败时用空数据覆盖已有内容', desc: '某次抓取只拿到 0 条，脚本照样把 feed.json 覆盖成空的，把之前 140 条有效数据抹掉了。现在抓不到东西就不写盘、保留原文件并返回错误码；抓到的量骤降超过六成也不写，除非显式加 --force。原则是：宁可这次不更新，也不要拿更差的数据覆盖好的。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '全部 43 篇手册按 10 分标准重写加固', desc: '用一张客观评分卡体检（输入产出 / 失败模式 / 工具取舍 / AI 边界 / 可验证产出），发现 23 篇不及格——普遍问题是避坑只写两条、步骤里只说「用 X」不解释「为什么用 X 而不是 Y」。补齐后 43 篇全部达到 7 分以上，平均 7.9 分。评分卡已固化进自动检查，以后不会再退化。' },
-  { date: '2026-09-21', tag: 'TOOLING', title: '新增场景手册质量体检脚本', desc: '把「这篇手册是不是假装有用」从主观判断变成可量化的检查。它看五件事：有没有明确输入与完成标准、有没有真实的失败模式、有没有解释工具之间的取舍、有没有划出「不该用 AI」的边界、产出是不是可验证。低于 7 分会直接报错拦住。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '场景手册 30 → 43 篇，工具覆盖率从 31% 提到 87%', desc: '之前 244 个工具里有 169 个从没出现在任何场景里——读者只知道它们存在，不知道什么时候该用。新增 13 篇覆盖最大缺口：本地跑模型、搭 Agent、AI 视频、3D 资产、文献综述、配乐配音、品牌视觉、会议自动化、翻译流水线、选编程工具、生成配图、学习辅导、做应用原型。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '每篇手册加上「验收区」——输入 / 产出 / 什么算失败 / 什么时候别用 AI', desc: '判断一篇流程文章是不是「假装有用」有客观标准。现在每篇开头就把这四件事写清楚，让你三十秒内知道这篇值不值得读、做完应该拿到什么、以及最重要的——什么情况下根本不该用 AI（用脚本、用模板、或者干脆别做）。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '工具库 236 → 244：补上整条「终端编程 Agent」线', desc: '这个赛道已经扩到七八个工具，我们之前只收了 Claude Code 和 Codex 两个。补上 Gemini CLI / Antigravity CLI、Grok Build、Qwen Code、OpenCode、Kilo CLI、Kimi Code CLI，以及腾讯开源的 WeKnora 知识平台和 Java 生态的 mica-voice 语音套件。' },
-  { date: '2026-09-21', tag: 'FIX', title: '去掉确认不了的精确版本号', desc: '写时效信息时发现有来源互相冲突（同一个模型被不同站点说成两个版本）。我们把无法交叉确认的小数点版本号删掉，改成描述「当前是什么形态」，并在模型库顶部写明：时效信息来自公开资料、会滞后，精确数据请点每条底部的「模型列表」看官方页。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '模型库从 40 扩到 78，新增 3D 与文档解析两个类型', desc: '补上 38 个缺失的模型家族：Meta Muse（Meta 已从 Llama 转向 Muse，库里之前完全没有）、Amazon Nova、Microsoft Phi、NVIDIA Nemotron、Cohere Command、AI21 Jamba、Gemma、Yi、MiniCPM、InternLM、天工、日日新，以及 3D 生成（Hunyuan3D / TRELLIS / Tripo / Rodin / Meshy）和文档解析（MinerU / dots.ocr / PaddleOCR-VL / Docling / GOT-OCR / Qwen-VL / OmniParser）两条完整线。' },
-  { date: '2026-09-21', tag: 'CONTENT', title: '每条模型都加了「时效」标注与官方模型列表链接', desc: '之前定的是「模型库不写版本号，因为几个月就过期」，但这样读者没法判断我们到底知不知道最新的东西。现在改成：稳定维度继续不写版本，另开一行时效说明并强制印出核验月份，同时每条都链到官方模型列表页——你点进去就能自己核对。' },
-  { date: '2026-09-21', tag: 'FIX', title: '修复分类页筛选栏高亮错位', desc: '打开 /models/3d/ 或 /tools/coding/ 时，筛选栏高亮的是「全部」而不是当前分类——因为筛选初始化只从 URL 参数读状态，而分类页是用路径区分的，服务端渲染好的 class 被脚本抹掉了。改为以服务端渲染结果为准。这个 bug 是靠新写的回归测试发现的。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增英文版（工具库 + 模型库）', desc: '236 个工具的英文简介与编辑点评、40 个模型家族的英文对比、15 个分类与 7 个类型的英文名、207 条标签字典。带 hreflang 互指与语言切换。刻意不翻译场景手册 / 提示词 / 资讯 / 学习资源——两套长期并行维护的长文翻译成本远高于收益，关于页里说清了范围。' },
-  { date: '2026-09-20', tag: 'CONTENT', title: '236 个工具全部补上「编辑点评」', desc: '每个工具一句「什么时候别选它」，平均 30 字，说的是它真实的短板而不是功能罗列。这是本站相对普通工具导航最核心的差异，已进入对比表维度与搜索索引，并成为新增工具的必填项（check 会点名）。' },
-  { date: '2026-09-20', tag: 'A11Y', title: '无障碍问题从 161 处修到 0', desc: '深度与浅色双主题、中英文页面全部通过。修的关键问题：强调色当文字/按钮底色时对比度只有 3.2~3.7（不达标），拆成装饰/文字/底色三个变体；卡片标题与表格链接的点击区域不足 24px；英文页详情页出现多个 h1；提示词卡内的收藏按钮会连带展开卡片。' },
-  { date: '2026-09-20', tag: 'QA', title: '新增无障碍审计与体积预算', desc: 'a11y.mjs 检查对比度、可访问名称、标题层级、点击区域、重复 id 等，跑真实浏览器、覆盖深浅双主题；perf.mjs 给关键资源与最大页面设了 gzip 预算，防止内容一直加而体积悄悄失控。' },
-  { date: '2026-09-20', tag: 'PERF', title: '长列表渲染优化', desc: '工具库一次渲染 236 张卡片，用 content-visibility: auto 让浏览器跳视口外的布局与绘制，纯 CSS、不影响功能与 SEO。当前首屏 CSS+JS 共 22.3KB（gzip），单页均值 7.4KB。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增「工具对比」', desc: '从工具库任意挑 4 个以内并排比较，差异维度自动高亮、相同维度淡化。支持分享链接（/compare/?t=id1,id2）、复制为可粘贴到文档的表格。选择存在浏览器本机，不上传。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增「我的收藏」', desc: '工具、提示词、场景、模型、学习资源都能收藏，汇总在 /saved/ 按类型分组。跨内容类型共用一个清单；数据里已下架的收藏会被自动忽略并如实告知少了几项。' },
-  { date: '2026-09-20', tag: 'QA', title: '新增游离属性检查', desc: '把 <a> 改写为 <div> 时容易把 data-* 属性留在标签外变成游离文本——后果是筛选、搜索静默失效（不报错，只是不工作）。links.mjs 现在会扫这类问题；已反向验证能抓到。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增「实时动态」：聚合 18 个资讯源', desc: '从 12 个中文源与 8 个英文源自动抓取最新内容（当前 140 条），带来源与语种筛选、相对时间显示、抓取状态如实展示。抓取与构建完全解耦——没有抓取数据时站点照常构建，只是不显示该区块。' },
-  { date: '2026-09-20', tag: 'AUTO', title: '每日自动抓取', desc: '已配置每天 9:00 自动抓取并重建。源失效会自动标注原因并尝试替换，不会静默消失。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增 236 个工具详情页', desc: '每个工具一个独立页面：该分类的选型要点、同分类横向对比表（并高亮当前工具）、它出现在哪些场景手册里、基本信息与同类工具。刻意不做「复制官网简介」那种薄内容页。' },
-  { date: '2026-09-20', tag: 'FIX', title: '修复分类 id 撞车导致的显示错误', desc: '工具分类与提示词分类共用同一批 id（coding/writing/design/data/marketing），合并成一个映射时提示词分类会覆盖工具分类——导致写作类工具显示成「写作文案」、营销类配色被换、详情页选型提示空白。已拆为 toolCatMap / promptCatMap 两套独立映射，并加了守卫与回归测试。' },
-  { date: '2026-09-20', tag: 'FIX', title: '修复 RSS 摘要残留 HTML 标签', desc: '抓取器原先「先剥标签再解码实体」，遇到把 HTML 转义后塞进 XML 的源（如 IT 之家）就会还原出真标签。改为解码与剥标签循环两轮，残留从 35 条降到 0。' },
-  { date: '2026-09-20', tag: 'PERF', title: '构建提速 3 倍（24s → 8s）', desc: '定位到 fs.rmSync 递归删除 dist 在 Windows 上要 15.5 秒，占构建时间六成以上。改为「覆盖写入 + 收尾只清理多余文件」，删除量从 369 个降到 0-3 个。' },
-  { date: '2026-09-20', tag: 'QA', title: '新增内部链接自动检查', desc: '扫全部页面的站内链接与锚点，验证都能落到真实文件。上线前跑一次即可，比人工点是唯一可行的办法。首跑即发现关于页丢失了 #links 锚点。' },
-  { date: '2026-09-20', tag: 'CONTENT', title: '场景手册扩至 30 篇', desc: '新增整理混乱表格、方案立项、多平台内容改写、播客制作、视频本地化、老项目补文档、上线前检查、学编程、技术分享、数据看板、用户反馈挖掘、发布会物料、内容矩阵等 14 篇。' },
-  { date: '2026-09-20', tag: 'CONTENT', title: '内容大规模扩充（3 倍）', desc: '工具 77 → 236（新增营销增长、会议协作、教育学习三个分类）、提示词 28 → 74、术语 40 → 93、学习资源 20 → 45、精选解读 9 → 18。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增「场景手册」', desc: '按「我想做某件事」组织的完整流程，每篇含流程步骤、配套工具、关联提示词和避坑清单。这是本站相对普通工具导航的核心差异。' },
-  { date: '2026-09-20', tag: 'NEW', title: '新增「模型库」', desc: '40 个模型家族按「最强的地方 / 主要注意 / 适合什么」对比。刻意不写版本号与具体参数——那类信息几个月就过期，需要精确数据请点官方链接。' },
-  { date: '2026-09-20', tag: 'VISUAL v2', title: '视觉体系重构', desc: '换成 Swiss 编辑网格 + 新粗野主义：栅格纸底纹、硬边框实心投影、等宽字体承担标签层、单一朱红强调色。字体改为自托管 IBM Plex 三体，不再依赖任何第三方 CDN。' },
-  { date: '2026-09-20', tag: 'INIT', title: '站点首次成型', desc: '完成工具库、提示词库、术语表、学习资源、资讯解读五大模块，以及全站搜索与深浅主题。' },
-];
+/* 更新日志挪到了 data/changelog.json —— 内容不该写在代码里（这是本项目的第一条约束），
+   而且能写进 data/ 才能被 check.mjs 检查「有没有落后于内容变更」。 */
+const CHANGELOG = readJSON('changelog.json');
 
 /**
  * 每个页面的 lastmod。
@@ -433,6 +399,7 @@ export function build({ quiet = false } = {}) {
   emit('search/index.html', () => searchPage(ctx), { title: '全站搜索', type: 'search' });
   emit('about/index.html', () => aboutPage(ctx), { title: '关于', type: 'about' });
   emit('changelog/index.html', () => changelogPage(ctx), { title: '更新日志', type: 'changelog' });
+  emit('open-data/index.html', () => openDataPage(ctx), { title: '开放数据', type: 'open-data' });
   emit('404.html', () => notFoundPage(ctx), { title: '404', type: '404' });
 
   for (const g of playbooks.groups) {
@@ -453,6 +420,7 @@ export function build({ quiet = false } = {}) {
   emit('en/tools/index.html', () => enTools(ctx, i18n), { title: i18n.en['tools.title'], type: 'tools' });
   emit('en/models/index.html', () => enModels(ctx, i18n), { title: i18n.en['models.title'], type: 'models' });
   emit('en/about/index.html', () => enAbout(ctx, i18n), { title: 'About', type: 'about' });
+  emit('en/open-data/index.html', () => enOpenData(ctx, i18n), { title: 'Open data', type: 'open-data' });
   for (const c of categories.toolCategories) {
     emit(`en/tools/${c.id}/index.html`, () => enTools(ctx, i18n, { activeCat: c.id }), { title: `${i18n.en['cat.' + c.id] || c.id} · AI Tools`, type: 'tools-cat' });
   }

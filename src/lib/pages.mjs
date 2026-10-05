@@ -488,7 +488,7 @@ ${siblings.length ? `<section class="section">
   <div class="container">
     <div class="review-note">
       <div class="rn-head">
-        <span class="rn-status">${esc(statusLabel)}</span>
+        <a class="rn-status" href="/about/#editorial" title="这四档标签分别是什么意思">${esc(statusLabel)}</a>
         ${reviewedAt ? `<span class="rn-date">更新于 ${esc(reviewedAt)}</span>` : ''}
         ${(t.evidence || []).length ? `<span class="rn-date">核验依据 ${t.evidence.length} 项</span>` : ''}
       </div>
@@ -1601,6 +1601,40 @@ ${pageHead('关于 AI 万象', '一个打算长期做下去的 AI 资料站。',
   </div>
 </section>
 
+<section class="section" style="padding-top:0" id="editorial">
+  <div class="container container-narrow">
+    ${shead('—', '我们怎么整理这些信息', '工具页上那个核验标签，就是按这一节的意思给的')}
+    <div class="card" style="padding:26px 28px">
+      <p style="color:var(--fg-2);line-height:1.95;margin:0 0 18px">${esc(site.review?.policy || '')}</p>
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th>标签</th><th>含义</th><th>可信到什么程度</th></tr></thead>
+        <tbody>
+          <tr><td>${esc((site.review?.statusLabels || {}).tested || '编辑实测')}</td>
+              <td>我们真的用过，能说出具体操作与踩坑</td>
+              <td>最高，但只覆盖少数条目</td></tr>
+          <tr><td>${esc((site.review?.statusLabels || {})['source-verified'] || '按官方资料核验')}</td>
+              <td>逐项对着官方文档／定价页核过，并记了核验时间</td>
+              <td>高；但官方说法与实际体验可能有差</td></tr>
+          <tr><td>${esc((site.review?.statusLabels || {}).editorial || '按公开资料整理')}</td>
+              <td>默认档：公开资料 + 固定编辑规则整理而成</td>
+              <td>够用来做初筛，落地前请自己试一次</td></tr>
+          <tr><td>${esc((site.review?.statusLabels || {})['needs-review'] || '待重新核验')}</td>
+              <td>已知可能过期，还没重查</td>
+              <td>最低，看到这个标签请以官网为准</td></tr>
+        </tbody>
+      </table></div>
+      <p style="color:var(--fg-3);font-size:.85rem;line-height:1.9;margin:16px 0 0">
+        <strong style="color:var(--fg)">为什么不把每条都实测一遍：</strong>
+        收录 248 个工具、每个都真跑一遍的话，更新速度会掉到每月几条，
+        而价格和可用性是按周在变的。所以我们把力气花在两件更值的事上：
+        给出<strong style="color:var(--fg)">「什么时候别用它」</strong>，
+        以及<strong style="color:var(--fg)">如实标注这条信息是怎么来的</strong>。
+        你因此可以自己判断该信几分，而不是被一个笼统的「精选推荐」糊弄。
+      </p>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="submit" style="padding-top:0">
   <div class="container container-narrow">
     ${shead('—', '提交收录 / 报错', '')}
@@ -1670,6 +1704,125 @@ ${pageHead('更新日志', '这个站每改一次都会记在这里。想跟踪�
   </div>
 </section>`;
   return layout({ site, path: '/changelog/', title: '更新日志', description: `${changelog.length} 次更新记录：新增了多少工具、新写了哪些场景手册、修了哪些问题。这个站是长期维护的，改动都在这里留痕。`, body, jsonld: breadcrumbLd(site, crumbItems) });
+}
+
+/* ============================ 开放数据 ============================
+   这个页面存在的理由：我们其实一直在输出 12 个 JSON 接口（约 1.4MB 整理好的双语数据），
+   但全站只有「关于」页底部一句话提到它 —— 一份没人知道的开放数据集等于没有。
+   对目录站来说，「别人愿意引用你的数据」是少数不依赖搜索引擎的分发方式之一，
+   所以给它一个正式的入口页：说清楚有什么、怎么取、怎么署名。
+   **表里的条目数全部实时算**，不写死数字（写死的一定会对不上，然后没人发现）。 */
+export function openDataPage(ctx) {
+  const { site, tools, prompts, models, playbooks, glossary, learn, news, searchIndex, enSearchIndex, queryMap, feed } = ctx;
+  const n = (x) => (Array.isArray(x) ? x.length : 0);
+  const feedItems = n(feed && feed.items);
+  const rows = [
+    ['/api/index.json', '站点信息、条目总数、分类清单', '1 个对象'],
+    ['/api/tools.json', 'AI 工具：价格档位、国内能否直连、编辑点评', n(tools) + ' 条'],
+    ['/api/prompts.json', '提示词：变量定义、适用模型、中英双版', n(prompts) + ' 条'],
+    ['/api/models.json', '模型家族：只比稳定维度，不写会过期的参数', n(models) + ' 条'],
+    ['/api/playbooks.json', '场景手册：流程步骤 + 工具 + 提示词 + 避坑', n(playbooks) + ' 篇'],
+    ['/api/glossary.json', 'AI 术语：英文名、缩写、相关术语', n(glossary) + ' 条'],
+    ['/api/learn.json', '学习资源：带来源标注（source）', n(learn) + ' 条'],
+    ['/api/news.json', '资讯解读、信息源清单、时间线', n(news.items) + ' 条 · ' + n(news.sources) + ' 个源'],
+    ['/api/feed.json', '实时动态（RSS 抓取结果，每日更新）', feedItems + ' 条'],
+    ['/api/search.json', '站内搜索索引（中文站）', n(searchIndex) + ' 条'],
+    ['/api/search-en.json', '站内搜索索引（英文站）', n(enSearchIndex) + ' 条'],
+    ['/api/query-map.json', '口语化说法 → 标准词的映射表', n(queryMap) + ' 条'],
+  ];
+  const fields = [
+    ['id / name / url', '稳定标识、显示名、官网或仓库地址'],
+    ['cat', '所属分类（对应 categories.json 里的 id）'],
+    ['desc / descEn', '一句话说明，中英各一份'],
+    ['pricing', 'free · freemium · paid · open'],
+    ['cn', '国内能否直连（实测结论，不是推测）'],
+    ['caveat / caveatEn', '**什么时候别用它** —— 这条是本站最花时间的部分'],
+    ['added', '收录日期，驱动「最新收录」与 NEW 徽章'],
+    ['review.status', '该条的核验方式，含义见「关于 → 我们怎么整理信息」'],
+  ];
+  const crumbItems = [{ label: '首页', href: '/' }, { label: '开放数据' }];
+  const body = `
+${crumbs(crumbItems)}
+${pageHead('开放数据', '全站内容都在 /api/ 下以 JSON 公开：不需要 key、不需要注册、没有请求限制。做导航站、做分析、训练自己的数据都可以。', `<div class="ph-meta">
+  <span class="label">接口 <b style="color:var(--fg)">12</b></span>
+  <span class="label">数据日期 <b style="color:var(--fg)">${esc(String(ctx.updatedAt || '').slice(0, 10))}</b></span>
+</div>`, 'OPEN DATA / 开放数据', '怎么取这些数据')}
+
+<section class="section" style="padding-top:0">
+  <div class="container container-narrow">
+    <div class="card" style="padding:28px 30px">
+      <p style="color:var(--fg-2);line-height:1.9;margin:0 0 16px">
+        直接取就行，不需要 token。取整份清单最长的一条（场景手册）大约 250 KB，
+        搜索索引约 250 KB，其余都在 200 KB 以下。
+      </p>
+      <pre style="font-family:var(--font-mono);font-size:.78rem;line-height:1.9;padding:14px;border:var(--bw) solid var(--line);background:var(--code-bg);overflow:auto">curl https://www.ealoongchan.top/api/tools.json</pre>
+      <p style="color:var(--fg-3);font-size:.84rem;line-height:1.85;margin:14px 0 0">
+        数据每日 9:00 自动重建一次（抓取 → 构建 → 部署）；
+        <code style="font-family:var(--font-mono)">/api/index.json</code> 里的
+        <code style="font-family:var(--font-mono)">updatedAt</code> 就是这一批数据的日期 ——
+        <strong style="color:var(--fg)">引用时请写上它</strong>，因为价格和可用性会变。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    ${shead(1, '有哪些接口', '条目数随内容增长，这个表在每次构建时重算')}
+    <div class="card" style="padding:22px 24px">
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th>路径</th><th>内容</th><th style="text-align:right">规模</th></tr></thead>
+        <tbody>${rows.map(([p, d, c]) => `<tr><td><code style="font-family:var(--font-mono);font-size:.8rem">${esc(p)}</code></td><td>${esc(d)}</td><td style="text-align:right;white-space:nowrap">${esc(c)}</td></tr>`).join('')}</tbody>
+      </table></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container container-narrow">
+    ${shead(1, '字段说明', '以 tools.json 为例，其它数据集字段同名同义')}
+    <div class="card" style="padding:22px 24px">
+      <div class="table-wrap"><table class="tbl">
+        <thead><tr><th>字段</th><th>含义</th></tr></thead>
+        <tbody>${fields.map(([k, v]) => `<tr><td><code style="font-family:var(--font-mono);font-size:.8rem">${esc(k)}</code></td><td>${esc(v.replace(/\*\*/g, ''))}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p style="color:var(--fg-3);font-size:.84rem;line-height:1.85;margin:14px 0 0">
+        英文版字段统一加 <code style="font-family:var(--font-mono)">En</code> 后缀
+        （<code style="font-family:var(--font-mono)">descEn</code>、<code style="font-family:var(--font-mono)">caveatEn</code>）；
+        提示词的英文版是嵌套对象 <code style="font-family:var(--font-mono)">en.title / en.prompt / en.tips</code>。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container container-narrow">
+    ${shead(1, '许可与出处', '两条都得守')}
+    <div class="card" style="padding:26px 28px">
+      <ul style="color:var(--fg-2);line-height:1.95;margin:0 0 14px;padding-left:20px">
+        <li><strong style="color:var(--fg)">数据（data/ 与 /api/）：CC BY 4.0</strong> —— 可以自由使用、修改、商用，
+          <strong style="color:var(--fg)">只需要署名并链回本站</strong>。</li>
+        <li>代码（构建脚本与模板）：MIT，见
+          <a href="https://github.com/EaloongChan/ai-wanxiang" target="_blank" rel="noopener">GitHub 仓库</a>。</li>
+      </ul>
+      <p style="color:var(--fg-3);font-size:.85rem;line-height:1.9;margin:0">
+        数据里也含第三方内容：工具名称与官网链接归各自所有者；学习资源与资讯条目来自第三方，
+        我们只做整理与点评并在 <code style="font-family:var(--font-mono)">source</code> 字段标注出处。
+        <strong style="color:var(--fg)">本站不转载第三方正文与图片</strong> —— 所以这份数据里没有可以直接抄走的文章。
+      </p>
+    </div>
+  </div>
+</section>`;
+  return layout({
+    site, path: '/open-data/',
+    title: '开放数据 · 12 个 JSON 接口',
+    description: `全站数据的 JSON 接口清单：${n(tools)} 个 AI 工具、${n(prompts)} 条提示词、${n(models)} 个模型、${n(playbooks)} 篇场景手册、${n(glossary)} 条术语，中英双语字段，无需 key 与注册，CC BY 4.0 署名即可商用。`,
+    body,
+    altPath: '/en/open-data/',
+    altLang: 'en',
+    altLabel: 'Switch to English (Open data)',
+    jsonld: breadcrumbLd(site, crumbItems),
+  });
 }
 
 /* ============================ 404 ============================ */

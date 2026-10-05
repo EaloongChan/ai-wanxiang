@@ -1815,6 +1815,16 @@ a.tag { padding-top: 3px; padding-bottom: 3px; }
   color: var(--fg-2);
   border: var(--bw-thin) solid var(--line-2);
 }
+/* 徽章做成链接：读者看到「按公开资料整理」会想知道这是什么意思，
+   不给出路的话它只是个看不懂的标签。锚点指向关于页的说明段。 */
+a.rn-status {
+  text-decoration: none;
+  display: inline-block;
+}
+a.rn-status:hover {
+  color: var(--accent-text);
+  border-color: var(--accent-text);
+}
 .rn-date {
   font-family: var(--font-mono);
   font-size: 0.68rem;

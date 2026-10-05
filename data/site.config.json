@@ -74,6 +74,10 @@
         "href": "/glossary/"
       },
       {
+        "label": "开放数据",
+        "href": "/open-data/"
+      },
+      {
         "label": "更新日志",
         "href": "/changelog/"
       },
@@ -91,6 +95,13 @@
   "review": {
     "policy": "本站的工具信息与编辑点评，是在公开资料和一套固定的编辑规则（选型要点、常见坑、不该用的场景）基础上整理出来的，不是逐一手工实测的结果。每条都标注核验状态与更新日期；发现错误欢迎指出，我们会核对后修正。",
     "defaultStatus": "editorial",
+    "policyEn": "Tool information and editorial notes on this site are compiled from public sources against a fixed set of editing rules (what to pick, common pitfalls, when not to use it). They are not hands-on test results for every entry. Each entry states how it was verified and when it was last reviewed; corrections are welcome.",
+    "statusLabelsEn": {
+      "tested": "Hands-on tested",
+      "source-verified": "Checked against official docs",
+      "editorial": "Compiled from public sources",
+      "needs-review": "Due for re-check"
+    },
     "statusLabels": {
       "tested": "编辑实测",
       "source-verified": "按官方资料核验",

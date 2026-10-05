@@ -220,6 +220,38 @@ const glossary = read('glossary.json');
   }
 }
 
+/* ---- 更新日志不能落后于内容 ----
+   这一页最容易悄悄烂掉：内容天天在加，日志没人想起来写。
+   页脚挂着它的入口、关于页写着「长期维护」—— 读者点进来看到两周前的最后一条，
+   会直接得出「这站没人管了」的结论。所以让内容日期替读者盯着它。 */
+{
+  let cl = null;
+  try { cl = JSON.parse(fs.readFileSync(path.join(DATA, 'changelog.json'), 'utf8')); } catch { /* 没这个文件就跳过 */ }
+  if (Array.isArray(cl) && cl.length) {
+    const newest = cl.map((c) => c.date).sort().pop();
+    const signals = [];
+    const cfg = read('site.config.json');
+    for (const [k, v] of Object.entries((cfg && cfg.contentDates) || {})) {
+      if (k !== 'note' && typeof v === 'string') signals.push([v, `contentDates.${k}`]);
+    }
+    const tools = read('tools.json');
+    const newestTool = tools.map((t) => t.added).filter(Boolean).sort().pop();
+    if (newestTool) signals.push([newestTool, 'tools[].added']);
+    const news = read('news.json');
+    const newestNews = ((news && news.items) || []).map((n) => n.date).filter(Boolean).sort().pop();
+    if (newestNews) signals.push([newestNews, 'news.items']);
+    const learnDates = (read('learn.json') || []).map((l) => l.added).filter(Boolean);
+    if (learnDates.length) signals.push([learnDates.sort().pop(), 'learn[].added']);
+
+    const newer = signals.filter(([d]) => d > newest).sort((a, b) => (a[0] < b[0] ? 1 : -1));
+    if (newer.length) {
+      warns.push(`更新日志: 最新一条是 ${newest}，但有 ${newer.length} 处内容比它更新（${newer.slice(0, 3).map(([d, w]) => `${w} ${d}`).join('、')}）→ 去 data/changelog.json 补一条，别让这一页停在两周前`);
+    } else {
+      ok.push(`更新日志: 最新 ${newest}，未落后于内容变更（${cl.length} 条）`);
+    }
+  }
+}
+
 /* ---- card-svg 共享碎片 ----
    搜索结果卡与「我的收藏」页都要画类型图标，这两套渲染分别在 search.js / app.js 里。
    图标表统一放在 card-svg.js（页面用不带 defer 的 <script> 最先引入），
