@@ -87,6 +87,21 @@ async function main() {
   const sha = (() => { try { return git(['rev-parse', '--short', 'HEAD']).trim(); } catch { return ''; } })();
   line(`  本地        ${branch} @ ${sha}`);
 
+  /* ---------- 0. 仓库体检 ----------
+     踩过（2026-10-06）：本地 .git 被清成空壳 —— refs/、logs/、packed-refs 全没，
+     objects/ 只剩 9 个松散对象，git 直接认为"这不是一个仓库"。
+     而当时**没有任何守卫会发现这件事**，是推送失败才暴露的。
+     放在最前面：仓库结构不对就别谈推送，先按提示恢复。
+     用 process.execPath 而不是 'node' —— 沙箱里 PATH 不一定能解析到 node。 */
+  line('');
+  line('  [0/3] 仓库体检');
+  try {
+    execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'git-doctor.mjs')], { stdio: 'inherit' });
+  } catch {
+    line('  ✗ 仓库结构有问题（原因与恢复步骤见上）。修好再推。');
+    process.exit(1);
+  }
+
   /* ---------- 1. 验证 SSH 密钥可用 ---------- */
   line('');
   line('  [1/3] 检查 SSH 授权');
