@@ -99,7 +99,7 @@ export function toolCard(t, catMap, L = ZH) {
     data-cn="${t.cn ? '1' : '0'}"
     data-hot="${t.hot ? '1' : '0'}">
     <div class="card-top">
-      <span class="avatar" style="${accent(c)}" aria-hidden="true">${esc(initials(t.name))}</span>
+      <span class="avatar" style="${accentTextStyle(c)}" aria-hidden="true">${icon(cat.icon || 'grid', 17)}</span>
       <div style="min-width:0;flex:1">
         <h3 class="card-title"><a class="name" href="${siteRoot(L)}/tools/${esc(t.cat)}/${esc(t.id)}/">${esc(t.name)}</a></h3>
         <div class="card-cat">${esc(cat.name)}</div>
@@ -177,7 +177,7 @@ export function promptCard(p, catMap, L = ZH) {
     data-vars="${esc(vars.join(','))}"
     data-hot="${p.hot ? '1' : '0'}">
     <div class="prompt-head" data-accordion>
-      <span class="avatar" style="${accent(c)};width:32px;height:32px;font-size:.7rem" aria-hidden="true">${esc(cat.name.slice(0, 2))}</span>
+      <span class="avatar" style="${accentTextStyle(c)};width:32px;height:32px" aria-hidden="true">${icon(cat.icon || 'grid', 15)}</span>
       <div class="ph-main">
         <h3>${esc(title)}${p.hot ? `<span class="badge-pill badge-hot">${L === EN ? 'Popular' : '热门'}</span>` : ''}</h3>
         <p>${esc(desc)}</p>
@@ -322,7 +322,7 @@ export function learnCard(l, trackMap) {
     data-cat="${esc(l.track)}"
     data-type="${esc(l.type)}">
     <div class="card-top">
-      <span class="avatar" style="${accent(c)}" aria-hidden="true">${icon(typeIcon, 16)}</span>
+      <span class="avatar" style="${accentTextStyle(c)}" aria-hidden="true">${icon(typeIcon, 17)}</span>
       <div style="min-width:0;flex:1">
         <h3 class="card-title"><span class="name">${esc(l.title)}</span></h3>
         <div class="card-cat">${esc(l.source)} / ${esc(typeLabel)} / ${esc(l.level)}</div>
@@ -409,7 +409,7 @@ export function playbookCard(pb, groupMap, base = '/playbooks/', L = ZH) {
     data-group="${esc(pb.group)}">
     <a class="card-hit" href="${base}${esc(pb.id)}/" aria-label="${esc(title)}"></a>
     <div class="card-top">
-      <span class="avatar" style="${accent(g.accent)}" aria-hidden="true">${icon(g.icon, 16)}</span>
+      <span class="avatar" style="${accentTextStyle(g.accent)}" aria-hidden="true">${icon(g.icon, 17)}</span>
       <div style="min-width:0;flex:1">
         <h3 class="card-title"><span class="name">${esc(title)}</span></h3>
         <div class="card-cat">${esc(g.name)} / ${esc(time)}</div>
@@ -446,7 +446,7 @@ export function modelCard(m, kindMap, tierLabels, L = ZH) {
     data-open="${m.open ? '1' : '0'}"
     data-cn="${m.cn ? '1' : '0'}">
     <div class="card-top">
-      <span class="avatar" style="${accent(k.accent)}" aria-hidden="true">${esc(initials(m.name.replace(/系列|（.*?）/g, '')))}</span>
+      <span class="avatar" style="${accentTextStyle(k.accent)}" aria-hidden="true">${icon(k.icon || 'grid', 17)}</span>
       <div style="min-width:0;flex:1">
         <h3 class="card-title"><span class="name">${esc(m.name)}</span></h3>
         <div class="card-cat">${esc(m.vendor)} / ${esc(k.name)} / ${esc(tierLabels[m.tier] || m.tier)}</div>

@@ -406,7 +406,7 @@ export function toolDetailPage(ctx, t) {
 ${crumbs(crumbItems)}
 <div class="container">
   <div class="tool-hero">
-    <span class="avatar avatar-lg" style="${accentStyle(c)}" aria-hidden="true">${esc(initials(t.name))}</span>
+    <span class="avatar avatar-lg" style="${accentTextStyle(c)}" aria-hidden="true">${icon(cat.icon || 'grid', 30)}</span>
     <div class="tool-hero-main">
       <div class="label label-accent" style="margin-bottom:8px">${esc(cat.name)}</div>
       <h1>${esc(t.name)}</h1>
@@ -1461,7 +1461,7 @@ ${pageHead(
     ${shead('—', '快速添加', '点一下即可放进去', '/tools/', '全部工具')}
     <div class="grid grid-4">
       ${suggest.map((t) => `<button class="cmp-quick" type="button" data-cmp-add="${esc(t.id)}">
-        <span class="avatar" style="${accentStyle((toolCatMap[t.cat] || {}).accent || '#1B4DFF')}" aria-hidden="true">${esc(initials(t.name))}</span>
+        <span class="avatar" style="${accentTextStyle((toolCatMap[t.cat] || {}).accent || '#1B4DFF')}" aria-hidden="true">${icon((toolCatMap[t.cat] || {}).icon || 'grid', 17)}</span>
         <span class="cmp-quick-main">
           <b>${esc(t.name)}</b>
           <span class="label">${esc((toolCatMap[t.cat] || {}).name || t.cat)}</span>

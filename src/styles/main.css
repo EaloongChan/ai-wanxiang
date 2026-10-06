@@ -31,10 +31,28 @@
 
   --grid-size: 34px;
 
-  --bw: 1.5px;          /* 主边框宽度 */
+  --bw: 1px;            /* 边框宽度：从 1.5px 收到发丝级，柔化整体观感 */
   --bw-thin: 1px;       /* 发丝线 */
-  --radius: 2px;        /* 近乎直角 */
-  --shift: 4px;         /* 实心投影偏移 */
+  /* ---------- 圆角体系（2026-10-06 改版）----------
+     原来 --radius 定义了但**一处都没用过**，全站是纯直角。
+     现在按 Material 3 / iOS 的层级来分档，不再只有一个值：
+       xs → 徽章、小标签；sm → 按钮、输入框；r → 卡片；lg → 大面板；pill → 胶囊 */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+  --radius: var(--r);   /* 旧名字保留，指向新档位 */
+  /* ---------- 阴影体系 ----------
+     原来是「4px 4px 0 纯黑」的实心偏移投影（新粗野主义的标志）。
+     换成柔和的多层投影：近距离一层压边、远距离一层扩散，这是 Google/Apple 的通用做法。
+     三层按高度递增，悬停往上升一档而不是"位移 + 落影"。 */
+  --sh-1: 0 1px 2px rgba(28, 24, 12, 0.06), 0 1px 1px rgba(28, 24, 12, 0.04);
+  --sh-2: 0 1px 2px rgba(28, 24, 12, 0.05), 0 6px 16px rgba(28, 24, 12, 0.07);
+  --sh-3: 0 2px 6px rgba(28, 24, 12, 0.06), 0 18px 40px rgba(28, 24, 12, 0.10);
+  /* 白底卡片上的一条发丝内描边：柔和投影在浅色背景下常显得"糊"，补一条内线才有边界 */
+  --ring: inset 0 0 0 1px rgba(28, 24, 12, 0.055);
+  --shift: 4px;         /* 旧令牌保留（已不再用于投影，避免遗留引用直接报错） */
   --shift-lg: 6px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -43,17 +61,21 @@
 
 /* 浅色：纸面（默认） */
 html[data-theme='light'] {
-  --bg: #f3f1ea;
-  --bg-rgb: 243 241 234;
-  --surface: #fdfcf8;
-  --surface-2: #eae7de;
+  --bg: #f4f2ec;
+  --bg-rgb: 244 242 236;
+  --surface: #ffffff;
+  --surface-2: #f0eee7;
   --fg: #0e0e0c;
   --fg-2: #3f3f39;
   --fg-3: #696860;
-  --line: #0e0e0c;
-  --line-2: #d3cfc3;
-  --grid: rgba(14, 14, 12, 0.055);
-  --pop: #0e0e0c;
+  /* 边框从「纯黑 1.5px」改成发丝线。这一步是整套观感变柔和的关键：
+     全站 85 处边框都读这个令牌，改这里等于同时把它们软下来。
+     需要"强调边框"的地方（悬停态）改用 --fg-3，见 .nav a:hover 那几处。 */
+  --line: #e3dfd4;
+  --line-2: #edeadf;
+  /* 栅格底纹去掉：那是 Swiss 编辑网格的签名，和"柔和圆润"是两套语言 */
+  --grid: transparent;
+  --pop: rgba(28, 24, 12, 0.12);
   --accent: #ff3b00;
   /* 强调色的两个「能用文字」的变体。
      原始 #ff3b00 只用来做装饰（边框、投影、色块标记），它承载文字会不达标：
@@ -80,17 +102,21 @@ html[data-theme='light'] {
 
 /* 深色：墨面 */
 html[data-theme='dark'] {
-  --bg: #0d0d0b;
-  --bg-rgb: 13 13 11;
-  --surface: #161613;
+  --bg: #101010;
+  --bg-rgb: 16 16 16;
+  --surface: #1a1a18;
+  /* 深色的 --surface-2 保持 #1f1f1a，**不要跟着调亮**：
+     accentTextStyle() 里的 WORST_DARK_SURFACE 就是写死这个值来算 --t-d 的，
+     调亮它会让所有"分类色当文字"的地方（标签、步骤引用）悄悄掉到 4.5 以下。
+     实测：调到 #232320 后 a11y 立刻在深色主题报出 20 处 4.5:1 压线（th 与 span.tag）。 */
   --surface-2: #1f1f1a;
   --fg: #f2f0ea;
   --fg-2: #b6b3aa;
-  --fg-3: #88867e;
-  --line: #f2f0ea;
-  --line-2: #2b2b25;
-  --grid: rgba(242, 240, 234, 0.05);
-  --pop: #4a4a41;
+  --fg-3: #8b8981;
+  --line: #33332c;
+  --line-2: #2a2a24;
+  --grid: transparent;
+  --pop: rgba(0, 0, 0, 0.5);
   --accent: #ff4d16;
   --accent-text: #ff4d16;
   --accent-btn: #ff4d16;
@@ -425,13 +451,13 @@ b, strong { font-weight: 600; }
   border: var(--bw) solid var(--line);
   background: var(--surface);
   font-size: 0.95rem;
-  box-shadow: var(--shift) var(--shift) 0 var(--pop);
+  box-shadow: var(--sh-2);
   transition: box-shadow var(--dur) var(--ease);
 }
 .search-hero input::placeholder { color: var(--fg-3); }
 .search-hero input:focus {
   outline: none;
-  box-shadow: var(--shift-lg) var(--shift-lg) 0 var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent), var(--sh-2);
 }
 .search-hero .s-icon {
   position: absolute;
@@ -467,7 +493,10 @@ b, strong { font-weight: 600; }
 /* ---------- 7. Stats（表格化，Swiss 的“数据即版面”） ---------- */
 .stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  /* 120px 而不是 150px：首页有 6 个统计项，而卡片最宽 820px ——
+     150px 只能排 5 列，第 6 个会换行并在下面留一大片空白。
+     卡片加上圆角轮廓之后这个不平衡非常显眼。 */
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   border: var(--bw) solid var(--line);
   background: var(--surface);
   margin-top: 48px;
@@ -517,8 +546,8 @@ b, strong { font-weight: 600; }
     border-color var(--dur) var(--ease);
 }
 .card:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: var(--shift) var(--shift) 0 var(--pop);
+  transform: translateY(-2px);
+  box-shadow: var(--sh-2);
 }
 /* 悬停时左上角出现一枚实心方块，作为“被选中”的信号 */
 .card::before {
@@ -546,9 +575,19 @@ b, strong { font-weight: 600; }
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--c-fg, #fff);
-  background: var(--c, var(--accent-btn));
-  border: var(--bw) solid var(--line);
+  /* 2026-10-06 改版：从「实心色块 + 白字」换成「同色淡底 + 彩色图标」。
+     实心块在同屏出现十几次时很吵；而分类色打底配白字还要额外调对比度。
+     淡色底 + 深色图标是 Google Workspace / iOS 设置页的通行做法，也更柔和。
+     颜色读 accentTextStyle() 给出的 --t-l / --t-d —— 那对值是按该主题
+     最不利的表面色算过对比度的，所以图标色本身一定达标。
+     淡底会不会把对比度拉低？用 11% / 20% 这种很淡的比例，并且改完跑 a11y.mjs 实测。 */
+  color: var(--t-l, var(--accent-text));
+  background: color-mix(in srgb, var(--t-l, var(--accent-text)) 11%, transparent);
+  border: 0;
+}
+html[data-theme='dark'] .avatar {
+  color: var(--t-d, var(--accent));
+  background: color-mix(in srgb, var(--t-d, var(--accent)) 20%, transparent);
 }
 
 .card-title {
@@ -597,7 +636,7 @@ b, strong { font-weight: 600; }
   border: var(--bw) solid var(--line);
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.cat-card:hover { transform: translate(-2px, -2px); box-shadow: var(--shift) var(--shift) 0 var(--pop); }
+.cat-card:hover { transform: translateY(-2px); box-shadow: var(--sh-3); }
 .cat-card .ci {
   width: 34px; height: 34px;
   display: grid;
@@ -702,7 +741,7 @@ html[data-theme='dark'] .badge-open { color: #7ba0ff; }
   font-size: 0.88rem;
 }
 .filter-input::placeholder { color: var(--fg-3); }
-.filter-input:focus { outline: none; box-shadow: 3px 3px 0 var(--accent); }
+.filter-input:focus { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
 
 /* 下拉：去掉浏览器默认外观，换成统一的方角 + 等宽 + 自绘箭头 */
 select.filter-input {
@@ -901,7 +940,7 @@ select.filter-input {
   background: var(--bg);
   font-size: 0.84rem;
 }
-.prompt-fill-grid input:focus { outline: none; border-color: var(--accent-text); box-shadow: 2px 2px 0 var(--accent); }
+.prompt-fill-grid input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
 
 /* ---------- 13. 资讯 ---------- */
 .news-list { border: var(--bw) solid var(--line); background: var(--surface); }
@@ -981,7 +1020,7 @@ select.filter-input {
   border: var(--bw) solid var(--line);
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.source-row:hover { transform: translate(-2px, -2px); box-shadow: var(--shift) var(--shift) 0 var(--pop); }
+.source-row:hover { transform: translateY(-2px); box-shadow: var(--sh-3); }
 .source-row .sr-ic {
   width: 32px; height: 32px;
   display: grid;
@@ -1052,7 +1091,7 @@ select.filter-input {
   border: var(--bw) solid var(--line);
   transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
 }
-.gloss-item:hover { transform: translate(-2px, -2px); box-shadow: var(--shift) var(--shift) 0 var(--pop); }
+.gloss-item:hover { transform: translateY(-2px); box-shadow: var(--sh-3); }
 .gloss-item .g-head {
   display: flex;
   align-items: baseline;
@@ -1556,7 +1595,7 @@ select.filter-input {
   transition: all var(--dur) var(--ease);
   width: 100%;
 }
-.cmp-quick:hover { transform: translate(-2px, -2px); box-shadow: var(--shift) var(--shift) 0 var(--pop); }
+.cmp-quick:hover { transform: translateY(-2px); box-shadow: var(--sh-3); }
 .cmp-quick .avatar { width: 32px; height: 32px; font-size: 0.72rem; }
 .cmp-quick-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .cmp-quick-main b { font-size: 0.9rem; font-weight: 600; }
@@ -1635,7 +1674,7 @@ select.filter-input {
   background: var(--fg);
   color: var(--bg);
   border: var(--bw) solid var(--line);
-  box-shadow: var(--shift-lg) var(--shift-lg) 0 var(--pop);
+  box-shadow: var(--sh-2);
   transition: transform 0.28s var(--ease);
   max-width: calc(100vw - 32px);
 }
@@ -1669,7 +1708,7 @@ select.filter-input {
   color: var(--accent-fg);
   background: var(--accent-btn);
   border: var(--bw) solid var(--line);
-  box-shadow: var(--shift) var(--shift) 0 var(--pop);
+  box-shadow: var(--sh-2);
   opacity: 0;
   transition: opacity 0.22s var(--ease), transform 0.22s var(--ease);
   pointer-events: none;
@@ -1709,7 +1748,7 @@ select.filter-input {
   border-left: 4px solid var(--warn);
   background: var(--surface);
   padding: 18px 22px;
-  box-shadow: var(--shift) var(--shift) 0 var(--pop);
+  box-shadow: var(--sh-2);
 }
 .cb-head {
   display: flex;
@@ -1924,6 +1963,47 @@ a.rn-status:hover {
   border-top: var(--bw-thin) dashed var(--line-2);
 }
 .tag-pb { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ---------- 31. 圆角体系（2026-10-06 视觉改版）----------
+   改版前全站**一处圆角都没有**（--radius 定义了但从没被引用过），是刻意的「近乎直角」。
+   现在统一按 Material 3 / iOS 的层级给圆角，并且只在这一个章节里集中赋值 ——
+   以后要调整弧度，只动 :root 里的五档，不用满文件找。
+
+   分档理由（写清楚，避免以后有人随手改成别的值）：
+     pill → 徽章、标签、导航项：本来就是"胶囊"语义（.badge-pill 之前竟然是个直角矩形）
+     sm   → 按钮、输入框：可点控件，12px 是"友善的矩形"
+     r    → 卡片类容器：16px，M3 的 medium 档
+     lg   → 浮动条与大面板：24px
+     xs   → 头像方块、图标按钮：8px，iOS 图标那种"圆角方"
+
+   **通栏元素一律不加**（.header / .toolbar / .footer / .table-wrap 外框）：
+   它们贴边，加了圆角会在两侧留下缺口。 */
+.card, .cat-card, .gloss-item, .source-row, .answer-card, .caveat-box, .fact,
+.tl-item, .playbook-card, .prompt-card, .prompt-body, .news-list, .live-list,
+.model-list, .model-use, .review-note, .prompt-tip, .warn-list, .kicker-box,
+.kicker-plain, .pb-spec, .empty, .step, .stats, .source-list {
+  border-radius: var(--r);
+}
+.btn, .act-btn, .cmp-btn, .cmp-quick, .copy-btn, .icon-btn, .menu-btn,
+.prompt-toggle, .filter-input, .quick-search, .prompt-fill-head, .cmp-head-in,
+.search-hero input, .prompt-fill-grid input {
+  border-radius: var(--r-sm);
+}
+.tag, .tag-link, .tag-pb, .badge-pill, .badge-hot, .badge-new, .badge-free,
+.badge-paid, .badge-open, .badge-cn, .nav a, .live-go, .search-more {
+  border-radius: var(--r-pill);
+}
+.avatar, .avatar-lg, .cmp-mark, .logo-mark, .step-num, .rn-status {
+  border-radius: var(--r-xs);
+}
+pre, .prompt-code, .data-table, .cmp-table, .table-wrap, .prompt-fill-grid {
+  border-radius: var(--r-sm);
+}
+.cmp-bar, .cmp-toast, .save-bar, .seg {
+  border-radius: var(--r-lg);
+}
+/* 圆角元素的图片/内嵌块不要溢出 */
+.card img, .cat-card img, .answer-card img { border-radius: calc(var(--r) - 6px); }
 
 /* ---------- 20. 响应式 ---------- */
 @media (max-width: 960px) {

@@ -355,7 +355,7 @@ export function enToolDetail(ctx, i18n, t) {
 ${crumbs(crumbItems, 'Breadcrumb')}
 <div class="container">
   <div class="tool-hero">
-    <span class="avatar avatar-lg" style="${accentStyle(c)}" aria-hidden="true">${esc(initials(tName))}</span>
+    <span class="avatar avatar-lg" style="${accentTextStyle(c)}" aria-hidden="true">${icon((ctx.categories.toolCategories.find((x) => x.id === t.cat) || {}).icon || 'grid', 30)}</span>
     <div class="tool-hero-main">
       <div class="label label-accent" style="margin-bottom:8px">${esc(catName(t.cat))}</div>
       <h1>${esc(tName)}</h1>
