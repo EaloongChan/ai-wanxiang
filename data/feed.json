@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-06T01:57:09.953Z",
+  "updatedAt": "2026-10-06T07:27:11.402Z",
   "sources": [
     {
       "id": "qbitai",
@@ -46,9 +46,8 @@
     {
       "id": "deepmind",
       "name": "Google DeepMind",
-      "ok": false,
-      "count": 0,
-      "error": "超时（>15s）"
+      "ok": true,
+      "count": 12
     },
     {
       "id": "blog-google-ai",
@@ -107,9 +106,8 @@
     {
       "id": "thegradient",
       "name": "The Gradient",
-      "ok": false,
-      "count": 0,
-      "error": "超时（>15s）"
+      "ok": true,
+      "count": 12
     },
     {
       "id": "oschina",
@@ -120,129 +118,149 @@
   ],
   "stats": {
     "total": 140,
-    "ok": 17,
-    "failed": 2
+    "ok": 19,
+    "failed": 0
   },
   "items": [
     {
-      "title": "微软 XBOX Elite 控制器（第三代）规格曝光：霍尔效应摇杆、VCA 触觉电机等",
-      "link": "https://www.ithome.com/1/009/948.htm",
-      "date": "2026-10-06T01:40:46.000Z",
-      "summary": "IT之家 10 月 6 日消息，网友 u/esketitethan 今天（10 月 6 日）在 Reddit 社区发帖，反馈称通过抓取微软官方 XBOX Design Lab 后端 API 数据，发现了 XBOX Elite 控制器（第三代）的相关规格信息。…",
+      "title": "索尼音乐 9 月要求下架 26 万首 AI 伪造歌曲：阿黛尔等艺人被冒充，请求量较 3 月近乎翻倍",
+      "link": "https://www.ithome.com/1/010/001.htm",
+      "date": "2026-10-06T07:19:39.000Z",
+      "summary": "IT之家 10 月 6 日消息，金融时报（FT）昨日（10 月 5 日）发布博文，报道称索尼音乐已要求各数字平台删除超过 26 万首冒充其旗下艺人的 AI 生成曲目。 在数量方面，报道称是索尼音乐娱乐公司（Sony Music Entertainment）要求流媒体平台在 9 月底前下架超过 26 万首歌曲，这一数字几乎是 3 月底 13.5 万首的两倍。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "维基媒体：OpenAI 失控 AI 智能体或引发其 5 月数据服务故障",
-      "link": "https://www.ithome.com/1/009/947.htm",
-      "date": "2026-10-06T01:38:25.000Z",
-      "summary": "IT之家 10 月 6 日消息，运营网络百科全书维基百科的维基媒体基金会表示，今年 5 月其数据服务出现故障，或许和来自 OpenAI 失控智能体产生的巨量访问流量有关。 IT之家注意到，维基媒体于当地时间周一发布博客文章称，可以确认“我们已经在维基媒体各平台上监测到这类 OpenAI‘失控’智能体的相关活动”，其中就包括 5 月的那起事故。…",
+      "title": "韩国拟推 4.7 万亿韩元专项计划，明年 3 月起研发前沿 AI 大模型",
+      "link": "https://www.ithome.com/1/010/000.htm",
+      "date": "2026-10-06T07:18:37.000Z",
+      "summary": "IT之家 10 月 6 日消息，据路透社报道，韩国科学技术信息通信部表示，韩国拟推出一项总规模 4.7 万亿韩元（IT之家注：现汇率约合 233.03 亿元人民币）的专项计划，自 2027 年 3 月起研发前沿人工智能大模型。首尔方面希望借此在尖端 AI 的全球竞争当中争取一席之地。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "GLM-5.3 上架亚马逊 AWS 旗下大模型平台，智谱打开海外收入分成通道",
-      "link": "https://www.ithome.com/1/009/946.htm",
-      "date": "2026-10-06T01:34:19.000Z",
-      "summary": "IT之家 10 月 6 日消息，据《科创板日报》报道，亚马逊云科技（AWS）旗下大模型服务平台 Amazon Bedrock 今日接入智谱 GLM-5.3，AWS 基于模型调用量与智谱进行收入分成。 报道称，除了 AWS 外，智谱近期与多家海外云厂商落地收入分成模式。此前智谱透露计划通过海外云平台收入分成增加一条具有规模潜力的商业路径。…",
+      "title": "亚马逊 AWS 豪掷 10 亿美元安抚数据中心所在地社区，试图缓解美国民众反对声浪",
+      "link": "https://www.ithome.com/1/009/999.htm",
+      "date": "2026-10-06T07:02:29.000Z",
+      "summary": "IT之家 10 月 6 日消息，据路透社上周（10 月 2 日）报道，亚马逊云计算（AWS）表示，未来 5 年将在全美国范围内的数据中心社区投资超 10 亿美元（IT之家注：现汇率约合 67.14 亿元人民币），承诺为当地民众承担数据中心带来的水电资源影响。 据报道，由于数据中心会对电力、公共事业成本等因素带来影响，美国各地民众近年来开始反对在自己的社区建设数据中心。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "挪威政府拟在部分敏感区域实施人工智能眼镜临时禁令",
-      "link": "https://www.ithome.com/1/009/945.htm",
-      "date": "2026-10-06T01:24:58.000Z",
-      "summary": "IT之家 10 月 6 日消息，挪威政府当地时间本月 5 日表示，计划尽快向议会提交临时禁止在部分敏感区域使用人工智能眼镜的草案，并为后续永久性立法设立专家咨询机构。 这里的“敏感区域”可能包括公园、海滩、博物馆、购物中心、学校、幼儿园、游乐场、课外活动中心、医疗机构、设有更衣淋浴设施的健身场所。挪威政府还将评估该禁令的适用设备范围，以及是否应涵盖高等院校及其它教育机构。…",
+      "title": "10 月 5 日蔚来换电 183,664 单，再创历史新高",
+      "link": "https://www.ithome.com/1/009/997.htm",
+      "date": "2026-10-06T06:57:39.000Z",
+      "summary": "IT之家 10 月 6 日消息，蔚来今日宣布，2026 年 10 月 5 日，蔚来换电单日总量达 183,664 单，再创历史新高（IT之家注：10 月 1 日蔚来换电单日总量达 183,469 单，曾创历史新高），平均 0.47 秒就有一台蔚来、乐道、萤火虫完成换电。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "我国海水淡化日处理能力突破 300 万吨",
-      "link": "https://www.ithome.com/1/009/944.htm",
-      "date": "2026-10-06T01:21:08.000Z",
-      "summary": "IT之家 10 月 6 日消息，据央视新闻今日报道，自然资源部数据显示，截至目前，我国海水淡化总规模已达到每日 307.7 万吨。 目前，全国已建海水淡化工程总规模为 307.7 万吨 / 日，据不完全统计，拟建和在建总规模超过 100 万吨 / 日。…",
+      "title": "微软延后 1 个月：OneDrive 520 字符路径限制改进推迟至 11 月",
+      "link": "https://www.ithome.com/1/009/996.htm",
+      "date": "2026-10-06T06:56:27.000Z",
+      "summary": "IT之家 10 月 6 日消息，科技媒体 NeoWin 今天（10 月 6 日）发布博文，报道称微软延后部署补丁，而该补丁主要用于修复 OneDrive 同步客户端在文件路径超过 520 个字符后触发的同步错误。 IT之家援引博文介绍，受此漏洞影响的用户包括所有 Windows 桌面版 OneDrive 同步客户端用户，以及 OneDrive for Business 的 Wi…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "苹果开放 iPhone Duo 适配应用提交，明年 4 月起上架需提供折叠设备截图",
-      "link": "https://www.ithome.com/1/009/942.htm",
-      "date": "2026-10-06T01:18:12.000Z",
-      "summary": "IT之家 10 月 6 日消息，iPhone Duo 即将正式发售，苹果现已开放开发者提交入口，开发者可使用 Xcode 27.1 打包适配这款机型的应用与游戏。 过去几周，苹果陆续推送了 Xcode 27.1 测试版，支持开发者为 iPhone Duo 开发、调试应用。今日苹果放出 Xcode 27.1 首个候选版本（RC 1），开发者可直接下载使用。…",
+      "title": "劳斯莱斯 CEO 称中国市场至关重要，车辆平均定制价值每年都在增长",
+      "link": "https://www.ithome.com/1/009/995.htm",
+      "date": "2026-10-06T06:46:53.000Z",
+      "summary": "IT之家 10 月 6 日消息，据央视财经，劳斯莱斯首席执行官克里斯 · 布朗里奇接受专访时表示，中国市场对劳斯莱斯至关重要。 据介绍，为服务好中国客户，劳斯莱斯不断在此投资，中国是全球范围内，劳斯莱斯在英国本土之外仅有的四个设有专属定制中心的地区之一（IT之家注：分别为上海、阿联酋迪拜、美国纽约、韩国首尔）。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "我国应用下一代通信关键技术空心光纤，AI 算力时代给光信号造出“磁悬浮”高速轨道",
-      "link": "https://www.ithome.com/1/009/941.htm",
-      "date": "2026-10-06T01:16:52.000Z",
-      "summary": "IT之家 10 月 6 日消息，@央视新闻 昨日（10 月 5 日）发布微博，我国下一代通信关键技术“空心光纤”已率先在宁夏中卫的智算中心间投入商用，传输时延与损耗直降 30% 以上，在 AI 算力时代给光信号造出一条“磁悬浮”高速轨道。 该光纤直径不足 0.…",
+      "title": "电影《生化危机：爆发夜》 上映 2 天，总票房破 1 亿",
+      "link": "https://www.ithome.com/1/009/994.htm",
+      "date": "2026-10-06T06:46:24.000Z",
+      "summary": "IT之家 10 月 6 日消息，据猫眼专业版数据，电影《生化危机：爆发夜》上映 2 天，总票房突破 1 亿。 IT之家附该电影官方简介如下： 嘘，别出声。 黑暗中的生化怪物正在凝视，楼顶上的嗜血异种们虎视眈眈。 城市变为血色废墟，危险即将全面爆发！检查好手中的武器，抱紧需要运送的快递。前方高能，浣熊市的求生副本即将开启，请做好逃离准备。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "欧盟推行数字主权遇阻，微软 Teams 替代方案被某官员吐槽“绝对垃圾”",
-      "link": "https://www.ithome.com/1/009/939.htm",
-      "date": "2026-10-06T01:02:41.000Z",
-      "summary": "IT之家 10 月 6 日消息，Politico Europe 于 9 月 30 日发布博文，在倡导数字主权并减少对美国技术依赖的背景下，欧盟委员会正推动 Element Pro 来替代微软 Teams，不过初期反馈偏向负面，部分欧洲官员直言 Element Pro 为“绝对垃圾”。 报道指出欧盟委员会计划 2026 年夏季引入 Element Pro。…",
+      "title": "2026 诺贝尔文学奖揭晓在即，中国作家残雪成最热门人选",
+      "link": "https://www.ithome.com/1/009/993.htm",
+      "date": "2026-10-06T06:44:55.000Z",
+      "summary": "IT之家 10 月 6 日消息，2026 年诺贝尔文学奖揭晓在即，中国作家残雪再次高居博彩赔率榜榜首，成为今年获奖的最热门人选，日本作家村上春树紧随其后位列第二。 IT之家发稿前，#残雪领跑诺贝尔文学奖#话题冲上微博热搜第 16 名，热度值为 289951。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "高通澄清：与华为专利交叉授权协议“涉及逻辑折叠”不属实、“高通为净支付方”不准确",
-      "link": "https://www.ithome.com/1/009/938.htm",
-      "date": "2026-10-06T01:01:47.000Z",
-      "summary": "IT之家 10 月 6 日消息，根据 Creative Strategies 分析师 Max Weinbach 从高通处获得的声明，一位高通发言人表示，部分媒体宣称高通与华为近日达成的专利交叉授权协议“与逻辑折叠芯片技术有关”的说法不属实。 高通发言人在声明中还提到，将该企业描述为该协议下的净支付方的相关报道并不准确。…",
+      "title": "《直到黎明》开发商 Supermassive Games 开始裁员，超 70 人受影响",
+      "link": "https://www.ithome.com/1/009/992.htm",
+      "date": "2026-10-06T06:38:34.000Z",
+      "summary": "IT之家 10 月 6 日消息，据游戏媒体 Game*Spark 今日报道，《直到黎明》开发商 Supermassive Games 已开始进行裁员，超 70 名员工受到影响。 Supermassive Games IT 部门员工 Frank Tindle 表示，他已经确认自己成为裁员对象。公司内的部分美术师、制作人、QA、运营人员等 70 多名同事都将离开。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "高盛上调台积电目标价至 3300 新台币，预示约 28% 上涨空间",
-      "link": "https://www.ithome.com/1/009/937.htm",
-      "date": "2026-10-06T00:57:51.000Z",
-      "summary": "IT之家 10 月 6 日消息，台积电 10 月 5 日在中国台湾股市创出历史新高，早盘最高冲上 2,580 新台币（IT之家注：现汇率约合 543.1 元人民币），13:30 收盘价定在 2,575 新台币（现汇率约合 542 元人民币），涨幅 3%，市值升至约 66.78 万亿新台币（现汇率约合 14.06 万亿元人民币）。…",
+      "title": "[AINews] Reflection Beam - 501B-A23B American Open Model",
+      "link": "https://www.latent.space/p/ainews-reflection-beam-501b-a23b",
+      "date": "2026-10-06T06:28:43.000Z",
+      "summary": "A small win for US open source",
+      "source": "Latent Space",
+      "sourceId": "latentspace",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "消息称 DeepSeek 接近完成至少 800 亿元融资，腾讯、宁德时代重金参与",
+      "link": "https://www.ithome.com/1/009/990.htm",
+      "date": "2026-10-06T06:25:15.000Z",
+      "summary": "IT之家 10 月 6 日消息，据彭博社报道，DeepSeek 新一轮融资即将敲定，募资规模至少可达 800 亿元人民币，大幅超出自身原定募资目标。此次融资也将为该公司计划在 2027 年初开展的里程碑式 IPO 铺路。 知情人士称，宁德时代以及腾讯是本轮融资当中出资规模最大的几家投资方，本轮交易很快就会完成交割。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "奥尔特曼：马斯克是个“霸凌者”，只尊重敢于回击他的人",
-      "link": "https://www.ithome.com/1/009/936.htm",
-      "date": "2026-10-06T00:54:25.000Z",
-      "summary": "IT之家 10 月 6 日消息，萨姆 · 奥尔特曼（Sam Altman）表示，如果希望他和埃隆 · 马斯克能够开展合作，大家就必须接受一定程度上的纷争。 “我认为有些时候，你就得狠狠回击霸凌者。”奥尔特曼在接受《名利场》的深度专访时说道，“而且我还觉得，埃隆和很多喜欢欺压别人的人一样，只会尊重敢于还手的对手。…",
+      "title": "育碧《刺客信条：女巫》游戏角色与剧情细节曝光，预估 2027 下半年发行",
+      "link": "https://www.ithome.com/1/009/989.htm",
+      "date": "2026-10-06T06:22:04.000Z",
+      "summary": "IT之家 10 月 6 日消息，游戏媒体 mp1st 于 10 月 4 日发布博文，报道称育碧《刺客信条：女巫》（Assassin's Creed Hexe，Hexe 为代号，非官方正式名称）游戏曝出新一批角色与剧情资料。 消息称游戏背景设定在 16 世纪德国，故事聚焦当地猎巫审判与宗教迫害，整体基调较系列近年作品更阴暗。 主角方面，消息称该游戏女主角称为“佩特拉”。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "《魔兽世界》：“无限”国服 Beta 测试今日开启，购买 388 元礼包可抢先体验",
-      "link": "https://www.ithome.com/1/009/934.htm",
-      "date": "2026-10-06T00:45:48.000Z",
-      "summary": "IT之家 10 月 6 日消息，《魔兽世界》：“无限”国服 Beta 测试今日（10 月 6 日）正式开启。10 月 6 日-10 月 26 日测试期间，多个开测狂欢活动上线。 购买天裔史诗礼包（388 元），即可解锁国服 Beta 测试资格，并获取诸多奖励收藏。 需要注意的是，本次测试为删档测试，测试结束后，所有测试角色及游戏数据将被删除，不会保留至正式上线。…",
+      "title": "颂拓 Race 3S 智能手表曝光：2000 nit 亮度、满电 GPS 续航 45 小时、存储翻倍至 64GB",
+      "link": "https://www.ithome.com/1/009/988.htm",
+      "date": "2026-10-06T06:06:17.000Z",
+      "summary": "IT之家 10 月 6 日消息，科技媒体 NotebookCheck 昨日（10 月 5 日）发布博文，分享了一组宣传物料，展示了颂拓（Suunto）Race 3S 智能手表。 外观方面，Race 3S 智能手表延续 2024 年 Suunto Race S 的外观语言，维持 45mm 表壳直径、11.4mm 厚度与 53g 重量，右侧保留双物理按键与数字表冠。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
+    },
+    {
+      "title": "AI tutoring with Khanmigo in a two-year school experiment",
+      "link": "https://edworkingpapers.com/ai26-1551",
+      "date": "2026-10-06T00:00:45.000Z",
+      "summary": "Article URL: https://edworkingpapers.com/ai26-1551 Comments URL: https://news.ycombinator.com/item?id=49972419 Points: 61 # Comments: 53",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
     },
     {
       "title": "Quoting Felix Rieseberg",
@@ -318,7 +336,7 @@
       "title": "AI Companies Are Parasites",
       "link": "https://www.coryd.dev/posts/2026/ai-companies-are-parasites",
       "date": "2026-10-05T19:30:10.000Z",
-      "summary": "Article URL: https://www.coryd.dev/posts/2026/ai-companies-are-parasites Comments URL: https://news.ycombinator.com/item?id=49969369 Points: 61 # Comments: 35",
+      "summary": "Article URL: https://www.coryd.dev/posts/2026/ai-companies-are-parasites Comments URL: https://news.ycombinator.com/item?id=49969369 Points: 66 # Comments: 36",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -445,6 +463,16 @@
       "topic": "industry"
     },
     {
+      "title": "Florida woman arrested for allegedly making threats in an AI chat",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1004747/florida-woman-arrested-for-allegedly-making-threats-in-an-ai-chat",
+      "date": "2026-10-05T15:11:36.000Z",
+      "summary": "Article URL: https://www.theverge.com/ai-artificial-intelligence/1004747/florida-woman-arrested-for-allegedly-making-threats-in-an-ai-chat Comments URL: https://news.ycombinator.com/item?…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
       "title": "Our approach to EU text provenance rules",
       "link": "https://openai.com/index/eu-text-provenance",
       "date": "2026-10-05T15:00:00.000Z",
@@ -538,7 +566,7 @@
       "title": "Spending on AI is becoming almost impossible for businesses to budget",
       "link": "https://www.wsj.com/tech/personal-tech/ai-token-spending-businesses-431ee94a",
       "date": "2026-10-05T13:22:31.000Z",
-      "summary": "Article URL: https://www.wsj.com/tech/personal-tech/ai-token-spending-businesses-431ee94a Comments URL: https://news.ycombinator.com/item?id=49964537 Points: 58 # Comments: 81",
+      "summary": "Article URL: https://www.wsj.com/tech/personal-tech/ai-token-spending-businesses-431ee94a Comments URL: https://news.ycombinator.com/item?id=49964537 Points: 59 # Comments: 81",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -698,7 +726,7 @@
       "title": "Show HN: AI search for every photo and every frame of video on macOS",
       "link": "https://github.com/allenv0/SCM",
       "date": "2026-10-04T09:24:52.000Z",
-      "summary": "Article URL: https://github.com/allenv0/SCM Comments URL: https://news.ycombinator.com/item?id=49952111 Points: 163 # Comments: 73",
+      "summary": "Article URL: https://github.com/allenv0/SCM Comments URL: https://news.ycombinator.com/item?id=49952111 Points: 166 # Comments: 73",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -809,26 +837,6 @@
       "link": "https://www.astralcodexten.com/p/our-ai-midwife",
       "date": "2026-10-03T19:12:27.000Z",
       "summary": "Article URL: https://www.astralcodexten.com/p/our-ai-midwife Comments URL: https://news.ycombinator.com/item?id=49946873 Points: 64 # Comments: 65",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
-      "title": "Pop!_OS bans AI-generated code from much of its codebase",
-      "link": "https://www.neowin.net/news/system76-bans-ai-generated-code-across-many-of-its-cosmic-codebases/",
-      "date": "2026-10-03T17:57:03.000Z",
-      "summary": "Article URL: https://www.neowin.net/news/system76-bans-ai-generated-code-across-many-of-its-cosmic-codebases/ Comments URL: https://news.ycombinator.com/item?…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
-      "title": "LeCun has \"zero concerns\" about AI wiping out humanity, recent \"rogue\" incidents",
-      "link": "https://fortune.com/2026/10/01/ai-godfather-yann-lecun-has-zero-concerns-about-human-extinction-says-anthropic-ceo-dario-amodei-is-deuded/",
-      "date": "2026-10-03T17:44:29.000Z",
-      "summary": "https://archive.ph/TyDPf Comments URL: https://news.ycombinator.com/item?id=49946228 Points: 410 # Comments: 823",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -1255,6 +1263,16 @@
       "topic": "industry"
     },
     {
+      "title": "Gemini 4 Argon: our next era of frontier intelligence",
+      "link": "https://deepmind.google/blog/gemini-4-argon-our-next-era-of-frontier-intelligence/",
+      "date": "2026-09-30T20:01:45.000Z",
+      "summary": "",
+      "source": "Google DeepMind",
+      "sourceId": "deepmind",
+      "lang": "English",
+      "topic": "model"
+    },
+    {
       "title": "RFK Jr. thinks AI will free us from the \"tyranny\" of medical facts, expertise",
       "link": "https://arstechnica.com/health/2026/09/rfk-jr-says-ai-backs-his-anti-vaccine-views-we-checked-it-doesnt/",
       "date": "2026-09-30T19:31:25.000Z",
@@ -1283,6 +1301,16 @@
       "sourceId": "ifanr",
       "lang": "中文",
       "topic": "product"
+    },
+    {
+      "title": "Introducing SynthID Bio",
+      "link": "https://deepmind.google/blog/introducing-synthid-bio/",
+      "date": "2026-09-30T15:03:07.000Z",
+      "summary": "Proof of concept for watermarking AI-generated proteins while preserving biological function.",
+      "source": "Google DeepMind",
+      "sourceId": "deepmind",
+      "lang": "English",
+      "topic": "model"
     },
     {
       "title": "从玩家的世界掠过：Bungie 的「列车」如何驶向终焉",
@@ -1493,36 +1521,6 @@
       "sourceId": "openai",
       "lang": "English",
       "topic": "model"
-    },
-    {
-      "title": "Introducing GPT-6.1 Sol",
-      "link": "https://openai.com/index/introducing-gpt-6-1-sol",
-      "date": "2026-09-29T10:00:00.000Z",
-      "summary": "Meet GPT-6.1 Sol: near-Astra intelligence for coding, computer use, and professional work at one-fifth of Astra’s standard API input and output token prices.",
-      "source": "OpenAI",
-      "sourceId": "openai",
-      "lang": "English",
-      "topic": "model"
-    },
-    {
-      "title": "社区速递 160 | 水月雨首款游戏耳机与八月派友剁手清单",
-      "link": "https://sspai.com/post/115153",
-      "date": "2026-09-29T09:03:00.000Z",
-      "summary": "除了首页时间流和侧栏的精选展位，少数派Matrix社区还有很多优秀内容因条件所限无法得到有效曝光，因此我们决定重启Matrix周报，并在此基础上添加更多社区内容、作者投稿新玩意呈现给大家。临近国庆长假 ...查看全文",
-      "source": "少数派",
-      "sourceId": "sspai",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "更懂你的心，也更懂你：Apple Watch Series 12 体验",
-      "link": "https://sspai.com/post/115061",
-      "date": "2026-09-29T07:44:46.000Z",
-      "summary": "全新 Apple Watch Series 12，有哪些可感知的升级？查看全文",
-      "source": "少数派",
-      "sourceId": "sspai",
-      "lang": "中文",
-      "topic": "product"
     }
   ]
 }
