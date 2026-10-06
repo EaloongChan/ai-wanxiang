@@ -55,23 +55,22 @@ const FONTS = fs.existsSync(path.join(OUT, 'fonts'))
 const ogHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 ${FONTS}
 *{margin:0;padding:0;box-sizing:border-box}
-body{width:1200px;height:630px;overflow:hidden;background:#f3f1ea;color:#0e0e0c;
-  font-family:'Plex Sans',system-ui,sans-serif;
-  background-image:linear-gradient(rgba(14,14,12,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,14,12,.055) 1px,transparent 1px);
-  background-size:40px 40px;position:relative}
+body{width:1200px;height:630px;overflow:hidden;background:#f4f2ec;color:#0e0e0c;
+  font-family:'Plex Sans',system-ui,sans-serif;position:relative}
 .mono{font-family:'Plex Mono',monospace}
-.frame{position:absolute;inset:36px;border:1.5px solid #0e0e0c;display:flex;flex-direction:column;padding:44px 48px}
+.frame{position:absolute;inset:34px;border-radius:28px;background:#fff;
+  box-shadow:0 2px 6px rgba(28,24,12,.06), 0 18px 44px rgba(28,24,12,.10);display:flex;flex-direction:column;padding:44px 48px}
 .top{display:flex;align-items:center;justify-content:space-between}
 .logo{display:flex;align-items:center;gap:14px}
-.mark{width:52px;height:52px;background:#ff3b00;border:1.5px solid #0e0e0c;display:grid;place-items:center;color:#fff;font-family:'Plex Mono',monospace;font-size:30px;font-weight:600}
+.mark{width:52px;height:52px;border-radius:14px;background:#ff3b00;display:grid;place-items:center;color:#fff;font-family:'Plex Mono',monospace;font-size:30px;font-weight:600}
 .brand{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.05}
 .brand small{display:block;font-family:'Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.24em;color:#78776d}
-.kicker{font-family:'Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:#ff3b00;color:#fff;border:1.5px solid #0e0e0c;padding:6px 12px}
+.kicker{font-family:'Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:#ff3b00;color:#fff;border-radius:999px;padding:7px 14px}
 h1{margin-top:auto;font-size:78px;font-weight:700;letter-spacing:-.05em;line-height:1.02}
 h1 .hl{color:transparent;-webkit-text-stroke:3px #ff3b00}
 h1 .u{background:linear-gradient(to top,#ff3b00 0 .13em,transparent .13em)}
 .sub{margin-top:20px;font-size:21px;color:#3f3f39;max-width:820px;line-height:1.5}
-.bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;border-top:1.5px solid #0e0e0c;padding-top:20px}
+.bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid #e3dfd4;padding-top:20px}
 .stats{display:flex;gap:38px}
 .stat b{display:block;font-family:'Plex Serif',serif;font-size:36px;font-weight:600;line-height:1;letter-spacing:-.02em}
 .stat span{font-family:'Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#78776d}
