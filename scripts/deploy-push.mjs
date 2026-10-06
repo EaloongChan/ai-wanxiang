@@ -218,12 +218,20 @@ async function main() {
   let remoteAhead = 0;
   try {
     git(['fetch', 'origin', 'main']);
-    remoteAhead = Number(git(['rev-list', '--count', 'HEAD..origin/main']).trim()) || 0;
+    /* ★ 必须读 FETCH_HEAD，不能读 origin/main ——
+       本仓库里**一个远程跟踪分支都没有**（`git branch -r` 是空的），
+       所以 `rev-list HEAD..origin/main` 会直接报错，而那个错误被下面的 catch 吞掉，
+       结果 remoteAhead 永远是 0、这条守卫**一次都不会触发**。
+       （2026-10-06 实测撞上：本地与远端各领先 1 个提交，脚本照样往下走，
+        最后是 git 自己以 non-fast-forward 拒收才没出事 —— 拦住推送的是 git，不是这条守卫。）
+       FETCH_HEAD 由上面那句 fetch 保证存在（显式指定分支名时一定写）。 */
+    remoteAhead = Number(git(['rev-list', '--count', 'HEAD..FETCH_HEAD']).trim()) || 0;
   } catch { /* 取不到就不拦，下面的快进推送会自然被 git 拒绝 */ }
   if (remoteAhead > 0 && !FORCE) {
     line(`  ✗ 远端 main 有 ${remoteAhead} 个本地没有的提交（通常是每日资讯自动提交）。`);
     line('    直接推会**把它们抹掉**，已中止。先把本地叠到远端之上：');
-    line('      git rebase origin/main        （或 git merge origin/main）');
+    line('      git fetch origin main && git rebase FETCH_HEAD');
+    line('    （不要写 origin/main —— 本仓库没有远程跟踪分支，那条命令会直接报错）');
     line('    然后重新跑本脚本。确实要覆盖远端，就加 --force。');
     line('');
     process.exit(1);
