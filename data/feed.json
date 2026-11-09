@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-11-08T07:09:02.020Z",
+  "updatedAt": "2026-11-09T07:50:37.702Z",
   "sources": [
     {
       "id": "qbitai",
       "name": "量子位",
       "ok": true,
-      "count": 9
+      "count": 10
     },
     {
       "id": "infoq-cn",
@@ -123,124 +123,414 @@
   },
   "items": [
     {
-      "title": "OpenAI GPT-6.1 Sol 参与活体小鼠脑手术：连续操作三次，定位误差减半",
-      "link": "https://www.ithome.com/1/023/900.htm",
-      "date": "2026-11-08T07:05:49.000Z",
-      "summary": "北京时间 11 月 8 日，据《WIRED》此前报道及生物科技公司 Exin Therapeutics 最新披露，OpenAI 旗下 AI 模型 GPT-6.1 Sol 已被用于活体小鼠脑部手术实验，并在连续三次操作中，通过外科医生的反馈改善了定位表现。到第三次操作时，其识别关键解剖标志的耗时从 169 秒缩短至 86 秒，定位误差从 0.6 毫米降至 0.3 毫米。…",
+      "title": "三星 SDI 将为波士顿动力 Atlas 人形机器人供应电池",
+      "link": "https://www.ithome.com/1/024/339.htm",
+      "date": "2026-11-09T07:50:07.000Z",
+      "summary": "IT之家 11 月 9 日消息，韩媒 The Elec 近日报道称，三星 SDI 将为波士顿动力（现代汽车集团旗下机器人子公司）开发的人形机器人 Atlas 供应电池。 虽然 LG 新能源也被选为供应商，但由于产能有限，预计三星 SDI 将负责几乎所有初期出货，并在一段时间内保持独家供应商的地位。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "京东物流“京碳惠”亮相进博会，快递减碳可以当钱花",
-      "link": "https://www.ithome.com/1/023/899.htm",
-      "date": "2026-11-08T07:05:07.000Z",
-      "summary": "IT之家 11 月 8 日消息，京东物流今日宣布，第九届中国国际进口博览会期间，由京东物流联合必维集团、上海市节能减排中心编制的《电子商务快递低碳运输》碳普惠方法学，正式通过上海市相关部门组织的专家评审并被推荐为 Ⅰ 类方法学，标志着首个电商场景碳普惠方法学落地上海。下一步，“京碳惠”将正式接入上海碳普惠体系、服务近 2500 万上海市民的个人碳账户，让低碳消费有了记录和激励。…",
+      "title": "OPPO Reno17 系列手机配色公布：奇遇喵、冰月白、可可棕、初雪白",
+      "link": "https://www.ithome.com/1/024/338.htm",
+      "date": "2026-11-09T07:47:38.000Z",
+      "summary": "IT之家 11 月 9 日消息，OPPO 官微今天（9 日）下午公布了 OPPO Reno17 系列手机的四款配色：奇遇喵、冰月白、可可棕、初雪白。 目前，Reno17、Reno17 Pro 两款新机均已开启预订。 京东 OPPO Reno17 奇遇喵 59999 元（此价格为占位符，下同）直达链接京东 OPPO Reno17 Pro 奇遇喵 59999 元直达链接今天早些时候…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "美式汉堡快餐品牌 Wendy's 推出复古风格 RPG 手游，玩游戏可兑换餐食",
-      "link": "https://www.ithome.com/1/023/898.htm",
-      "date": "2026-11-08T07:04:42.000Z",
-      "summary": "IT之家 11 月 8 日消息，美国连锁快餐品牌温蒂汉堡（Wendy's）近日推出一款免费复古风格 RPG 手游《WendyQuest》，玩家可以在游戏中获得奖励兑换码，用于在温蒂汉堡门店兑换薯条、汉堡等食品。 温蒂汉堡发言人表示，该品牌多年来一直积极参与游戏文化，曾与 Twitch、Fortnite 等平台及游戏展开合作，也推出过《Feast of Legends》等作品，而…",
+      "title": "马斯克：特斯拉 Cybertruck 的订单量远超我们的产量，但生产该车的机会成本太高",
+      "link": "https://www.ithome.com/1/024/337.htm",
+      "date": "2026-11-09T07:43:00.000Z",
+      "summary": "IT之家 11 月 9 日消息，特斯拉 CEO 埃隆 · 马斯克刚刚在 X 平台发文称，“Cybertruck 的订单增速远远超过我们的产能。我们会尽量多生产，这条产线大约 8 个月后停产，但届时不得不给大量客户退还定金。这并非像传统媒体不实报道所说的 Cybertruck 不盈利，真实原因是：Cybertruck 工艺复杂带来的机会成本，已经远远高于增产 Cybercab 所…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "Bmax 推出 MaxBook X15 S Pro 笔记本，搭载 8 年前的酷睿 i3-8109U",
-      "link": "https://www.ithome.com/1/023/897.htm",
-      "date": "2026-11-08T07:03:04.000Z",
-      "summary": "IT之家 11 月 8 日消息，制造商 Bmax 最近在海外推出 MaxBook X15 S Pro 笔记本。单看参数表可以发现，这款产品搭载的处理器，是 2018 年 4 季度推出的英特尔酷睿 i3-8109U。 IT之家了解到，这款笔记本的处理器采用双核四线程设计，基础频率 3.0 GHz，最高睿频可达 3.6 GHz，拥有 4 MB Intel 智能缓存。…",
+      "title": "调侃争议“内存”言论：工程师打造开源脚本，每天可向 OpenAI CEO 奥尔特曼汇报自己电脑闲置 RAM 量",
+      "link": "https://www.ithome.com/1/024/336.htm",
+      "date": "2026-11-09T07:42:43.000Z",
+      "summary": "IT之家 11 月 9 日消息，OpenAI 首席执行官 Sam Altman 先前在谈及全球 DRAM 内存供应紧张问题时声称“个人电脑中大量内存长期闲置，不符合全球资源分配效率”。 上述言论因与消费者对内存容量的需求产生冲突而引发强烈争议。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "苹果 iPhone 18/18e 系列机型 X 光图曝光：两款手机共用部分模具，搭 4430mAh 电池",
-      "link": "https://www.ithome.com/1/023/896.htm",
-      "date": "2026-11-08T06:50:06.000Z",
-      "summary": "IT之家 11 月 8 日消息，综合外媒 NoteBook Check 及高通吧“小 tree_666”，近期网络上流出所谓苹果 iPhone 18 标准版 / 18e 手机的 X 光图，相应机型代号分别为 Taycan（V67 K）和 Nevera（V69）。…",
+      "title": "乘联分会报告披露小米汽车 10 月零售销量 50,168 辆",
+      "link": "https://www.ithome.com/1/024/335.htm",
+      "date": "2026-11-09T07:41:07.000Z",
+      "summary": "IT之家 11 月 9 日消息，小米汽车官方本月初宣布，2026 年 10 月，小米汽车交付量超过 50,000 台。 小米汽车官方并未公布具体的交付数据，不过在乘联分会今日公布的 2026 年 10 月份全国乘用车市场分析中，IT之家查询到了其具体的零售销量为 50,123 辆。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "《死亡搁浅》系列游戏发售 7 年，全球累计玩家数突破 2800 万",
-      "link": "https://www.ithome.com/1/023/895.htm",
-      "date": "2026-11-08T06:49:46.000Z",
-      "summary": "IT之家 11 月 8 日消息，知名游戏制作人小岛秀夫表示，《死亡搁浅》系列游戏今日发售 7 周年，全球累计玩家数量正式突破 2800 万。 据IT之家了解，《死亡搁浅》是小岛秀夫脱离 KONAMI 后发布的首款游戏作品。本作以“链接”为主题，玩家需要在已经荒芜的美国，通过运送各种重要的货物来使美国各地重新相连。…",
+      "title": "599 元：创维推出 2027 款 G24 GT2 显示器，23.8 英寸 1080P 260Hz Fast IPS 面板",
+      "link": "https://www.ithome.com/1/024/334.htm",
+      "date": "2026-11-09T07:40:37.000Z",
+      "summary": "IT之家 11 月 9 日消息，创维现已推出 2027 款 G24 GT2 显示器，新品采用 23.8 英寸 Fast IPS 面板，最高刷新率可达 260Hz，售价 599 元。 据介绍，这款显示器的最高刷新率可达 260Hz（超频，原生 200Hz），峰值亮度 470nits，满足 HDR400 标准。灰阶响应时间为 1ms，可减少画面拖影、重影现象。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "比亚迪李柯回应收购玛莎拉蒂传闻：或许几年前兴趣更高，但现在我们已经走出属于自己的道路",
-      "link": "https://www.ithome.com/1/023/894.htm",
-      "date": "2026-11-08T06:48:13.000Z",
-      "summary": "IT之家 11 月 8 日消息，据新浪科技报道，比亚迪执行副总裁李柯在阿布扎比仰望 U9 Xtreme 速度纪录庆祝活动期间，被媒体再次问及收购玛莎拉蒂传闻。 李柯回应：“或许几年前我们兴趣更高。但现在我们已经走出属于自己的道路，方向正确。况且如今全球最快的车就是我们的…… 也正因如此，仰望品牌成功落地，在这里路上也能越来越多看到我们的车。…",
+      "title": "网信办：互联网新技术新应用信息服务备案系统上线，可一体化开展生成式人工智能、算法等备案",
+      "link": "https://www.ithome.com/1/024/332.htm",
+      "date": "2026-11-09T07:40:28.000Z",
+      "summary": "IT之家 11 月 9 日消息，网信办今日发布公告，为进一步提升新技术新应用备案工作规范化水平，便捷企业、公众线上填报查询新技术新应用备案信息，国家互联网信息办公室建设了“互联网新技术新应用信息服务备案系统”，可一体化开展生成式人工智能、算法、深度合成、区块链等新技术新应用备案。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "先锋推出“米家 AI 智能石墨烯电热油汀”：接入小米米家 App，2500W 功率，499 元",
-      "link": "https://www.ithome.com/1/023/893.htm",
-      "date": "2026-11-08T06:37:41.000Z",
-      "summary": "IT之家 11 月 8 日消息，先锋现已在有品上架一款“米家 AI 智能石墨烯电热油汀”（点此访问），该产品支持小米米家 App，定价为 499 元。 该产品机身配备 LED 数码显示屏，支持 15-35℃ 温度调节，提供 2500W 额定最大功率，搭配石墨烯导热技术，主打快速升温。产品内部配备 17 片专利热浪片体，相比传统直板结构，全屋升温速度提升 19%。…",
+      "title": "数据中心火了、燃气轮机不够用了：新设备交货要到本世纪 30 年代，企业疯抢二手货",
+      "link": "https://www.ithome.com/1/024/313.htm",
+      "date": "2026-11-09T07:33:09.000Z",
+      "summary": "IT之家 11 月 9 日消息，据路透社今天（9 日）下午报道，AI 数据中心建设热潮让燃气轮机供不应求，新设备的交货期甚至排到了 2030 年代。 为尽快获得发电设备，全球各地的电力企业、项目开发商和数据中心供电商四处搜寻二手燃气轮机，重新启用长期封存的机组，甚至把退役喷气发动机改造成发电设备。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "量产一个月，上纬新材旗下启元机器人第 10000 台下线",
-      "link": "https://www.ithome.com/1/023/891.htm",
-      "date": "2026-11-08T06:28:02.000Z",
-      "summary": "IT之家 11 月 8 日消息，据界面新闻今日，上纬新材启元机器人第 10000 台个人机器人正式下线。继今年 10 月 25 日第 5000 台下线后，启元机器人 14 天累计下线量从 5000 台增至 10000 台。 IT之家注意到，该公司 9 月 20 日正式发售启元 Q1、启元 T1 两款个人机器人，今年 10 月，启元机器人整机生产工厂正式量产，采用“车规标准 +3…",
+      "title": "《GTA 6》预载即将开启，代码暗藏多人游戏线索",
+      "link": "https://www.ithome.com/1/024/312.htm",
+      "date": "2026-11-09T07:33:00.000Z",
+      "summary": "IT之家 11 月 9 日消息，随着《GTA 6》预载即将开启，数据挖掘者开始从游戏文件中寻找这款 Rockstar 备受期待的新作的更多线索。PlayStation Game Size 发现，《GTA 6》发售版本的代码中已经出现了与在线功能有关的痕迹。虽然多人游戏模式不会随游戏在 11 月 19 日同步推出，但其上线时间可能早于此前预期。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "《塞尔达传说》制作人青沼英二：不裁员，是任天堂成功的关键",
-      "link": "https://www.ithome.com/1/023/890.htm",
-      "date": "2026-11-08T06:20:34.000Z",
-      "summary": "IT之家 11 月 8 日消息，游戏行业似乎很难有一个月完全没有裁员消息。在运营成本不断上升的背景下，裁员已经成为一种令人遗憾的行业趋势。今年以来，游戏行业的裁员人数甚至已经超过了 2025 年全年。 多年来，任天堂一直是游戏行业中少数没有大规模裁员的公司之一。一位《塞尔达传说》系列资深开发者认为，任天堂长期坚持不裁员的做法，正是这个品牌多年来取得成功的关键。…",
+      "title": "BLG 不夺冠退全款：雷鸟 GT Max 智能 AR 眼镜 2288 元 10:00 蹲点抢",
+      "link": "https://www.ithome.com/1/024/310.htm",
+      "date": "2026-11-09T07:31:54.000Z",
+      "summary": "在《英雄联盟》2026 全球总决赛中，BLG 一路连续淘汰 HLE、DK、T1 三支 LCK 队伍晋级决赛。 北京时间 11 月 15 日凌晨 3:00 BLG（LPL） vs GEN（LCK）将开启决赛，雷鸟同步上线专属助威活动：BLG 不夺冠，雷鸟全退款。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "比亚迪腾势 N8 首批实车到店，11 月 12 日上市",
-      "link": "https://www.ithome.com/1/023/889.htm",
-      "date": "2026-11-08T06:09:07.000Z",
-      "summary": "IT之家 11 月 8 日消息，比亚迪今日宣布旗下腾势 N8 全国首批实车到店开展，城市包括石家庄、沈阳、宜兴、常州、无锡、苏州、郑州、广州等等。 IT之家注意到，全新腾势 N8 将于 11 月 12 日正式上市，新车此前已开启小订，搭载了天神之眼 5.0、第二代刀片电池、闪充技术、云辇-A 等技术。…",
+      "title": "苹果 2026 财年利用新加坡、爱尔兰各避税 27、26 亿美元",
+      "link": "https://www.ithome.com/1/024/309.htm",
+      "date": "2026-11-09T07:31:27.000Z",
+      "summary": "IT之家 11 月 9 日消息，《金融时报》当地时间本月 8 日报道称，根据 Apple（苹果）提交的文件，这家科技巨头在 2026“年”缴纳 270 亿美元（现汇率约合 1,803.55 亿元人民币）的企业所得税，相比按美国法定联邦税率 (21%) 计算的 330 亿美元少了 50~60 亿美元。…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
     },
     {
-      "title": "前索尼 SIE 总裁肖恩 · 莱登称 PS6 掌机很可能赢得市场，但前提是不和家用主机同步发售",
-      "link": "https://www.ithome.com/1/023/888.htm",
-      "date": "2026-11-08T05:44:13.000Z",
-      "summary": "IT之家 11 月 8 日消息，据游戏媒体 GamesRadar 昨天报道，前索尼互动娱乐（SIE）美国分部总裁肖恩 · 莱登（Shawn Layden）表示，索尼如果真推出传闻的 PS6 掌机很可能赢得市场，但前提是这款掌机不能和家用主机同步发售。 这名曾参与 PSP 和 PS Vita 发布工作的前索尼高管认为，一家公司很难同时支持家用主机和掌机。…",
+      "title": "荣耀 MagicOS 11 系统第三批内测报名通道重新开放，覆盖 Robot Phone、Magic5 系列等 28 款机型",
+      "link": "https://www.ithome.com/1/024/308.htm",
+      "date": "2026-11-09T07:26:36.000Z",
+      "summary": "IT之家 11 月 9 日消息，荣耀产品维护与升级 @荣耀小芳哥 今日宣布，MagicOS 11 系统第三批内测报名通道重新开放，覆盖 Robot Phone、Magic5 系列等 28 款机型。 手机：荣耀 Robot Phone、Magic Vs3、Magic V2 RSR 保时捷设计、Magic V2 至臻版、Magic V2、Magic5 至臻版、Magic5 Pro、…",
       "source": "IT 之家",
       "sourceId": "ithome",
       "lang": "中文",
       "topic": "product"
+    },
+    {
+      "title": "不用 Node 也能编译 Vue：一个原生二进制，把前后端做成一个工程",
+      "link": "https://www.oschina.net/news/503480",
+      "date": "2026-11-09T06:20:16.000Z",
+      "summary": "一、痛点：内网项目里那张「Node 门票」 过去一年我参与的几个项目都有同一个特征：服务器在内网、离线、镜像体积有硬指标，但业务上确实需要几个 Vue 页面。每次迭代的流程都很别扭——外网机器装 Node、npm install 一坨依赖、build 出 dist、再把产物拷进内网。一旦线上要改个按钮文案，就得走一遍完整的前端构建链。...",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "开源数据库管理工具 CloudDM 新版本发布，支持 OpenSearch、IoTDB 数据源",
+      "link": "https://www.oschina.net/news/503479",
+      "date": "2026-11-09T05:44:37.000Z",
+      "summary": "CloudDM 是一款免费且开源的团队化数据库管理工具，提供统一 Web 数据库访问、权限控制、数据脱敏、SQL 审核、流程协同和数据库 CI/CD 等能力。 GitHub：https://github.com/ClouGence/open-cdm Gitee：https://gitee.com/clougence/open-cdm 新增 新增 OpenSearch 2.…",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "Apple capped engineers at a $200 daily AI budget",
+      "link": "https://www.stork.ai/newsletter/2026-11-08-apple-capped-engineers-at-a-200-daily-ai-budget#story-1",
+      "date": "2026-11-09T05:30:11.000Z",
+      "summary": "Article URL: https://www.stork.ai/newsletter/2026-11-08-apple-capped-engineers-at-a-200-daily-ai-budget#story-1 Comments URL: https://news.ycombinator.com/item?…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Is Jensen Huang’s job on the line? Yale’s Jeffrey Sonnenfeld estimates it’s “about a 50-50”",
+      "link": "https://techcrunch.com/2026/11/08/is-jensen-huangs-job-on-the-line-yales-jeffrey-sonnenfeld-estimates-its-about-a-50-50/",
+      "date": "2026-11-09T05:26:29.000Z",
+      "summary": "Nvidia’s board is investigating Jensen Huang over his relationship with a suspected Chinese spy, and Yale’s Jeffrey Sonnenfeld thinks it’s roughly a coin flip whether Huang stays on as CEO.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "The Web Is More Than Enough, by Paul Ford",
+      "link": "https://simonwillison.net/2026/Nov/9/hn-50421091/",
+      "date": "2026-11-09T04:32:33.000Z",
+      "summary": "My comment on The Web Is More Than Enough, by Paul Ford — Hacker News. OK, this comment convinced me to give that a shot. Here's a thing I made in Three.…",
+      "source": "Simon Willison",
+      "sourceId": "simonw",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "Hide your slop PR descriptions behind",
+      "link": "https://simonwillison.net/2026/Nov/9/details-summary/",
+      "date": "2026-11-09T04:25:05.000Z",
+      "summary": "Most of the changes I make to my projects these days come in the form of PRs opened for me by Claude Code or Codex. The PR is my unit of work - I use them to bundle commits together, iterati…",
+      "source": "Simon Willison",
+      "sourceId": "simonw",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "微信 AI 录音笔体验：手机都能装的办公神器，免费！",
+      "link": "https://www.ifanr.com/1688410?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "date": "2026-11-09T04:00:04.000Z",
+      "summary": "又能摸鱼了#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "source": "爱范儿",
+      "sourceId": "ifanr",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "GrantForge 2026.4.0 正式发布：新增四大数据系统，组织同步与细粒度授权全面升级",
+      "link": "https://www.oschina.net/news/503478",
+      "date": "2026-11-09T03:19:10.000Z",
+      "summary": "GrantForge 2026.4.0 正式发布！ 本次版本新增 Elasticsearch、Apache Doris、MongoDB、Redis/Valkey 四类数据系统的服务插件及 Agent，进一步扩展统一权限治理能力。 同时，新增钉钉组织架构同步、用户直接授权、资源目录导入导出等功能，并完成 Agent 同步核心重构、多语言文档质量检查及安全依赖升级。…",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": ":clap:日志审计系统 WGLOG v2.3.1 正式发布",
+      "link": "https://www.oschina.net/news/503477",
+      "date": "2026-11-09T03:02:06.000Z",
+      "summary": "WGLOG 日志审计系统是私有化部署的 B/S 系统，只需要在本地搭建好 WGLOG 后，所有用户都通过浏览器来访问使用即可，不需要在安装任何组件和客户端。 WGLOG 是一款功能完善的日志审计管理系统，主要用于实时收集服务器、主机、网络设备、防火墙、数据库、API 接口等设备的日志，也可以支持离线日志文件导入，性能优秀，部...",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "双十一好物精选：Sonos Play 85 折送充电套装，CD 机加赠透明面盖",
+      "link": "https://sspai.com/post/118612",
+      "date": "2026-11-09T03:00:00.000Z",
+      "summary": "从墨水屏到手机壳，从磁吸信息屏到CD播放器，这些看似平常的数码产品，经过一些新的设计和尝试，也能带来不太一样的使用体验。今年双十一，各大平台的促销活动陆续开始，不过满减、凑单等规则可能还是有些繁琐。所 ...查看全文",
+      "source": "少数派",
+      "sourceId": "sspai",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "Vue 动态表单 FormCreate 3.2 发布!",
+      "link": "https://www.oschina.net/news/503476",
+      "date": "2026-11-09T02:20:45.000Z",
+      "summary": "FormCreate 是一个可以通过 JSON 生成具有动态渲染、数据收集、验证和提交功能的表单生成组件。支持8个UI框架，并且支持生成任何 Vue 组件。内置20种常用表单组件和自定义组件，再复杂的表单都可以轻松搞定。目前在OA系统、ERP系统、电商系统、流程管理等系统中已稳定应用。 帮助文档 | 源码下载 3.3.6 版本及近期主要更...",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "M6 MacBook Pro 体验：38 块的灵魂，一万五的身体",
+      "link": "https://www.ifanr.com/1688127?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "date": "2026-11-09T01:54:03.000Z",
+      "summary": "苹果的下一座围城，是创作#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "source": "爱范儿",
+      "sourceId": "ifanr",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "早报｜曝特努斯要求加快AI研发/Win 11优化8GB内存电脑流畅度/马斯克：SpaceX明年12月年化营收或超5000亿美元",
+      "link": "https://www.ifanr.com/1688379?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "date": "2026-11-09T00:34:19.000Z",
+      "summary": "· 苹果称超 10 万款应用已适配 iPhone Duo · Anthropic 拟于本周启动 IPO 路演 · 比亚迪李柯回应玛莎拉蒂收购传闻#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "source": "爱范儿",
+      "sourceId": "ifanr",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "I'm not convinced the AI bubble exists",
+      "link": "https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists",
+      "date": "2026-11-08T23:44:36.000Z",
+      "summary": "Article URL: https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists Comments URL: https://news.ycombinator.com/item?…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Here’s the full text of Jensen Huang’s memo to Nvidia",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1029595/full-text-jensen-huang-affair-memo-nvidia",
+      "date": "2026-11-08T22:54:50.000Z",
+      "summary": "On Sunday, Nvidia announced it was launching an investigation into CEO Jensen Huang's relationship with Alice Huang, an AI executive and agent of the Chinese government.…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "派早报：特斯拉将停产 Cybertruck",
+      "link": "https://sspai.com/post/118805",
+      "date": "2026-11-08T22:41:56.000Z",
+      "summary": "特斯拉将停产 Cybertruck 深圳在 APEC 前夕整顿非法市场 美国数据中心股持续遭抛售，大量建设项目被取消 京津冀三地消协组织敦促航司、平台规范机票退改签 FBI 警告冰柜网络安全攻击风险 广电总局部署开展新一轮微短剧专项治理工作 看看就行的简讯 少数派的近期动态 你可能错过的好文章 查看全文",
+      "source": "少数派",
+      "sourceId": "sspai",
+      "lang": "中文",
+      "topic": "product"
+    },
+    {
+      "title": "parse_number() as a SQLite extension: C vs Rust",
+      "link": "https://simonwillison.net/2026/Nov/8/sqlite-parse-number-c-vs-rust/",
+      "date": "2026-11-08T22:26:00.000Z",
+      "summary": "Research: parse_number() as a SQLite extension: C vs Rust I was out walking the dog when I got curious about how easy/difficult it would be to write a SQLite C extension that adds a parse_nu…",
+      "source": "Simon Willison",
+      "sourceId": "simonw",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "How Stanford Teaches AI-Native Engineering — Mihail Eric, Monaco",
+      "link": "https://latent.space/p/cs146s/",
+      "date": "2026-11-08T21:41:44.000Z",
+      "summary": "What happens when students can one-shot last year’s homework? Inside CS146S and the engineering team at Monaco.",
+      "source": "Latent Space",
+      "sourceId": "latentspace",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "[One Million AI Engineer Special] How Stanford Teaches AI-Native Engineering — Mihail Eric, Monaco",
+      "link": "https://latent.space/p/one_million_ai_engineer_special_how_stanford_teaches_ai-native_engineering_mihail_eric_monaco/",
+      "date": "2026-11-08T21:23:29.000Z",
+      "summary": "What do you assign when a coding agent can finish last year’s homework in one prompt? In the second run of Stanford’s CS146S, Mihail Eric brought open-source maintainers into the course.…",
+      "source": "Latent Space",
+      "sourceId": "latentspace",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
+      "title": "Nvidia will investigate CEO Jensen Huang’s relationship with possible Chinese spy",
+      "link": "https://techcrunch.com/2026/11/08/nvidia-says-its-investigating-ceo-jensen-huangs-relationship-with-possible-chinese-spy/",
+      "date": "2026-11-08T21:00:11.000Z",
+      "summary": "In a memo to the company, Huang admitted that he had an affair.",
+      "source": "TechCrunch · AI",
+      "sourceId": "techcrunch-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Nvidia is investigating Jensen Huang’s relationship with a Chinese spy",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1029562/nvidia-investigating-jensen-huang-relationship-chinese-spy",
+      "date": "2026-11-08T20:22:39.000Z",
+      "summary": "Nvidia has announced that it is opening an investigation into CEO Jensen Huang and his relationship with Megaspeed executive Alice Huang, who was reportedly recruited by China's Ministry of …",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "How I Fight AI Brain Fry",
+      "link": "https://sergeykuhne.com/blog/fighting-ai-brain-fry",
+      "date": "2026-11-08T19:37:42.000Z",
+      "summary": "Article URL: https://sergeykuhne.com/blog/fighting-ai-brain-fry Comments URL: https://news.ycombinator.com/item?id=50416363 Points: 223 # Comments: 163",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Apple is racing to make Siri more agentic",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1029552/apple-siri-ai-agentic",
+      "date": "2026-11-08T19:18:19.000Z",
+      "summary": "Bloomberg's Mark Gurman says CEO John Ternus is pressuring AI czar Craig Federighi to accelerate the Siri roadmap and deliver a powerful AI agent that can compete with OpenAI's Dots or Meta'…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "Silicon Valley Promises AI Will Cure Disease. Drugmaker CEOs Aren't Buying It",
+      "link": "https://www.wsj.com/tech/ai/silicon-valley-promises-ai-will-cure-disease-drugmaker-ceos-arent-buying-it-5218511c",
+      "date": "2026-11-08T18:43:07.000Z",
+      "summary": "Article URL: https://www.wsj.com/tech/ai/silicon-valley-promises-ai-will-cure-disease-drugmaker-ceos-arent-buying-it-5218511c Comments URL: https://news.ycombinator.com/item?…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
+      "topic": "opensource"
+    },
+    {
+      "title": "Elvis and Eminem rights holders are suing Suno",
+      "link": "https://www.theverge.com/ai-artificial-intelligence/1029533/elvis-eminem-suno-ai-music-clone-lawsuit",
+      "date": "2026-11-08T17:23:19.000Z",
+      "summary": "Suno is facing yet another pair of lawsuits. A group of rights holders of Elvis Presley's music and the publisher of some of Eminem's biggest records are suing the AI music company, claiming…",
+      "source": "The Verge · AI",
+      "sourceId": "theverge-ai",
+      "lang": "English",
+      "topic": "industry"
+    },
+    {
+      "title": "积木报表漏洞清零计划：10 月以来修复 32 个安全漏洞，另加固 5 项",
+      "link": "https://www.oschina.net/news/503472",
+      "date": "2026-11-08T14:10:19.000Z",
+      "summary": "涉及产品：积木报表（JimuReport）、积木 BI 大屏 / 仪表盘（JimuBI）、Chat2BI 统计时间：2026 年 9 月 11 日 – 11 月 3 日 推荐版本：积木报表 / 积木 BI 2.5.6.1，JeecgBoot v3.9.6 先说结论：积木报表、积木 BI 已知的安全公告已全部处理完，待处理数为 0。请所有用户尽快升级到 2.5.6.…",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "KnowForge 2026.0.10：从知识库，开始长出一点“社区”了",
+      "link": "https://www.oschina.net/news/503471",
+      "date": "2026-11-08T13:24:40.000Z",
+      "summary": "KnowForge 2026.0.10 正式发布。 本次更新主要围绕 内容采集稳定性、用户关系与内容发现体验 进行了增强，同时进一步完善了后台任务与章节管理能力。 内容采集更稳定了 这次重点解决了整站采集过程中，遇到异常页面后可能长时间卡住，甚至阻塞其他后台任务的问题。 现在： 单个页面采集超过 90 秒会自动跳过并继续 超时后...",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "Jync v2.0.0 · Spring Boot 4.1 平台升级",
+      "link": "https://www.oschina.net/news/503470",
+      "date": "2026-11-08T09:29:02.000Z",
+      "summary": "升级内容 Spring Boot 4.1.2：Spring Framework 7.0、Spring Security 7.1、Hibernate ORM 7.4、Tomcat 11、Jackson 3、Lettuce 7、MongoDB 同步驱动 5.8；javax.* 全部迁移到 jakarta.*。功能范围与 v1.14.…",
+      "source": "开源中国",
+      "sourceId": "oschina",
+      "lang": "中文",
+      "topic": "opensource"
+    },
+    {
+      "title": "资本正在撤离“世界模型”",
+      "link": "https://www.qbitai.com/2026/11/508466.html",
+      "date": "2026-11-08T04:09:55.000Z",
+      "summary": "没有永远的夏天",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
     },
     {
       "title": "别再拿《影之刃零》对比《黑神话》了",
@@ -323,6 +613,16 @@
       "topic": "industry"
     },
     {
+      "title": "Terry Pratchett's Study",
+      "link": "https://simonwillison.net/2026/Nov/7/hn-50407316/",
+      "date": "2026-11-07T19:34:24.000Z",
+      "summary": "My comment on Terry Pratchett's Study — Hacker News. Terry Pratchett once wrote about the concept of \"horizontal wealth\".…",
+      "source": "Simon Willison",
+      "sourceId": "simonw",
+      "lang": "English",
+      "topic": "product"
+    },
+    {
       "title": "The End of AI Frontiers",
       "link": "https://hunch.net/?p=13764006",
       "date": "2026-11-07T18:04:07.000Z",
@@ -403,14 +703,24 @@
       "topic": "industry"
     },
     {
-      "title": ":fire: xbatis 1.10.15 正式发版，mybatis 系列最好用最简单最方便的 ORM !!",
-      "link": "https://www.oschina.net/news/503464",
-      "date": "2026-11-07T09:40:05.000Z",
-      "summary": "推荐理由： 强、强、强 ，单表？连表？不想连表？让你直接少写 1/3 甚至 2/3 的持久层代码；API 简单 快捷 优雅 简洁 构建 SQL 非常强！用过的 没用过的都来体验，虽然有 AI 了，但是真正好用的 ORM 的还不能忽略的，除非你以后不维护。 1.10.15 - 2026-11-05 1：修复一些问题和优化代码 2：提前部分兼容mybatis 3.6.0 3...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
+      "title": "Ask HN: How do you manage your AI agents' context across clients and projects?",
+      "link": "https://news.ycombinator.com/item?id=50403153",
+      "date": "2026-11-07T10:01:48.000Z",
+      "summary": "Hi Guys, like many of you I work with AI agents every day and across several clients. The major time cost for me is to re-explaining context and past decisions, client rules, that we already…",
+      "source": "Hacker News · AI",
+      "sourceId": "hn-ai",
+      "lang": "English",
       "topic": "opensource"
+    },
+    {
+      "title": "GitHub不堪重负！OpenAI收购替代品，A社原地自研，马斯克也要搞",
+      "link": "https://www.qbitai.com/2026/11/508449.html",
+      "date": "2026-11-07T09:38:56.000Z",
+      "summary": "AI写代码太快，基础设施跟不上了",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
     },
     {
       "title": "一个 05 后的个人数码编年史",
@@ -421,6 +731,26 @@
       "sourceId": "sspai",
       "lang": "中文",
       "topic": "product"
+    },
+    {
+      "title": "OpenAI新融资到账110亿美元，不及原计划一半",
+      "link": "https://www.qbitai.com/2026/11/508344.html",
+      "date": "2026-11-07T08:11:25.000Z",
+      "summary": "融资缩水，硅谷投资人也谨慎了",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "为了去AI味，人类开始主动写烂文章了……",
+      "link": "https://www.qbitai.com/2026/11/508330.html",
+      "date": "2026-11-07T07:59:28.000Z",
+      "summary": "需要说明的是，这并不意味着不会说人话就一定是人，也不意味着说人话的就一定不是AI.......",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
     },
     {
       "title": "抢跑DeepSeek！硅谷华人把下一代Agent Harness造出来了！？",
@@ -437,6 +767,16 @@
       "link": "https://www.qbitai.com/2026/11/508244.html",
       "date": "2026-11-07T03:43:55.000Z",
       "summary": "全新的电脑病毒",
+      "source": "量子位",
+      "sourceId": "qbitai",
+      "lang": "中文",
+      "topic": "industry"
+    },
+    {
+      "title": "浙大00后博士生再交卷！把十几种物理要素装进一个世界模型｜华为昇腾原生",
+      "link": "https://www.qbitai.com/2026/11/508236.html",
+      "date": "2026-11-07T03:31:44.000Z",
+      "summary": "中国版cosmos再交卷",
       "source": "量子位",
       "sourceId": "qbitai",
       "lang": "中文",
@@ -466,7 +806,7 @@
       "title": "The AI sell-off compared to well-known stock market crashes",
       "link": "https://www.kadoa.com/companies/insights/ai-selloff-perspective",
       "date": "2026-11-07T02:20:06.000Z",
-      "summary": "Article URL: https://www.kadoa.com/companies/insights/ai-selloff-perspective Comments URL: https://news.ycombinator.com/item?id=50401029 Points: 90 # Comments: 75",
+      "summary": "Article URL: https://www.kadoa.com/companies/insights/ai-selloff-perspective Comments URL: https://news.ycombinator.com/item?id=50401029 Points: 99 # Comments: 84",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -481,16 +821,6 @@
       "sourceId": "techcrunch-ai",
       "lang": "English",
       "topic": "industry"
-    },
-    {
-      "title": "Jync v1.14.0 · 应用内 HTTPS 与配置包迁移",
-      "link": "https://www.oschina.net/news/503458",
-      "date": "2026-11-07T00:59:08.000Z",
-      "summary": "Jync v1.14.0 新增 应用内 HTTPS：「系统配置」可直接上传 PKCS#12 / JKS 密钥库或 PEM 证书链与私钥，由 Jync 自己提供 HTTPS，不必再改 nginx 或环境变量。 证书与加密后的密钥库口令存放在 ./data/tls，不进元数据库、不进配置包；私钥与叶子证书用签名探测校验，加密私钥与 SEC1 格式明确拒绝。…",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
     },
     {
       "title": "早报｜触屏MacBook Pro开卖即缺货/仰望U9 Xtreme突破503kph/博世吴永桥：汽车不该拿来订咖啡机票",
@@ -536,21 +866,11 @@
       "title": "AI is dramatically accelerating AI research",
       "link": "https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai",
       "date": "2026-11-06T20:27:23.000Z",
-      "summary": "Article URL: https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai Comments URL: https://news.ycombinator.com/item?id=50397994 Points: 364 # Comments: 346",
+      "summary": "Article URL: https://www.planned-obsolescence.org/p/ai-is-dramatically-accelerating-ai Comments URL: https://news.ycombinator.com/item?id=50397994 Points: 374 # Comments: 354",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
       "topic": "opensource"
-    },
-    {
-      "title": "All the latest updates on AI data centers",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/902546/data-centers-ai-energy-power-grids-controversy",
-      "date": "2026-11-06T20:02:22.000Z",
-      "summary": "Massive new data centers are the physical foundation for tech companies’ hopes and dreams for AI. But the rush to expand warehouses full of energy-hungry servers has also kicked up fights ac…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
     },
     {
       "title": "Hundreds of Artex AI hacking tools found publicly exposed to the web",
@@ -569,16 +889,6 @@
       "summary": "Meta's Muse agents continue to get new features and integrations. Spaces promises to be a new way to interact with the AI helpers.",
       "source": "TechCrunch · AI",
       "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Meta’s Muse AI can create custom ‘spaces’ for the version of the app you need right now",
-      "link": "https://www.theverge.com/tech/1028871/meta-muse-ai-spaces",
-      "date": "2026-11-06T18:10:10.000Z",
-      "summary": "Meta will now allow you to build customized, app-like experiences within Muse. The new feature, called \"spaces,\" allows its AI assistant to build things like a shopping hub, school dashboard…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
       "lang": "English",
       "topic": "industry"
     },
@@ -643,26 +953,6 @@
       "topic": "product"
     },
     {
-      "title": "AI is the new dating dealbreaker",
-      "link": "https://www.theverge.com/ai-artificial-intelligence/1028609/ai-dating-feelings-doomers-singularity",
-      "date": "2026-11-06T17:00:00.000Z",
-      "summary": "When Irene moved to San Francisco last year, she started using dating apps as a way to meet new people, get to know her new city, and connect with others who care about the things she does.…",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Big Tech lost big in the 2026 election",
-      "link": "https://www.theverge.com/podcast/1028731/2026-midterms-tech-ai-vergecast",
-      "date": "2026-11-06T16:38:02.000Z",
-      "summary": "On Tuesday, millions of American voters went to the polls and voted overwhelmingly for Democrats and against AI. The fight against Big Tech is about to come roaring back, and the fight over …",
-      "source": "The Verge · AI",
-      "sourceId": "theverge-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
       "title": "Could potential AI clones of GTA VI force a quicker official port?",
       "link": "https://arstechnica.com/gaming/2026/11/could-potential-ai-clones-of-gta-vi-force-a-quicker-official-port/",
       "date": "2026-11-06T16:19:12.000Z",
@@ -706,7 +996,7 @@
       "title": "University libraries are being swarmed by AI bots, putting public access at risk",
       "link": "https://www.cbc.ca/news/world/university-libraries-ai-data-scraping-bots-9.7408287",
       "date": "2026-11-06T14:13:09.000Z",
-      "summary": "Article URL: https://www.cbc.ca/news/world/university-libraries-ai-data-scraping-bots-9.7408287 Comments URL: https://news.ycombinator.com/item?id=50392499 Points: 135 # Comments: 63",
+      "summary": "Article URL: https://www.cbc.ca/news/world/university-libraries-ai-data-scraping-bots-9.7408287 Comments URL: https://news.ycombinator.com/item?id=50392499 Points: 136 # Comments: 61",
       "source": "Hacker News · AI",
       "sourceId": "hn-ai",
       "lang": "English",
@@ -721,46 +1011,6 @@
       "sourceId": "techcrunch-ai",
       "lang": "English",
       "topic": "industry"
-    },
-    {
-      "title": "Underdog shows off a 32MB speech model in new demo",
-      "link": "https://techcrunch.com/2026/11/06/underdog-shows-off-a-32mb-speech-model-in-new-demo/",
-      "date": "2026-11-06T13:02:16.000Z",
-      "summary": "Despite its small size, Underdog's new model can generate both speech and music.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "Physicl raises $10M to make the digital world real enough for robots",
-      "link": "https://techcrunch.com/2026/11/06/physicl-raises-10m-to-make-the-digital-world-real-enough-for-robots/",
-      "date": "2026-11-06T13:00:00.000Z",
-      "summary": "Physicl is trying to solve the sim-to-real gap with a pipeline originally built to market goods online.",
-      "source": "TechCrunch · AI",
-      "sourceId": "techcrunch-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "2026 开源行业解决方案创新赛「开源基础软件与解决方案赛道」决赛名单公布",
-      "link": "https://www.oschina.net/news/503457",
-      "date": "2026-11-06T11:23:16.000Z",
-      "summary": "第四届开放原子大赛 · 2026 开源行业解决方案创新赛「开源基础软件与解决方案赛道」决赛入围名单今日公布，以下 10 支队伍成功晋级，将于 11 月 13 日在北京亦庄通明湖会展中心参加总决赛。 现将入围名单按报名时间顺序公示如下： 项目名称 负责人 仓库链接 实时交互数字人引擎 李恒中 https://github.com/lipku/LiveT...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
-    },
-    {
-      "title": "2026 开源行业解决方案创新赛「开源智能硬件解决方案赛道」决赛名单公布",
-      "link": "https://www.oschina.net/news/503456",
-      "date": "2026-11-06T10:54:23.000Z",
-      "summary": "第四届开放原子大赛 · 2026 开源行业解决方案创新赛「开源智能硬件解决方案赛道」决赛入围名单今日公布，以下 10 支队伍成功晋级，将于 11 月 13 日在北京亦庄通明湖会展中心参加总决赛。 现将入围名单按报名时间顺序公示如下： 项目名称 负责人 代码仓库链接 Blockless 科创教育 AI 嵌入式软件开发平台 辛瑞莉 https:...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
     },
     {
       "title": "[AINews] Inkling 2 Small: 17A-594B trained in 68 hours on 12T tokens, beating Muse Spark",
@@ -813,36 +1063,6 @@
       "topic": "product"
     },
     {
-      "title": "阶跃终端 STEPX Neo 智能体手机亮相进博会高通展台，软硬模一体打造智能体新体验",
-      "link": "https://www.qbitai.com/2026/11/508170.html",
-      "date": "2026-11-06T09:21:51.000Z",
-      "summary": "阶跃终端旗下 STEPX Neo 智能体手机首次亮相",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "阿里巴巴发布《2026 AI向善行动报告》 AI数据中心可持续发展成年度亮点",
-      "link": "https://www.qbitai.com/2026/11/508165.html",
-      "date": "2026-11-06T09:19:00.000Z",
-      "summary": "11月5日，阿里巴巴发布《2026 AI向善行动报告》",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "AI for scientific discovery: How researchers use Claude",
-      "link": "https://www.anthropic.com/research/how-researchers-use-claude",
-      "date": "2026-11-06T09:13:30.000Z",
-      "summary": "Article URL: https://www.anthropic.com/research/how-researchers-use-claude Comments URL: https://news.ycombinator.com/item?id=50389990 Points: 101 # Comments: 39",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
       "title": "Partnering with Hacktron to find vulnerabilities in OpenAI’s systems",
       "link": "https://openai.com/index/partnering-with-hacktron",
       "date": "2026-11-06T08:00:00.000Z",
@@ -851,36 +1071,6 @@
       "sourceId": "openai",
       "lang": "English",
       "topic": "model"
-    },
-    {
-      "title": "App Store 2026 in numbers: AI, pricing, abandoned apps",
-      "link": "https://obelisk.club/research/app-store-2026",
-      "date": "2026-11-06T07:59:19.000Z",
-      "summary": "Article URL: https://obelisk.club/research/app-store-2026 Comments URL: https://news.ycombinator.com/item?id=50389448 Points: 60 # Comments: 55",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
-      "title": "2026 开源行业解决方案创新赛「“地心飞行”AIGC创作赛道」决赛名单公布",
-      "link": "https://www.oschina.net/news/503451",
-      "date": "2026-11-06T07:48:43.000Z",
-      "summary": "第四届开放原子大赛 · 2026 开源行业解决方案创新赛「“地心飞行”AIGC创作赛道」决赛入围名单今日公布，以下 10 支队伍成功晋级，将于 11 月 13 日在北京亦庄通明湖会展中心参加总决赛。 现将入围名单按报名时间顺序公示如下： 项目名称 负责人 视频链接 地心脉动 王剑歌 https://www.bilibili.com/video/BV1qz4i6iEv...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
-    },
-    {
-      "title": "DeepSeek带火稀疏计算，国产芯片公司加速突围：这家公司又融近10亿",
-      "link": "https://www.qbitai.com/2026/11/508155.html",
-      "date": "2026-11-06T07:00:29.000Z",
-      "summary": "Q3营收实现数倍增长",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
     },
     {
       "title": "iPhone 变强了，但我没有",
@@ -893,46 +1083,6 @@
       "topic": "product"
     },
     {
-      "title": "一边赛博修仙，一边卖家电！AI短剧开始冲双11业绩了？",
-      "link": "https://www.qbitai.com/2026/11/508118.html",
-      "date": "2026-11-06T06:54:17.000Z",
-      "summary": "挑战商业视频的高难度场景",
-      "source": "量子位",
-      "sourceId": "qbitai",
-      "lang": "中文",
-      "topic": "industry"
-    },
-    {
-      "title": "qData 数据中台开源版 v1.6.6 发布：ETL 模块轻量化升级，优化定时任务磁盘占用问题",
-      "link": "https://www.oschina.net/news/503440",
-      "date": "2026-11-06T06:45:58.000Z",
-      "summary": "qData 数据中台开源版 v1.6.6 发布，本次更新主要涉及 ETL 执行模块拆分，以及定时任务运行中的 JAR 包累积问题修复。 在社区使用反馈中，有开发者发现，数据集成定时任务持续运行后，服务器上的 ETL JAR 包不断累积，占用了较多磁盘空间。对于高频、长期运行的同步任务，这类问题需要持续关注。 围绕执行包体积和运行文...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
-    },
-    {
-      "title": "OpenSSH 严重绕过漏洞“sshole”让任意超长密码都能登录 root",
-      "link": "https://www.oschina.net/news/503439/openssh-sshhole",
-      "date": "2026-11-06T06:41:31.000Z",
-      "summary": "一个本该永远无法登录的账号，只要输入超过 256 个字符的任意密码，就能进去。这个漏洞在 musl libc 里躺了十四年——从 2012 年埋下，到 2026 年才被发现。 发现者 Özgün Kültekin 给它起了个名字：*sshole。他还做了个网站 sshhole.com，把这个 bug 的来龙去脉从 1980 年一路讲到今天。 先看这个漏洞怎么形成的 19...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
-    },
-    {
-      "title": "当 Coding Agent 走进研发团队：腾讯开源了云端自进化研发平台 LoopForge",
-      "link": "https://www.oschina.net/news/503437",
-      "date": "2026-11-06T06:31:36.000Z",
-      "summary": "单机 Coding Agent 已经能飞快写出代码，但一旦走进真实研发团队，合盖断流、多人上下文割裂、自由 Vibe Coding 质量失控、日常盯单耗时以及同类问题反复踩坑，很快就会把团队卡在“单兵提效、全局内耗”的瓶颈里。为此，腾讯轻量云团队打造并开源了云端自进化 AI 研发平台 LoopForge——集 7×24 小时云端工作区、多角色...",
-      "source": "开源中国",
-      "sourceId": "oschina",
-      "lang": "中文",
-      "topic": "opensource"
-    },
-    {
       "title": "10 月最值得关注的 17 个产品｜明日产品 WATCHLIST",
       "link": "https://www.ifanr.com/1688060?utm_source=rss&utm_medium=rss&utm_campaign=",
       "date": "2026-11-06T05:26:24.000Z",
@@ -943,16 +1093,6 @@
       "topic": "product"
     },
     {
-      "title": "I struggle to believe that AI R&D is ingenious",
-      "link": "https://www.lesswrong.com/posts/DALNiKBjMGMF8grme/arjun-panickssery-s-shortform?commentId=fJtaHHHfx45tD7BSL",
-      "date": "2026-11-06T05:19:04.000Z",
-      "summary": "Article URL: https://www.lesswrong.com/posts/DALNiKBjMGMF8grme/arjun-panickssery-s-shortform?commentId=fJtaHHHfx45tD7BSL Comments URL: https://news.ycombinator.com/item?…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
-    },
-    {
       "title": "更高能效比，带来新惊喜：M6 款 MacBook Pro 初探",
       "link": "https://sspai.com/post/118570",
       "date": "2026-11-06T03:06:53.000Z",
@@ -961,16 +1101,6 @@
       "sourceId": "sspai",
       "lang": "中文",
       "topic": "product"
-    },
-    {
-      "title": "Closed AI models dominate the price-performance frontier",
-      "link": "https://village.dev/blog/closed-ai-models-now-dominate-the-price-performance-frontier/",
-      "date": "2026-11-06T02:49:56.000Z",
-      "summary": "Article URL: https://village.dev/blog/closed-ai-models-now-dominate-the-price-performance-frontier/ Comments URL: https://news.ycombinator.com/item?id=50387546 Points: 77 # Comments: 74",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
     },
     {
       "title": "派早报：国务院办公厅发布 2027 年部分节假日放假安排等",
@@ -1001,16 +1131,6 @@
       "sourceId": "openai",
       "lang": "English",
       "topic": "model"
-    },
-    {
-      "title": "Cuban: Facebook knowingly runs AI deepfake scam ads; docs say $16B fraud revenue",
-      "link": "https://finance.yahoo.com/technology/ai/articles/mark-cuban-says-facebook-knowingly-213000020.html",
-      "date": "2026-11-05T23:09:57.000Z",
-      "summary": "Article URL: https://finance.yahoo.com/technology/ai/articles/mark-cuban-says-facebook-knowingly-213000020.html Comments URL: https://news.ycombinator.com/item?…",
-      "source": "Hacker News · AI",
-      "sourceId": "hn-ai",
-      "lang": "English",
-      "topic": "opensource"
     },
     {
       "title": "Google: Schools can keep search while skipping Gemini, but AI search is non-negotiable",
@@ -1103,26 +1223,6 @@
       "topic": "product"
     },
     {
-      "title": "23.98 万元起！智己 LS8 NEO 正式上市，转向刹车全面线控",
-      "link": "https://www.ifanr.com/1688228?utm_source=rss&utm_medium=rss&utm_campaign=",
-      "date": "2026-11-05T12:44:28.000Z",
-      "summary": "全面线控已成智己核心能力。#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
-      "source": "爱范儿",
-      "sourceId": "ifanr",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
-      "title": "你记忆里的那台两座小车回来了！smart #2 上市，9.99 万元起",
-      "link": "https://www.ifanr.com/1688208?utm_source=rss&utm_medium=rss&utm_campaign=",
-      "date": "2026-11-05T12:39:38.000Z",
-      "summary": "经典回归。#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
-      "source": "爱范儿",
-      "sourceId": "ifanr",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
       "title": "Agility Robotics' Nasdaq debut invites scrutiny of humanoid robot market",
       "link": "https://arstechnica.com/ai/2026/11/agility-robotics-nasdaq-debut-invites-scrutiny-of-humanoid-robot-market/",
       "date": "2026-11-05T12:00:41.000Z",
@@ -1131,16 +1231,6 @@
       "sourceId": "arstechnica-ai",
       "lang": "English",
       "topic": "industry"
-    },
-    {
-      "title": "Bose Ultra 开放式耳机 II 体验：听得见好音质，也升级了舒适感",
-      "link": "https://www.ifanr.com/1687834?utm_source=rss&utm_medium=rss&utm_campaign=",
-      "date": "2026-11-05T11:03:42.000Z",
-      "summary": "用无损音质和无感佩戴，更新「开放式旗舰」的定义#欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
-      "source": "爱范儿",
-      "sourceId": "ifanr",
-      "lang": "中文",
-      "topic": "product"
     },
     {
       "title": "新玩意 255｜少数派的编辑们最近买了啥？",
@@ -1173,16 +1263,6 @@
       "topic": "model"
     },
     {
-      "title": "不用困在厨房也能做出好饭：三十道省事家常蒸菜",
-      "link": "https://sspai.com/prime/story/30-easy-steamed-dishes",
-      "date": "2026-11-05T07:16:51.000Z",
-      "summary": "蒸锅真是懒人做饭好帮手。查看全文本文为会员文章，出自《单篇文章》，订阅后可阅读全文。",
-      "source": "少数派",
-      "sourceId": "sspai",
-      "lang": "中文",
-      "topic": "product"
-    },
-    {
       "title": "[AINews] It's Swapping Season",
       "link": "https://latent.space/p/ainews-it-s-swapping-season/",
       "date": "2026-11-05T06:24:09.000Z",
@@ -1190,16 +1270,6 @@
       "source": "Latent Space",
       "sourceId": "latentspace",
       "lang": "English",
-      "topic": "product"
-    },
-    {
-      "title": "Apple 官网排版细节鉴赏",
-      "link": "https://sspai.com/post/115399",
-      "date": "2026-11-05T02:57:22.000Z",
-      "summary": "Apple 独一无二的品牌价值，正是从这些细节中凝聚的。查看全文",
-      "source": "少数派",
-      "sourceId": "sspai",
-      "lang": "中文",
       "topic": "product"
     },
     {
@@ -1383,10 +1453,10 @@
       "topic": "model"
     },
     {
-      "title": "Qwen 3.8 27B on my laptop can interpret model weights, too",
-      "link": "https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/",
-      "date": "2026-11-03T16:29:48.000Z",
-      "summary": "Yesterday's hot paper was Sparks of Weight-Space Programming: LLMs can natively read & write neural network weights by Rikiya Takehi, Jayden Teoh, Alex Zhang, and Omar Khattab.…",
+      "title": "AI is destroying my CS degree",
+      "link": "https://simonwillison.net/2026/Nov/3/hn-50354278/",
+      "date": "2026-11-03T16:42:02.000Z",
+      "summary": "My comment on AI is destroying my CS degree — Hacker News. I don't envy educators right now. AI clearly means you need to change how you teach and evaluate students.…",
       "source": "Simon Willison",
       "sourceId": "simonw",
       "lang": "English",
@@ -1413,26 +1483,6 @@
       "topic": "product"
     },
     {
-      "title": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube",
-      "link": "https://simonwillison.net/2026/Nov/3/a-sound-that-leaks-your-exact-location/",
-      "date": "2026-11-03T05:32:25.000Z",
-      "summary": "I discovered a sound that leaks your exact location (and it's everywhere) - YouTube Genius piece of OSINT by Colsto, who demonstrates how you can take almost imperceptible background noise o…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
-      "topic": "product"
-    },
-    {
-      "title": "October sponsors-only newsletter",
-      "link": "https://simonwillison.net/2026/Nov/3/october-newsletter/",
-      "date": "2026-11-03T05:28:59.000Z",
-      "summary": "I sent out the October edition of my sponsors-only monthly newsletter. If you are a sponsor (or start a sponsorship now) you can access it here.…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
-      "topic": "product"
-    },
-    {
       "title": "Here’s who is falling in line for Trump’s “Super Intelligence” loyalty test",
       "link": "https://www.technologyreview.com/2026/11/02/1147932/heres-who-is-falling-in-line-for-trumps-super-intelligence-loyalty-test/",
       "date": "2026-11-03T04:18:47.000Z",
@@ -1441,16 +1491,6 @@
       "sourceId": "mittr-ai",
       "lang": "English",
       "topic": "industry"
-    },
-    {
-      "title": "llm 0.37",
-      "link": "https://simonwillison.net/2026/Nov/2/llm/",
-      "date": "2026-11-02T23:49:30.000Z",
-      "summary": "Release: llm 0.37 There's a lot of stuff in this new release of my LLM CLI tool and Python library, representing around two months of accumulated features and fixes. I added gpt-6.…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
-      "topic": "product"
     },
     {
       "title": "Building AI for Lawyers - Jacob Lauritzen, CTO of Legora",
@@ -1481,46 +1521,6 @@
       "sourceId": "arstechnica-ai",
       "lang": "English",
       "topic": "industry"
-    },
-    {
-      "title": "Claude’s new rules against game cloning won’t stop the AI copying boom",
-      "link": "https://arstechnica.com/ai/2026/11/claudes-new-rules-against-game-cloning-wont-stop-the-ai-copying-boom/",
-      "date": "2026-11-02T18:05:31.000Z",
-      "summary": "The tsunami of imitators is way bigger than any one model maker can stem.",
-      "source": "Ars Technica · AI",
-      "sourceId": "arstechnica-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "The latest AI news we announced in October 2026",
-      "link": "https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-october-2026/",
-      "date": "2026-11-02T17:45:00.000Z",
-      "summary": "Here are Google’s latest AI updates from October 2026",
-      "source": "Google · AI Blog",
-      "sourceId": "blog-google-ai",
-      "lang": "English",
-      "topic": "model"
-    },
-    {
-      "title": "Raising the quality of insights in agentic analytics",
-      "link": "https://www.technologyreview.com/2026/11/02/1147660/raising-the-quality-of-insights-in-agentic-analytics/",
-      "date": "2026-11-02T17:00:00.000Z",
-      "summary": "In just a few years, generative AI has changed the face of enterprise analytics, notably by making analytics accessible to users across the organization.…",
-      "source": "MIT Tech Review · AI",
-      "sourceId": "mittr-ai",
-      "lang": "English",
-      "topic": "industry"
-    },
-    {
-      "title": "The U.S. Census Bureau and “Super Intelligence”",
-      "link": "https://simonwillison.net/2026/Nov/2/census-bureau-super-intelligence/",
-      "date": "2026-11-02T13:31:26.000Z",
-      "summary": "I was reminded today of AI Adoption Rate Trending Down for Large Companies, a chart produced by Apollo Global Management in September 2025, which appeared to show a slowdown in U.S.…",
-      "source": "Simon Willison",
-      "sourceId": "simonw",
-      "lang": "English",
-      "topic": "product"
     }
   ]
 }
