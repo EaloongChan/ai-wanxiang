@@ -4758,5 +4758,29 @@
     "caveat": "要自己部署、吃显存，换来的是音频不出本机；克隆他人音色涉及声音权，商用前必须确认授权。只想快速出活，云端服务更省事。",
     "descEn": "A local, open-source voice toolkit: cloning, voice design, video dubbing, dictation and audiobooks, across 646 languages.",
     "caveatEn": "You deploy it yourself and it wants VRAM — the payoff is that your audio never leaves your machine. Cloning a voice needs that person's consent for commercial use; for quick jobs a cloud service is less work."
+  },
+  {
+    "id": "autotasker-hub",
+    "name": "AutoTasker Hub",
+    "url": "https://autotasker.highkingflower.com",
+    "cat": "data",
+    "desc": "面向 AI Agent 的 x402 按次付费中文社媒数据 API：微博/知乎/豆瓣/B站/贴吧热榜、市场扫描与趋势预测，Base 主网 USDC 结算，无需 API key 或注册，MIT 开源。",
+    "tags": [
+      "x402",
+      "USDC",
+      "Base",
+      "中文",
+      "数据API",
+      "MCP",
+      "开源"
+    ],
+    "pricing": "paid",
+    "cn": true,
+    "hot": false,
+    "official": false,
+    "added": "2026-11-19",
+    "caveat": "按次付费（$0.01–$0.50/次），面向开发者与 AI Agent；需通过 x402 协议用 Base USDC 支付，不提供传统 API key 套餐。",
+    "descEn": "Pay-per-call Chinese social data API for AI agents: trending data from Weibo/Zhihu/Douban/Bilibili/Tieba, market scan and trend prediction, settled in USDC on Base via x402, no API keys or signup, MIT-licensed.",
+    "caveatEn": "Per-call pricing ($0.01-$0.50); payment via x402 in USDC on Base rather than a traditional API-key plan."
   }
 ]
