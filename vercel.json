@@ -15,6 +15,81 @@
       ],
       "destination": "https://www.ealoongchan.top/$1",
       "permanent": true
+    },
+    {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tools/(chat|coding|image|video|audio|writing|research|agent|design|data|3d|local|marketing|meeting|edu)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tools/:cat/:id",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/prompts/(.*)",
+      "destination": "/tools/prompt-template-builder/",
+      "permanent": true
+    },
+    {
+      "source": "/playbooks/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/models/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/news/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/learn/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/glossary/(.*)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/prompts",
+      "destination": "/tools/prompt-template-builder/",
+      "permanent": true
+    },
+    {
+      "source": "/(compare|saved|search|open-data|changelog)",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/(feed|rss).xml",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/api/(tools|prompts|glossary|playbooks|models|learn|news|categories|tags-en|i18n|feeds).json",
+      "destination": "/api/legacy/$1.json",
+      "permanent": true
+    },
+    {
+      "source": "/api/(search|search-en|query-map|feed|index).json",
+      "destination": "/api/legacy/index.json",
+      "permanent": true
     }
   ],
   "headers": [

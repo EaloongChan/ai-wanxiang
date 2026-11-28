@@ -1,21 +1,18 @@
 /**
- * 生成每页专属的社交分享图（1200×630），零依赖，用本机 Chrome 直出
+ * Social share images (1200×630), rendered by the local copy of Chrome. Zero dependencies.
  *
- *   node scripts/og-images.mjs                为所有场景手册生成（中英各一张），已存在的跳过
- *   node scripts/og-images.mjs --force        重新生成全部
- *   node scripts/og-images.mjs --lang zh      只做中文
- *   node scripts/og-images.mjs --limit 3      只做前 3 篇（调样式时用）
+ *   node scripts/og-images.mjs             one image per game, tool and long-form page; existing files are kept
+ *   node scripts/og-images.mjs --force     redraw everything
+ *   node scripts/og-images.mjs --limit 2   only the first two jobs (while tuning the style)
  *
- * 为什么要有它：全站 698 个页面的 og:image 原来都是同一张 /og.png ——
- * 分享到微信/X/社媒时，工具页、手册页、首页长得完全一样，等于没有分享位。
- * 而手册是这个站最有差异化的内容，值得一张能看清「这篇讲什么」的图。
+ * Why: every page used to share the same picture, so a link to a game looked like a link
+ * to a privacy policy. layout.mjs picks the image up automatically when it is named
+ * after the page path (/games/lumber-tycoon/ → public/og/games-lumber-tycoon.png).
  *
- * 产物落在 public/og/<slug>.png，**跟着仓库走**（不是构建产物）：
- * 构建必须能在无 Chrome、无网络的环境跑通，所以生成与构建解耦 ——
- * 和「抓取与构建解耦」是同一个道理。构建时 layout 只检查文件在不在。
+ * Output goes to public/og/ and is committed with the site. The build must run on a
+ * machine with no browser, so rendering is a separate step: build → og → commit.
  *
- * 样式沿用站点的视觉体系（栅格纸底纹、1.5px 硬边框、等宽标签、衬线数字）。
- * 字体与 assets.mjs 一样必须**base64 内联**：data: 页面加载不到外部字体。
+ * Fonts are inlined as data: URLs because a data: page cannot load external fonts.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -23,15 +20,14 @@ import http from 'node:http';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
 const OUTDIR = path.join(PUB, 'og');
 const PORT = Number(process.env.OG_PORT || 9226);
 
+const arg = (name) => { const i = process.argv.indexOf(name); return i !== -1 ? process.argv[i + 1] : ''; };
 const FORCE = process.argv.includes('--force');
-const LANG = (() => { const i = process.argv.indexOf('--lang'); return i !== -1 ? process.argv[i + 1] : 'both'; })();
-const LIMIT = Number((() => { const i = process.argv.indexOf('--limit'); return i !== -1 ? process.argv[i + 1] : 0; })()) || 0;
+const LIMIT = Number(arg('--limit')) || 0;
 
 const CHROME = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -45,61 +41,49 @@ const get = (u) => new Promise((res, rej) => http.get(u, (r) => { let d = ''; r.
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const site = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'site.config.json'), 'utf8'));
-const playbooks = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'playbooks.json'), 'utf8')).items;
+const read = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 
-const FONTS = fs.readdirSync(path.join(PUB, 'fonts'))
-  .filter((f) => f.endsWith('.woff2'))
-  .map((f) => {
-    const m = f.match(/ibm-plex-(\w+)-latin-(\d+)-normal/);
-    if (!m) return '';
-    return `@font-face{font-family:'Plex ${m[1][0].toUpperCase() + m[1].slice(1)}';src:url('data:font/woff2;base64,${fs.readFileSync(path.join(PUB, 'fonts', f)).toString('base64')}') format('woff2');font-weight:${m[2]};}`;
-  }).join('\n');
+const FONTS = fs.existsSync(path.join(PUB, 'fonts'))
+  ? fs.readdirSync(path.join(PUB, 'fonts'))
+    .filter((f) => f.endsWith('.woff2'))
+    .map((f) => {
+      const m = f.match(/^ibm-plex-(\w+)-latin-(\d+)-normal/);
+      if (!m) return '';
+      const family = m[1][0].toUpperCase() + m[1].slice(1);
+      return `@font-face{font-family:'Plex ${family}';src:url('data:font/woff2;base64,${fs.readFileSync(path.join(PUB, 'fonts', f)).toString('base64')}') format('woff2');font-weight:${m[2]};}`;
+    })
+    .join('\n')
+  : '';
 
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-/* 标题按长度自动降字号：手册标题 9~22 字，固定 78px 会溢出 */
-const titleSize = (t) => (t.length <= 12 ? 84 : t.length <= 16 ? 72 : t.length <= 20 ? 62 : 54);
+/* Titles range from "FOV Calculator" to "Mouse sensitivity converter…": shrink by length so nothing is cut. */
+const titleSize = (t) => (t.length <= 16 ? 92 : t.length <= 26 ? 76 : t.length <= 40 ? 60 : 48);
 
-const tpl = ({ kicker, title, sub, stats, foot }) => `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+const page = ({ kicker, title, sub, foot }) => `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
 ${FONTS}
 *{margin:0;padding:0;box-sizing:border-box}
-/* 2026-10-06：跟着站点改版换成柔和圆角 —— 去掉栅格底纹与 1.5px 黑描边，
-   改成「浅灰底 + 白色圆角卡片 + 层叠软影」。分享出去的第一眼要和站内一致。 */
-body{width:1200px;height:630px;overflow:hidden;background:#f4f2ec;color:#0e0e0c;
-  font-family:'Plex Sans',system-ui,sans-serif;position:relative}
-.frame{position:absolute;inset:34px;border-radius:28px;background:#fff;
-  box-shadow:0 2px 6px rgba(28,24,12,.06), 0 18px 44px rgba(28,24,12,.10);
-  display:flex;flex-direction:column;padding:44px 48px}
-.mono{font-family:'Plex Mono',monospace}
-.top{display:flex;align-items:center;justify-content:space-between}
+body{width:1200px;height:630px;overflow:hidden;background:#0b0e17;color:#eef1f7;font-family:'Plex Sans',system-ui,sans-serif;position:relative}
+.frame{position:absolute;inset:34px;border-radius:28px;background:#111624;border:1px solid #2a3450;
+  box-shadow:0 24px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;padding:44px 48px;overflow:hidden}
+.frame::before{content:'';position:absolute;width:520px;height:520px;right:-160px;top:-200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,176,32,.22),transparent 65%)}
+.frame::after{content:'';position:absolute;width:460px;height:460px;left:-180px;bottom:-220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(63,214,197,.16),transparent 65%)}
+.top{display:flex;align-items:center;justify-content:space-between;position:relative}
 .logo{display:flex;align-items:center;gap:14px}
-.mark{width:52px;height:52px;border-radius:14px;background:#ff3b00;display:grid;place-items:center;color:#fff;font-family:'Plex Mono',monospace;font-size:30px;font-weight:600}
-.brand{font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.05}
-.brand small{display:block;font-family:'Plex Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.24em;color:#78776d}
-.kicker{font-family:'Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;background:#ff3b00;color:#fff;border-radius:999px;padding:7px 14px}
-h1{margin-top:auto;font-size:${titleSize(title)}px;font-weight:700;letter-spacing:-.05em;line-height:1.06;
-  box-decoration-break:clone;background:linear-gradient(to top,#ff3b00 0 .1em,transparent .1em);display:inline}
-.sub{margin-top:22px;font-size:22px;color:#3f3f39;max-width:900px;line-height:1.5}
-.bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid #e3dfd4;padding-top:20px}
-.stats{display:flex;gap:38px}
-.stat b{display:block;font-family:'Plex Serif',serif;font-size:34px;font-weight:600;line-height:1;letter-spacing:-.02em}
-.stat span{font-family:'Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#78776d}
-.domain{font-family:'Plex Mono',monospace;font-size:13px;letter-spacing:.1em;color:#78776d}
+.mark{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#ffb020,#ff7a1a);display:grid;place-items:center;color:#1a1200;font-family:'Plex Mono',monospace;font-size:20px;font-weight:600;letter-spacing:-.04em}
+.brand{font-size:26px;font-weight:700;letter-spacing:-.02em;line-height:1.05}
+.kicker{font-family:'Plex Mono',monospace;font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#ffc855;border:1px solid rgba(255,176,32,.55);border-radius:999px;padding:8px 16px}
+h1{margin-top:auto;font-size:${titleSize(title)}px;font-weight:700;letter-spacing:-.035em;line-height:1.04;position:relative;max-width:1000px}
+.sub{margin-top:20px;font-size:23px;line-height:1.45;color:#b4bdd0;max-width:940px;position:relative}
+.bottom{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;border-top:1px solid #2a3450;padding-top:20px;position:relative;font-family:'Plex Mono',monospace;font-size:14px;color:#8d97ae}
 </style></head><body>
 <div class="frame">
-  <div class="top">
-    <div class="logo">
-      <span class="mark">象</span>
-      <span class="brand">${esc(site.brand.name)}<small>${esc(site.brand.nameEn)}</small></span>
-    </div>
-    <span class="kicker">${esc(kicker)}</span>
-  </div>
+  <div class="top"><div class="logo"><span class="mark">${esc(site.brand.logoText)}</span><span class="brand">${esc(site.brand.name)}</span></div><span class="kicker">${esc(kicker)}</span></div>
   <h1>${esc(title)}</h1>
   ${sub ? `<p class="sub">${esc(sub)}</p>` : ''}
-  <div class="bottom">
-    <div class="stats">${stats.map(([n, l]) => `<div class="stat"><b>${esc(n)}</b><span>${esc(l)}</span></div>`).join('')}</div>
-    <span class="domain">${esc(foot)}</span>
-  </div>
+  <div class="bottom"><span>${esc(foot)}</span><span>${esc((site.baseUrl || '').replace(/^https?:\/\//, ''))}</span></div>
 </div>
 </body></html>`;
 
@@ -125,91 +109,83 @@ function cdp(url) {
   });
 }
 
-async function shoot(c, html, out) {
-  await c.send('Emulation.setDeviceMetricsOverride', { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
-  await c.send('Page.navigate', { url: 'data:text/html;charset=utf-8,' + encodeURIComponent(html) });
-  /* 等字体真正解码完再截，别用固定 sleep —— 固定值要么白等要么拍成 fallback 字体。
-     踩过（assets.mjs 的注释里也写着）：data: 页面加载不到外部字体，必须内联 base64，
-     并且截图前要等解码完成，否则会拍到回退字体。 */
-  try {
-    await c.send('Runtime.evaluate', { expression: 'document.fonts.ready.then(()=>1)', awaitPromise: true, returnByValue: true });
-  } catch { await sleep(900); }
-  await sleep(120);
-  const cap = await c.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
-  fs.writeFileSync(out, Buffer.from(cap.data, 'base64'));
-  return fs.statSync(out).size;
-}
-
-const slugOf = (p) => p.replace(/^\/|\/$/g, '').replace(/\//g, '-');
-
-async function main() {
-  if (!CHROME) { console.error('  ✗ 未找到 Chrome/Edge，无法生成分享图'); process.exit(1); }
+/**
+ * Render jobs = [{ out, html, width, height }] through one headless Chrome session.
+ * Resolves to the list of written files. Throws if no browser is available.
+ */
+export async function shoot(jobs) {
+  if (!CHROME) throw new Error('no Chrome or Edge found');
   fs.mkdirSync(OUTDIR, { recursive: true });
-
-  /* 任务表：中文站 + 英文站各一篇手册一张图 */
-  const jobs = [];
-  for (const pb of playbooks) {
-    const stats = [
-      [String((pb.steps || []).length), '步骤'],
-      [String((pb.tools || []).length), '工具'],
-      [String((pb.prompts || []).length), '提示词'],
-    ];
-    if (LANG !== 'en') {
-      jobs.push({
-        out: path.join(OUTDIR, slugOf(`/playbooks/${pb.id}/`) + '.png'),
-        html: tpl({
-          kicker: 'Playbook / 场景手册', title: pb.title, sub: pb.problem,
-          stats: [[pb.time || '—', '耗时'], ...stats.slice(0, 2)],
-          foot: (site.baseUrl || '').replace(/^https?:\/\//, '') + '/playbooks/',
-        }),
-      });
-    }
-    if (LANG !== 'zh' && pb.en) {
-      jobs.push({
-        out: path.join(OUTDIR, slugOf(`/en/playbooks/${pb.id}/`) + '.png'),
-        html: tpl({
-          kicker: 'Playbook', title: pb.en.title, sub: pb.en.problem,
-          stats: [[pb.en.time || pb.time || '—', 'time'], ...stats.slice(0, 2).map(([n, l]) => [n, l === '步骤' ? 'steps' : l === '工具' ? 'tools' : 'prompts'])],
-          foot: (site.baseUrl || '').replace(/^https?:\/\//, '') + '/en/playbooks/',
-        }),
-      });
-    }
-  }
-  const todo = (LIMIT ? jobs.slice(0, LIMIT) : jobs).filter((j) => FORCE || !fs.existsSync(j.out));
-
-  console.log('');
-  console.log('  生成每页分享图');
-  console.log('  ' + '─'.repeat(52));
-  console.log(`  计划 ${jobs.length} 张 · 需要生成 ${todo.length} 张${todo.length !== jobs.length ? '（其余已存在，--force 可重做）' : ''}`);
-  if (!todo.length) { console.log('  没有要生成的。'); console.log(''); return; }
-
   try { await get(`http://127.0.0.1:${PORT}/json/version`); }
   catch {
     spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, '--disable-gpu', '--no-first-run',
-      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'aiwx-og'), 'about:blank'],
+      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'ealoong-og'), 'about:blank'],
       { detached: true, stdio: 'ignore' }).unref();
   }
   for (let i = 0; i < 40; i++) { try { await get(`http://127.0.0.1:${PORT}/json/version`); break; } catch { await sleep(250); } }
 
   const list = JSON.parse(await get(`http://127.0.0.1:${PORT}/json/list`));
-  const page = list.find((t) => t.type === 'page') || JSON.parse(await get(`http://127.0.0.1:${PORT}/json/new?about:blank`));
-  const c = await cdp(page.webSocketDebuggerUrl);
+  const target = list.find((t) => t.type === 'page') || JSON.parse(await get(`http://127.0.0.1:${PORT}/json/new?about:blank`));
+  const c = await cdp(target.webSocketDebuggerUrl);
   await c.send('Page.enable');
   await c.send('Runtime.enable');
 
-  let total = 0;
-  for (let i = 0; i < todo.length; i++) {
-    const bytes = await shoot(c, todo[i].html, todo[i].out);
-    total += bytes;
-    const name = path.basename(todo[i].out);
-    process.stdout.write(`\r  (${i + 1}/${todo.length}) ${name.padEnd(38)} ${(bytes / 1024).toFixed(0)} KB   `);
+  for (let i = 0; i < jobs.length; i++) {
+    const j = jobs[i];
+    await c.send('Emulation.setDeviceMetricsOverride', { width: j.width || 1200, height: j.height || 630, deviceScaleFactor: 1, mobile: false });
+    await c.send('Page.navigate', { url: 'data:text/html;charset=utf-8,' + encodeURIComponent(j.html) });
+    // Wait for the fonts to decode instead of guessing with a fixed sleep: a wrong guess photographs a fallback font.
+    try { await c.send('Runtime.evaluate', { expression: 'document.fonts.ready.then(()=>1)', awaitPromise: true, returnByValue: true }); }
+    catch { await sleep(900); }
+    await sleep(120);
+    const cap = await c.send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: false });
+    const buf = Buffer.from(cap.data, 'base64');
+    if (!j.out) { j.png = buf; continue; }        // caller takes the bytes
+    fs.mkdirSync(path.dirname(j.out), { recursive: true });
+    fs.writeFileSync(j.out, buf);
+    j.png = buf;
+    process.stdout.write(`\r  (${i + 1}/${jobs.length}) ${path.basename(j.out).padEnd(40)} ${(buf.length / 1024).toFixed(0)} KB   `);
   }
   c.close();
-  console.log('');
-  console.log('');
-  console.log(`  ✓ 生成 ${todo.length} 张，合计 ${(total / 1024 / 1024).toFixed(1)} MB`);
-  console.log(`    目录 public/og/  ·  构建时 layout 会自动认领同名页面`);
-  console.log('');
+  return jobs;
 }
 
-await main();
+const slugOf = (p) => p.replace(/^\/|\/$/g, '').replace(/\//g, '-');
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const jobs = [];
+  const KICKER = {
+    en: { game: 'Game · Play free in your browser', tool: 'Gamer tool · Free, no sign-up', brand: 'Ealoong Arcade', games: 'Ealoong Arcade · Games', tools: 'Ealoong Arcade · Tools' },
+    zh: { game: '游戏 · 浏览器里免费玩', tool: '玩家工具 · 免费，不用注册', brand: 'Ealoong Arcade', games: 'Ealoong Arcade · 游戏', tools: 'Ealoong Arcade · 工具' },
+  };
+  for (const lang of ['en', 'zh']) {
+    const prefix = lang === 'zh' ? 'zh-' : '';
+    const k = KICKER[lang];
+    for (const g of read('games.json')) {
+      jobs.push({ out: path.join(OUTDIR, `${prefix}${slugOf(g.path)}.png`), html: page({ kicker: k.game, title: (lang === 'zh' && g.zh && g.zh.name) || g.name, sub: (lang === 'zh' && g.zh && g.zh.tagline) || g.tagline, foot: k.games }) });
+    }
+    for (const t of read('tools.json')) {
+      jobs.push({ out: path.join(OUTDIR, `${prefix}${slugOf(t.path)}.png`), html: page({ kicker: k.tool, title: (lang === 'zh' && t.zh && t.zh.name) || t.name, sub: (lang === 'zh' && t.zh && t.zh.summary) || t.summary, foot: k.tools }) });
+    }
+    for (const [slug, d] of Object.entries(read('pages.json'))) {
+      if (slug.startsWith('$')) continue;
+      jobs.push({ out: path.join(OUTDIR, `${prefix}${slug}.png`), html: page({ kicker: k.brand, title: (lang === 'zh' && d.zh && d.zh.title) || d.title, sub: (lang === 'zh' && d.zh && d.zh.lead) || d.lead, foot: (lang === 'zh' && site.brand.zh && site.brand.zh.tagline) || site.brand.tagline }) });
+    }
+  }
+  const todo = (LIMIT ? jobs.slice(0, LIMIT) : jobs).filter((j) => FORCE || !fs.existsSync(j.out));
+
+  console.log('');
+  console.log('  分享图');
+  console.log('  ' + '─'.repeat(56));
+  console.log(`  共 ${jobs.length} 张 · 需要生成 ${todo.length} 张${todo.length !== jobs.length ? '（其余已存在，--force 重做）' : ''}`);
+  if (!todo.length) { console.log('  没有要生成的。'); console.log(''); process.exit(0); }
+  try {
+    await shoot(todo);
+    console.log('');
+    console.log(`  ✓ 已写入 public/og/，构建时 layout 会按路径自动认领`);
+    console.log('');
+  } catch (e) {
+    console.error(`  ✗ ${e.message}`);
+    process.exit(1);
+  }
+}

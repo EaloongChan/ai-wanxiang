@@ -34,11 +34,11 @@ const PORT = Number(process.env.AUDIT_PORT || 9222);
 const SERVE = process.env.AUDIT_URL || 'http://127.0.0.1:4173';
 
 const PAGES = [
-  '/', '/playbooks/', '/tools/', '/prompts/', '/models/', '/news/', '/learn/', '/glossary/', '/search/', '/about/',
-  '/news/live/', '/compare/', '/saved/', '/en/', '/en/tools/', '/en/tools/chat/chatgpt/', '/en/models/', '/en/about/', '/playbooks/pb-weekly-report/', '/playbooks/code/', '/models/chat/', '/tools/image/',
-  '/tools/coding/cursor/', '/tools/chat/deepseek/', '/prompts/meta/', '/news/n-what-is-mcp/',
-  // 英文站新增的三大块，与 a11y.mjs 的清单保持一致，避免新页型漏审
-  '/en/prompts/', '/en/playbooks/', '/en/glossary/', '/en/search/',
+  '/', '/games/', '/games/lumber-tycoon/', '/tools/', '/about/', '/contact/', '/privacy/', '/404.html',
+  // keep in step with data/tools.json so a new tool is audited from day one
+  '/tools/sens-converter/', '/tools/fov-calculator/', '/tools/steam-id-converter/', '/tools/discord-timestamp/', '/tools/prompt-template-builder/',
+  // Chinese tree: one of each page type, which is enough to catch layout problems
+  '/zh/', '/zh/games/', '/zh/games/lumber-tycoon/', '/zh/tools/', '/zh/tools/sens-converter/', '/zh/tools/prompt-template-builder/', '/zh/about/', '/zh/privacy/',
 ];
 
 const VIEWPORTS = [
@@ -166,7 +166,7 @@ async function assertServeUp() {
       console.error('\n  ✗ ' + SERVE + ' 返回 HTTP ' + res.status + '\n' + hint + '\n');
       process.exit(1);
     }
-    if (!/万象/.test(html)) {
+    if (!/Ealoong Arcade/.test(html)) {
       console.error('\n  ✗ ' + SERVE + ' 返回的不是本站页面（内容标记不匹配）\n' + hint + '\n');
       process.exit(1);
     }
@@ -190,7 +190,7 @@ async function main() {
     spawn(chrome, [
       '--headless=new', `--remote-debugging-port=${PORT}`,
       '--disable-gpu', '--no-first-run', '--no-default-browser-check',
-      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'aiwx-audit'),
+      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'ealoong-audit'),
       'about:blank',
     ], { detached: true, stdio: 'ignore' }).unref();
   }

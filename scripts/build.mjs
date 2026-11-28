@@ -1,24 +1,27 @@
 /**
- * AI 万象 — 静态站生成器（零依赖）
+ * Ealoong Arcade — static site generator (zero dependencies)
  *
- *   node scripts/build.mjs            构建到 dist/
- *   node scripts/build.mjs --watch    监听 data/ 与 src/ 变化自动重建
+ *   node scripts/build.mjs                  build the site into dist/
+ *   node scripts/build.mjs --watch          rebuild when data/ or src/ changes
+ *   node scripts/build.mjs --target=portal  build the standalone game packages into dist/portal/
+ *
+ * Everything on the site comes from data/. The build never contains content of its own.
+ * It must run on a machine with no network and no browser: image generation lives in
+ * scripts/assets.mjs and scripts/og-images.mjs and is run separately.
  */
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import zlib from 'node:zlib';
 
 import {
-  homePage, toolsPage, promptsPage, newsPage, newsDetailPage,
-  learnPage, glossaryPage, searchPage, aboutPage, changelogPage, openDataPage, notFoundPage,
-  playbooksPage, playbookDetailPage, modelsPage, toolDetailPage, liveNewsPage, comparePage, savedPage,
+  homePage, gamesIndexPage, gamePage, toolsIndexPage, toolPage, docPage, notFoundPage, gameShell, GAME_RUNTIME_ICONS,
 } from '../src/lib/pages.mjs';
-import { enHome, enTools, enToolDetail, enModels, enAbout, enOpenData, enPlaybooks, enPlaybookDetail, enPrompts, enGlossary, enSearch, GROUP_EN } from '../src/lib/pages-en.mjs';
-import { EN, tagList } from '../src/lib/labels.mjs';
-import { toolNameEn, vendorEn, modelNameEn } from '../src/lib/i18n-en-maps.mjs';
-import { countBy, esc } from '../src/lib/utils.mjs';
-import { resetIcons } from '../src/lib/icons.mjs';
+import { iconSprite, reserveIcons, resetIcons } from '../src/lib/icons.mjs';
+import { stringsFor } from '../src/lib/strings.mjs';
+import { LANGS, LANG_ATTR, loc, pick } from '../src/lib/i18n.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -27,18 +30,22 @@ const DIST = path.join(ROOT, 'dist');
 const SRC = path.join(ROOT, 'src');
 
 const readJSON = (f) => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
+const readSrc = (p) => fs.readFileSync(path.join(SRC, p), 'utf8');
+const hash7 = (buf) => crypto.createHash('sha256').update(buf).digest('hex').slice(0, 7);
+const today = () => new Date().toISOString().slice(0, 10);
 
-/**
- * 本次构建实际写出的文件集合。
- * 不再用 fs.rmSync 整树删除——在 Windows 上删 300+ 文件要 15 秒以上，占构建时间的一大半。
- * 改成「覆盖写入 + 收尾时只清理多余文件」，多出来的删除量通常只有个位数，毫秒级。
- */
+/** Latest of a list of ISO dates, for sitemap lastmod. */
+const latest = (...dates) => dates.filter(Boolean).sort().pop() || today();
+
+/* ---------- output helpers ----------
+   Files are overwritten in place and only leftovers are deleted at the end.
+   Deleting a whole tree on Windows costs more than the build itself. */
 const written = new Set();
 
 function write(rel, content) {
   const out = path.join(DIST, rel);
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, content, 'utf8');
+  fs.writeFileSync(out, content);
   written.add(path.resolve(out));
   return out;
 }
@@ -60,7 +67,6 @@ function copyDir(from, to) {
   return n;
 }
 
-/** 清理这一轮没有写出、但 dist 里还留着的文件，并删掉空目录 */
 function pruneStale() {
   const removed = [];
   const walk = (dir) => {
@@ -79,483 +85,194 @@ function pruneStale() {
   return removed;
 }
 
-const today = () => new Date().toISOString().slice(0, 10);
+/* ---------- bundler ----------
+   The site has no build toolchain, so modules are concatenated by hand into one classic
+   script per page. That keeps `file://` double-click previews working (module scripts
+   are blocked there) and gives each page a single request.
+   Rules for bundled modules: named exports only, relative imports only, no default
+   exports, no top-level `await`, no duplicate top-level names. The rules are enforced
+   here, at build time, by throwing. */
+const DECL = /^(?:export\s+)?(?:async\s+)?(?:function\*?|const|let|var|class)\s+([A-Za-z_$][\w$]*)/gm;
+const IMPORT = /^import\s*\{([^}]*)\}\s*from\s*['"](\.{1,2}\/[^'"]+)['"];?/gm;
 
-/* 更新日志挪到了 data/changelog.json —— 内容不该写在代码里（这是本项目的第一条约束），
-   而且能写进 data/ 才能被 check.mjs 检查「有没有落后于内容变更」。 */
-const CHANGELOG = readJSON('changelog.json');
-
-/**
- * 每个页面的 lastmod。
- *
- * 踩过的坑：原先所有 603 条 URL 的 lastmod 都是构建当天。每日 RSS 更新一次，
- * 全部工具页 / 场景页 / 术语页都被标成「今日更新」—— 这是错误的新鲜度信号，
- * Google 明确说过不要靠改日期假装内容更新。
- *
- * 现在的规则：
- *   · 内容页 → 该内容自己的日期（条目级 reviewed/updated 优先，否则用模块级 contentDates）
- *   · 目录页 → 所属模块的日期
- *   · 首页 / 实时动态 / 更新日志 / 搜索 → 构建日期（这些页面确实每天都在变）
- * 只有 data/feed.json 会每日变动，所以除首页和实时动态外，其他页面的 lastmod 是稳定的。
- */
-function lastmodFor(meta, ctx, fallback) {
-  const d = ctx.site.contentDates || {};
-  const item = meta.item || null;
-  switch (meta.type) {
-    case 'tool-detail':      return (item && item.reviewed) || d.tools || fallback;
-    case 'tools':
-    case 'tools-cat':        return d.tools || fallback;
-    case 'playbook-detail':  return (item && item.updated) || d.playbooks || fallback;
-    case 'playbooks':
-    case 'playbooks-group':  return d.playbooks || fallback;
-    case 'prompts':
-    case 'prompts-cat':      return d.prompts || fallback;
-    case 'models':
-    case 'models-kind':      return d.models || fallback;
-    case 'glossary':         return d.glossary || fallback;
-    case 'learn':
-    case 'learn-track':      return d.learn || fallback;
-    case 'news-detail':      return (item && item.date) || d.news || fallback;
-    case 'news':             return d.news || fallback;
-    /* 这几页确实每天都在变 */
-    case 'home':
-    case 'news-live':
-    case 'changelog':
-    case 'search':           return fallback;
-    default:                 return fallback;
+export function bundle(modules) {
+  const seen = new Map();       // top-level name → module it came from
+  const parts = [];
+  for (const file of modules) {
+    let code = readSrc(file);
+    if (/^\s*export\s+default/m.test(code)) throw new Error(`${file}: default exports cannot be bundled`);
+    if (/^\s*export\s+\{/m.test(code)) throw new Error(`${file}: re-exports cannot be bundled`);
+    if (/^\s*import\s+[^\{]/m.test(code)) throw new Error(`${file}: only named imports from ./ are supported`);
+    for (const [, names, rel] of code.matchAll(IMPORT)) {
+      if (!modules.includes(path.posix.join(path.posix.dirname(file), rel))) {
+        throw new Error(`${file}: imports ./${rel}, which is not part of this bundle`);
+      }
+      void names;
+    }
+    code = code.replace(IMPORT, '').replace(/^export\s+(?=(?:async\s+)?(?:function\*?|const|let|class)\b)/gm, '');
+    for (const [, name] of code.matchAll(DECL)) {
+      if (seen.has(name)) throw new Error(`duplicate top-level name "${name}" in ${file} and ${seen.get(name)}`);
+      seen.set(name, file);
+    }
+    parts.push(`/* ---- ${file} ---- */\n${code.trim()}\n`);
   }
+  return parts.join('\n');
 }
+
+function classicScript(code, prelude = '') {
+  const out = `(function () {\n'use strict';\n${prelude}\n${code}\n})();\n`;
+  new vm.Script(out, { filename: 'bundle.js' });     // syntax errors must fail the build
+  return out;
+}
+
+/* ---------- site ---------- */
 
 export function build({ quiet = false } = {}) {
   const t0 = Date.now();
   written.clear();
   fs.mkdirSync(DIST, { recursive: true });
 
-  /* ---------- 0. 静态资源指纹 ----------
-     踩过一次：/assets/* 设了 max-age=31536000 + immutable，但文件名永远叫 app.js。
-     结果用户第一次访问之后，浏览器把旧版 JS/CSS 缓存了一年 —— 之后不管我们怎么更新，
-     老用户看到的都是旧代码（表现为「本地测试正常、用户那边功能是坏的」）。
-     解决办法是内容哈希文件名：内容变了文件名就变，缓存自然不会命中旧的。 */
-  const hash7 = (buf) => crypto.createHash('sha256').update(buf).digest('hex').slice(0, 7);
-  const srcFile = (p) => fs.readFileSync(path.join(SRC, p));
-  const ASSET = {
-    css: `main.${hash7(srcFile('styles/main.css'))}.css`,
-    print: `print.${hash7(srcFile('styles/print.css'))}.css`,
-    js: `app.${hash7(srcFile('scripts/app.js'))}.js`,
-    /* 搜索逻辑只在 /search/ 用得上，单独一个文件由搜索页按需引入，
-       不跟 app.js 一起下（其余 691 个页面只是白白的体积与解析开销）。 */
-    search: `search.${hash7(srcFile('scripts/search.js'))}.js`,
-    /* 类型图标：搜索卡与收藏页共用，必须单抽出来源源。
-       不带 defer，以保证在 defer 的 app.js / search.js 之前执行。 */
-    icons: `card-svg.${hash7(srcFile('scripts/card-svg.js'))}.js`,
-  };
-
-  /* ---------- 1. 载入数据 ---------- */
   const site = readJSON('site.config.json');
-  const categories = readJSON('categories.json');
+  const games = readJSON('games.json');
   const tools = readJSON('tools.json');
-  const prompts = readJSON('prompts.json');
-  const news = readJSON('news.json');
-  const learn = readJSON('learn.json');
-  const glossary = readJSON('glossary.json');
-  const playbooks = readJSON('playbooks.json');
-  const models = readJSON('models.json');
-  const i18n = readJSON('i18n.json');
-  const queryMap = readJSON('query-map.json');
-
-  /* ---------- 2a-1. 外链健康状态 ----------
-     由 scripts/check-outbound.mjs 产出（每周一次，CI 或本地）。
-     这里是**可选数据**：文件不存在、格式不对、还是空壳，都必须能正常构建——
-     抓取与构建解耦这条原则在这里同样成立，不能让一次没跑的检查拖垮整站构建。
-     页面上只展示 verdict === 'dead'（GET 也确认过 404/410）的条目，
-     403/超时那些「没能验证成功」的不能当成坏链告诉用户。 */
-  let outbound = {};
-  let outboundAt = '';
-  try {
-    const h = readJSON('outbound-health.json');
-    outbound = h && typeof h.items === 'object' && h.items ? h.items : {};
-    outboundAt = String((h && h.checkedAt) || '').slice(0, 10);
-  } catch {
-    outbound = {};
-  }
-  /** URL 归一化：只有记录里的地址和当前数据的地址一致，这条健康记录才算数 */
-  const normUrl = (u) => String(u || '').trim().replace(/\/+$/, '');
-  /** 只在确凿失效时返回该条目的结论。
-     注意这里比对了 URL —— 改过 url 但没重跑 check-outbound 时，旧记录会指向旧地址，
-     拿它去标注新地址等于告诉用户「你眼前这个链接是死的」，而它根本没被检查过。 */
-  const deadLink = (id, currentUrl) => {
-    const it = outbound[id];
-    if (!it || it.verdict !== 'dead') return null;
-    return normUrl(it.url) === normUrl(currentUrl) ? it : null;
-  };
-  // 标签字典挂到英文标签表上，供卡片渲染时翻译受控词表
-  EN.tagDict = readJSON('tags-en.json');
-  delete queryMap.note;
-
-  // 实时动态是可选的：抓取与构建解耦，没有 feed.json 也能正常构建（只是没有实时区块）
-  let feed = null;
-  const feedPath = path.join(DATA, 'feed.json');
-  if (fs.existsSync(feedPath)) {
-    try {
-      const raw = JSON.parse(fs.readFileSync(feedPath, 'utf8'));
-      // 丢弃没有链接或标题的脏数据，并设上限，避免把页面撑爆
-      raw.items = (raw.items || []).filter((it) => it && it.title && /^https?:\/\//.test(it.link || '')).slice(0, 200);
-      if (raw.items.length) feed = raw;
-    } catch (e) {
-      console.warn(`  ! data/feed.json 解析失败，跳过实时动态：${e.message}`);
-    }
-  }
-  const FEED_HOURS = 24;
-
-  // 两套分类体系有 id 撞车（coding/writing/design/data/marketing），必须分开映射，
-  // 否则提示词分类会覆盖工具分类，导致工具卡显示错误分类名与配色
-  const toolCatMap = Object.fromEntries(categories.toolCategories.map((c) => [c.id, c]));
-  const promptCatMap = Object.fromEntries(categories.promptCategories.map((c) => [c.id, c]));
-  const topicMap = Object.fromEntries(categories.newsTopics.map((t) => [t.id, t]));
-  const trackMap = Object.fromEntries(categories.learnTracks.map((t) => [t.id, t]));
-  const groupMap = Object.fromEntries(playbooks.groups.map((g) => [g.id, g]));
-  const playbookMap = Object.fromEntries(playbooks.items.map((p) => [p.id, p]));
-  const kindMap = Object.fromEntries(models.kinds.map((k) => [k.id, k]));
-  const toolMap = Object.fromEntries(tools.map((t) => [t.id, t]));
-  const promptMap = Object.fromEntries(prompts.map((p) => [p.id, p]));
-
-  const counts = {
-    tools: tools.length,
-    prompts: prompts.length,
-    learn: learn.length,
-    glossary: glossary.length,
-    news: news.items.length,
-    playbooks: playbooks.items.length,
-    models: models.items.length,
-    live: feed ? feed.items.length : 0,
-    toolsByCat: countBy(tools, 'cat'),
-    promptsByCat: countBy(prompts, 'cat'),
-    learnByTrack: countBy(learn, 'track'),
-    playbooksByGroup: countBy(playbooks.items, 'group'),
-  };
-  counts.total = counts.tools + counts.prompts + counts.glossary + counts.learn
-    + counts.news + counts.playbooks + counts.models;
-
-  // layout 每个页面都会收到 site，所以把资源映射挂在这里，不用改任何调用点
-  site.asset = ASSET;
-
-  /* ---------- 2. 派生字段 ---------- */
-  // NEW 标记：最近收录的一小批（按 added 倒序取前 8），避免同月大规模入库时徽章泛滥
-  const NEW_COUNT = 8;
-  const byAdded = [...tools]
-    .filter((t) => t.added)
-    .sort((a, b) => String(b.added).localeCompare(String(a.added)) || String(a.id).localeCompare(String(b.id)));
-  const newIds = new Set(byAdded.slice(0, NEW_COUNT).map((t) => t.id));
-  for (const t of tools) t._new = newIds.has(t.id);
-
-  // 全站搜索索引（页面内嵌 + 开放 API 共用一份）
-  const searchIndex = [];
-  for (const t of tools) {
-    searchIndex.push({
-      t: 'tool', id: t.id, title: t.name, sub: (toolCatMap[t.cat] || {}).name || '',
-      desc: t.desc, caveat: t.caveat || '', url: t.url, detail: `/tools/${t.cat}/${t.id}/`,
-      tags: t.tags || [], ext: true, hot: !!t.hot,
-    });
-  }
-  /* prompt/glossary/news/playbook/model 的 url 本身就是站内详情页，
-     必须同时写进 detail —— 搜索结果卡片的标题只有在 detail 非空时才渲染成链接。
-     踩过一次：只给 tool 写了 detail，于是 608 条结果里有 319 条（全部非工具内容）
-     标题点不动，只有底部那颗小按钮能进。learn 类型的 url 是站外资源，
-     没有站内详情页，故意不写 detail。 */
-  for (const p of prompts) {
-    searchIndex.push({ t: 'prompt', id: p.id, title: p.title, sub: (promptCatMap[p.cat] || {}).name || '', desc: p.desc, url: `/prompts/${encodeURIComponent(p.cat)}/#${p.id}`, detail: `/prompts/${encodeURIComponent(p.cat)}/#${p.id}`, tags: p.tags || [], hot: !!p.hot });
-  }
-  for (const l of learn) {
-    searchIndex.push({ t: 'learn', id: l.id, title: l.title, sub: (trackMap[l.track] || {}).name || '', desc: l.desc, url: l.url, tags: l.tags || [], ext: true });
-  }
-  /* 术语条目额外带 en（英文说法）和 rel（相关术语）——
-     只有定义类查询会用到它们（搜索页顶部那张「答案卡」）。
-     92 条 × 几十字节，代价可接受；换来的是问「什么叫 X」时
-     能直接把答案和相关词条一起给出来，而不是扔一张普通卡片。 */
-  for (const g of glossary) {
-    searchIndex.push({
-      t: 'glossary', id: g.term, title: g.term, sub: g.cat, desc: g.def,
-      url: `/glossary/?q=${encodeURIComponent(g.term)}`, detail: `/glossary/?q=${encodeURIComponent(g.term)}`,
-      tags: g.abbr ? [g.abbr] : [],
-      // 中文版的答案卡要显示中文相关词条，不做英文名映射
-      en: g.en || '', abbr: g.abbr || '', rel: (g.related || []).slice(0, 3),
-    });
-  }
-  for (const n of news.items) {
-    searchIndex.push({ t: 'news', id: n.id, title: n.title, sub: (topicMap[n.topic] || {}).name || '', desc: n.summary, url: `/news/${n.id}/`, detail: `/news/${n.id}/`, tags: n.tags || [] });
-  }
-  for (const p of playbooks.items) {
-    searchIndex.push({
-      t: 'playbook', id: p.id, title: p.title, sub: (groupMap[p.group] || {}).name || '',
-      desc: p.problem, url: `/playbooks/${p.id}/`, detail: `/playbooks/${p.id}/`,
-      tags: [p.time, p.level].filter(Boolean),
-    });
-  }
-  for (const m of models.items) {
-    searchIndex.push({
-      t: 'model', id: m.id, title: m.name, sub: m.vendor,
-      desc: (m.strengths || []).join('；'), url: `/models/${m.kind}/`, detail: `/models/${m.kind}/`,
-      tags: [m.vendor, (kindMap[m.kind] || {}).name, m.open ? '开源' : '闭源'].filter(Boolean),
-    });
-  }
-
+  const docs = readJSON('pages.json');
+  const prompts = readJSON('legacy/prompts.json');
   const updatedAt = today();
 
-  /* ---------- 2b. 英文站搜索索引 ----------
-     英文站已经有 244 个工具 + 78 个模型 + 92 条术语 + 86 条提示词 + 20 篇手册，
-     但没有搜索 —— 导航里的搜索按钮一直是隐藏的（当时英文站内容太少，不值得做）。
-     内容体量到这个程度，没有搜索就等于让读者一条条翻。
+  /* ---- assets with content-hashed names.
+     /assets/* is cached for a year, so a name that never changes would freeze an old
+     version in returning browsers. The name is the content. */
+  const mainCss = readSrc('styles/main.css');
+  const printCss = readSrc('styles/print.css');
+  const gameCss = readSrc('styles/game.css');
+  const appJs = readSrc('scripts/app.js');
 
-     索引规则和中文一致，但**只收有英文版的条目**：
-     宁可少一条结果，也不要把读者送到中文页上。
-     类型标签、分类名都走英文命名空间（cat.* / pcat.* / kind.* / gcat.*），
-     和页面上的显示完全一致。 */
-  const enCatName = (id) => (i18n.en || {})[`cat.${id}`] || id;
-  const enPcatName = (id) => (i18n.en || {})[`pcat.${id}`] || id;
-  const enKindName = (id) => (i18n.en || {})[`kind.${id}`] || id;
-  const enGcatName = (id) => (i18n.en || {})[`gcat.${id}`] || id;
-
-  const enSearchIndex = [];
-  for (const t of tools) {
-    if (!t.descEn) continue;            // 没翻的工具不进英文索引
-    enSearchIndex.push({
-      t: 'tool', id: t.id, title: toolNameEn(t.name), sub: enCatName(t.cat),
-      desc: t.descEn, caveat: t.caveatEn || '', url: t.url, detail: `/en/tools/${t.cat}/${t.id}/`,
-      tags: tagList(t.tags, EN).filter((g) => !/[\u4e00-\u9fa5]/.test(g)),
-      ext: true, hot: !!t.hot,
-    });
-  }
-  for (const p of prompts) {
-    if (!p.en || !p.en.prompt) continue;
-    enSearchIndex.push({
-      t: 'prompt', id: p.id, title: p.en.title, sub: enPcatName(p.cat), desc: p.en.desc || '',
-      url: `/en/prompts/${p.cat}/#${p.id}`,
-      detail: `/en/prompts/${p.cat}/#${p.id}`,
-      tags: tagList(p.tags, EN).filter((g) => !/[\u4e00-\u9fa5]/.test(g)), hot: !!p.hot,
-    });
-  }
-  /* 英文答案卡的「相关词条」要显示英文说法，而 data 里的 related 存的是中文术语，
-     所以这里按 term 反查每个词条的英文（查不到就退回中文，好过留空）。 */
-  const termEn = new Map(glossary.map((g) => [g.term, g.en || g.term]));
-  for (const g of glossary) {
-    if (!g.defEn) continue;
-    enSearchIndex.push({
-      t: 'glossary', id: g.en || g.term, title: g.en || g.term, sub: enGcatName(g.cat),
-      desc: g.defEn, url: `/en/glossary/?q=${encodeURIComponent(g.en || g.term)}`,
-      detail: `/en/glossary/?q=${encodeURIComponent(g.en || g.term)}`,
-      tags: g.abbr ? [g.abbr] : [],
-      en: g.en || '', abbr: g.abbr || '', rel: (g.related || []).slice(0, 3).map((t) => termEn.get(t) || t),
-    });
-  }
-  for (const p of playbooks.items) {
-    if (!p.en || !p.en.steps || !p.en.steps.length) continue;
-    enSearchIndex.push({
-      t: 'playbook', id: p.id, title: p.en.title, sub: GROUP_EN[p.group] || p.group,
-      desc: p.en.problem || '', url: `/en/playbooks/${p.id}/`, detail: `/en/playbooks/${p.id}/`,
-      tags: [p.en.time || p.time, p.en.level || p.level].filter(Boolean),
-    });
-  }
-  for (const m of models.items) {
-    if (!m.strengthsEn || !m.strengthsEn.length) continue;
-    enSearchIndex.push({
-      t: 'model', id: m.id, title: modelNameEn(m.name), sub: vendorEn(m.vendor),
-      desc: m.strengthsEn.join('; '), url: `/en/models/${m.kind}/`, detail: `/en/models/${m.kind}/`,
-      tags: [vendorEn(m.vendor), enKindName(m.kind), m.open ? 'Open source' : 'Closed'].filter(Boolean),
-    });
-  }
-
-  const ctx = {
-    site, categories, tools, prompts, news, learn, glossary, playbooks, models, i18n, queryMap, feed, feedHours: FEED_HOURS,
-    toolCatMap, promptCatMap, topicMap, trackMap, groupMap, kindMap, toolMap, promptMap, playbookMap,
-    counts, changelog: CHANGELOG,
-    searchIndex, enSearchIndex, updatedAt,
-    outbound, outboundAt, deadLink,
+  const ASSET = {
+    css: `main.${hash7(mainCss)}.css`,
+    print: `print.${hash7(printCss)}.css`,
+    gameCss: `game.${hash7(gameCss)}.css`,
+    js: `app.${hash7(appJs)}.js`,
   };
+  site.asset = ASSET;
 
-  /* ---------- 3. 生成页面 ---------- */
+  write('assets/' + ASSET.css, mainCss);
+  write('assets/' + ASSET.print, printCss);
+  write('assets/' + ASSET.gameCss, gameCss);
+  write('assets/' + ASSET.js, appJs);
+
+  /* ---- games: one script per game per language = config + strings + logic + view + main ----
+     A separate bundle per language keeps each one lean and removes any chance of the
+     script drawing the wrong language after someone switches. The portal package uses
+     the English bundle. */
+  for (const g of games) {
+    g.config = readJSON(`games/${g.id}/config.json`);
+    g.scripts = {};
+    const code = bundle([`game/${g.id}/logic.js`, `game/${g.id}/view.js`, `game/${g.id}/main.js`]);
+    for (const lang of LANGS) {
+      // Each bundle carries one language's text only: the other language's names would be dead weight.
+      const config = JSON.parse(JSON.stringify(g.config, (key, value) => (key === 'zh' && lang !== 'zh' ? undefined : value)));
+      const prelude = `const LANG = ${JSON.stringify(lang)};\nconst CONFIG = ${JSON.stringify(config)};\nconst SAVE_KEY = ${JSON.stringify(`${site.saveKeyPrefix || 'ealoong'}.${g.id}.save`)};\nconst L10N = ${JSON.stringify(stringsFor(lang, ['gr.']))};`;
+      const name = `game-${g.id}${lang === 'en' ? '' : '-' + lang}.${hash7(code + prelude)}.js`;
+      write('assets/' + name, classicScript(code, prelude));
+      g.scripts[lang] = '/assets/' + name;
+    }
+  }
+
+  /* ---- tools: one script per tool per language = data + strings + core + ui ---- */
+  for (const t of tools) {
+    t.scripts = {};
+    const files = [`tools/${t.id}/core.js`, 'tools/shared-ui.js', `tools/${t.id}/ui.js`];
+    const code = bundle(files);
+    for (const lang of LANGS) {
+      let prelude = `const TOOL = ${JSON.stringify(t.client || {})};\nconst STR = ${JSON.stringify(stringsFor(lang, ['tu.', 'err.', 'copy.']))};\n`;
+      if (t.id === 'prompt-template-builder') {
+        // 86 full prompts weigh 33 KB gzipped, which would delay the first paint of this page for
+        // data most visitors never scroll through. The script gets the index only and fetches
+        // the texts right after the page is interactive.
+        // Left in dataset order: it starts with general writing prompts, which is where most people begin.
+        const list = prompts
+          .filter((p) => (lang === 'zh' ? p.zh || p.en : p.en) && (p.zh || p.en).prompt)
+          .map((p) => {
+            const entry = lang === 'zh' ? (p.zh || p.en) : p.en;
+            return { id: p.id, title: entry.title, desc: entry.desc || '', prompt: entry.prompt, vars: entry.vars || [] };
+          });
+        const json = JSON.stringify(list);
+        const name = `prompts-${lang}.${hash7(json)}.json`;
+        write('assets/' + name, json);
+        prelude += `const PROMPTS_URL = ${JSON.stringify('/assets/' + name)};\nconst PROMPT_INDEX = ${JSON.stringify(list.map((p) => ({ id: p.id, title: p.title })))};\n`;
+      }
+      const name = `tool-${t.id}${lang === 'en' ? '' : '-' + lang}.${hash7(code + prelude)}.js`;
+      write('assets/' + name, classicScript(code, prelude));
+      t.scripts[lang] = '/assets/' + name;
+    }
+  }
+
+  /* ---- pages: English at the root, Chinese under /zh ----
+     Each page is emitted twice with the same unlocalized path recorded in the manifest,
+     which is what the sitemap uses to pair the two versions. */
+  const ctx = { site, games, tools, docs, updatedAt };
   const manifest = [];
-  const emit = (rel, htmlOrThunk, meta = {}) => {
-    // 传函数时：先重置图标集合再渲染，保证 sprite 只含本页用到的图标
-    const html = typeof htmlOrThunk === 'function'
-      ? (resetIcons(), htmlOrThunk())
-      : htmlOrThunk;
-    write(rel, html);
-    manifest.push({ url: '/' + rel.replace(/index\.html$/, ''), title: meta.title || '', type: meta.type || 'page', lastmod: meta.lastmod || lastmodFor(meta, ctx, updatedAt) });
+  const emit = (path_, lang, render, meta = {}) => {
+    resetIcons();
+    const rel = (lang === 'zh' ? 'zh/' : '') + path_.replace(/^\//, '') + 'index.html';
+    write(rel, render());
+    manifest.push({ path: path_, lang, title: meta.title || site.brand.name, type: meta.type || 'page', lastmod: meta.lastmod || updatedAt });
   };
+  const titleOf = (m, lang) => (lang === 'zh' && m.zh && m.zh.metaTitle ? m.zh.metaTitle : m.metaTitle || pick(m, 'name', lang));
 
-  emit('index.html', () => homePage(ctx), { title: site.brand.name, type: 'home' });
-  emit('playbooks/index.html', () => playbooksPage(ctx), { title: '场景手册', type: 'playbooks' });
-  emit('tools/index.html', () => toolsPage(ctx), { title: 'AI 工具库', type: 'tools' });
-  emit('prompts/index.html', () => promptsPage(ctx), { title: '提示词库', type: 'prompts' });
-  emit('models/index.html', () => modelsPage(ctx), { title: '模型库', type: 'models' });
-  emit('news/index.html', () => newsPage(ctx), { title: 'AI 资讯与解读', type: 'news' });
-  if (feed) {
-    emit('news/live/index.html', () => liveNewsPage(ctx), { title: '实时动态', type: 'news-live' });
-  }
-  emit('learn/index.html', () => learnPage(ctx), { title: '学习资源', type: 'learn' });
-  emit('glossary/index.html', () => glossaryPage(ctx), { title: 'AI 术语表', type: 'glossary' });
-  emit('compare/index.html', () => comparePage(ctx), { title: '工具对比', type: 'compare' });
-  emit('saved/index.html', () => savedPage(ctx), { title: '我的收藏', type: 'saved' });
-  emit('search/index.html', () => searchPage(ctx), { title: '全站搜索', type: 'search' });
-  emit('about/index.html', () => aboutPage(ctx), { title: '关于', type: 'about' });
-  emit('changelog/index.html', () => changelogPage(ctx), { title: '更新日志', type: 'changelog' });
-  emit('open-data/index.html', () => openDataPage(ctx), { title: '开放数据', type: 'open-data' });
-  emit('404.html', () => notFoundPage(ctx), { title: '404', type: '404' });
-
-  for (const g of playbooks.groups) {
-    emit(`playbooks/${g.id}/index.html`, () => playbooksPage(ctx, { activeGroup: g.id }), { title: `${g.name} · 场景手册`, type: 'playbooks-group' });
-  }
-  for (const p of playbooks.items) {
-    emit(`playbooks/${p.id}/index.html`, () => playbookDetailPage(ctx, p), { title: p.title, type: 'playbook-detail', item: p });
-  }
-  for (const k of models.kinds) {
-    emit(`models/${k.id}/index.html`, () => modelsPage(ctx, { activeKind: k.id }), { title: `${k.name}模型 · 模型库`, type: 'models-kind' });
-  }
-
-  /* ---------- 英文版 ----------
-     范围刻意收窄：只覆盖「查询型」内容（工具库 + 模型库）。
-     场景手册 / 提示词 / 资讯 / 学习资源是长篇中文内容，不做翻译——
-     两套长期并行维护的翻译成本远高于它能带来的价值。 */
-  emit('en/index.html', () => enHome(ctx, i18n), { title: i18n.en.siteTagline, type: 'home' });
-  emit('en/tools/index.html', () => enTools(ctx, i18n), { title: i18n.en['tools.title'], type: 'tools' });
-  emit('en/models/index.html', () => enModels(ctx, i18n), { title: i18n.en['models.title'], type: 'models' });
-  emit('en/about/index.html', () => enAbout(ctx, i18n), { title: 'About', type: 'about' });
-  emit('en/open-data/index.html', () => enOpenData(ctx, i18n), { title: 'Open data', type: 'open-data' });
-  for (const c of categories.toolCategories) {
-    emit(`en/tools/${c.id}/index.html`, () => enTools(ctx, i18n, { activeCat: c.id }), { title: `${i18n.en['cat.' + c.id] || c.id} · AI Tools`, type: 'tools-cat' });
-  }
-
-  /* 英文场景手册：只生成有翻译的那几篇。没翻译的不生成页面，
-     而不是生成一个中文页面挂在 /en/ 下面（那比缺内容更糟）。
-     注意这个 emit 必须在分类循环**外面** —— 放进去会被每个分类重复执行一遍。 */
-  const pbEnList = playbooks.items.filter((p) => p.en && p.en.steps && p.en.steps.length);
-  if (pbEnList.length) {
-    emit('en/playbooks/index.html', () => enPlaybooks(ctx, i18n), { title: 'AI playbooks: end-to-end workflows', type: 'playbooks' });
-    for (const p of pbEnList) {
-      emit(`en/playbooks/${p.id}/index.html`, () => enPlaybookDetail(ctx, i18n, p), { title: `${p.en.title} · Playbook`, type: 'playbook-detail', item: p });
+  for (const lang of LANGS) {
+    emit('/', lang, () => homePage(ctx, lang), { title: site.brand.name, type: 'home', lastmod: updatedAt });
+    emit('/games/', lang, () => gamesIndexPage(ctx, lang), { title: 'Games', type: 'index', lastmod: updatedAt });
+    emit('/tools/', lang, () => toolsIndexPage(ctx, lang), { title: 'Tools', type: 'index', lastmod: updatedAt });
+    for (const g of games) emit(g.path, lang, () => gamePage(ctx, g, lang), { title: titleOf(g, lang), type: 'game', lastmod: latest(g.updated, updatedAt) });
+    for (const t of tools) emit(t.path, lang, () => toolPage(ctx, t, lang), { title: titleOf(t, lang), type: 'tool', lastmod: latest(t.updated, updatedAt) });
+    // Keys starting with "$" are notes for people editing the data, not pages.
+    for (const [slug, p] of Object.entries(docs)) {
+      if (slug.startsWith('$')) continue;
+      emit(`/${slug}/`, lang, () => docPage(ctx, slug, p, lang), { title: (lang === 'zh' && p.zh && p.zh.title) || p.title, type: 'doc', lastmod: latest(p.updated, updatedAt) });
     }
   }
+  // One 404 for the whole site: the host serves this file for every missing address.
+  resetIcons();
+  write('404.html', notFoundPage(ctx));
 
-  /* 英文提示词库：同样只生成有翻译的。没翻译的不生成页面。 */
-  if (prompts.some((p) => p.en && p.en.prompt)) {
-    emit('en/prompts/index.html', () => enPrompts(ctx, i18n), { title: 'Prompt library', type: 'prompts' });
-    for (const pc of categories.promptCategories) {
-      if (!prompts.some((p) => p.cat === pc.id && p.en && p.en.prompt)) continue;
-      emit(`en/prompts/${pc.id}/index.html`, () => enPrompts(ctx, i18n, { activeCat: pc.id }), { title: `${i18n.en['cat.' + pc.id] || pc.id} prompts`, type: 'prompts-cat' });
-    }
-  }
-
-  /* 英文术语表：只收录有英文定义的 */
-  if (glossary.some((g) => g.defEn)) {
-    emit('en/glossary/index.html', () => enGlossary(ctx, i18n), { title: 'AI glossary', type: 'glossary' });
-  }
-
-  /* 英文全站搜索：有内容才生成（内容为空时搜索页只是一张空壳） */
-  if (enSearchIndex.length) {
-    emit('en/search/index.html', () => enSearch(ctx, i18n), { title: 'Search', type: 'search' });
-  }
-
-  for (const t of tools) {
-    emit(`en/tools/${t.cat}/${t.id}/index.html`, () => enToolDetail(ctx, i18n, t), { title: `${t.name} · AI Tools`, type: 'tool-detail', item: t });
-  }
-  for (const k of models.kinds) {
-    emit(`en/models/${k.id}/index.html`, () => enModels(ctx, i18n, { activeKind: k.id }), { title: `${i18n.en['kind.' + k.id] || k.id} · Models`, type: 'models-kind' });
-  }
-
-  for (const c of categories.toolCategories) {
-    emit(`tools/${c.id}/index.html`, () => toolsPage(ctx, { activeCat: c.id }), { title: `${c.name} · AI 工具`, type: 'tools-cat' });
-  }
-  // 工具详情页：同类对比 + 出现在哪些场景里（不做「复制官网简介」那种薄内容）
-  for (const t of tools) {
-    emit(`tools/${t.cat}/${t.id}/index.html`, () => toolDetailPage(ctx, t), { title: `${t.name} · ${(toolCatMap[t.cat] || {}).name}`, type: 'tool-detail', item: t });
-  }
-  for (const c of categories.promptCategories) {
-    emit(`prompts/${c.id}/index.html`, () => promptsPage(ctx, { activeCat: c.id }), { title: `${c.name} · 提示词`, type: 'prompts-cat' });
-  }
-  for (const t of categories.learnTracks) {
-    emit(`learn/${t.id}/index.html`, () => learnPage(ctx, { activeTrack: t.id }), { title: `${t.name} · 学习资源`, type: 'learn-track' });
-  }
-  for (const n of news.items) {
-    emit(`news/${n.id}/index.html`, () => newsDetailPage(ctx, n), { title: n.title, type: 'news-detail', item: n });
-  }
-
-  /* ---------- 4. 静态资源 ---------- */
-  write('assets/' + ASSET.css, fs.readFileSync(path.join(SRC, 'styles', 'main.css'), 'utf8'));
-  write('assets/' + ASSET.print, fs.readFileSync(path.join(SRC, 'styles', 'print.css'), 'utf8'));
-  write('assets/' + ASSET.js, fs.readFileSync(path.join(SRC, 'scripts', 'app.js'), 'utf8'));
-  write('assets/' + ASSET.search, fs.readFileSync(path.join(SRC, 'scripts', 'search.js'), 'utf8'));
-  write('assets/' + ASSET.icons, fs.readFileSync(path.join(SRC, 'scripts', 'card-svg.js'), 'utf8'));
   copyDir(path.join(ROOT, 'public'), DIST);
 
-  /* ---------- 5. 开放数据 ---------- */
-  const api = {
-    'index.json': {
-      site: { name: site.brand.name, nameEn: site.brand.nameEn, slogan: site.brand.slogan, description: site.brand.description },
-      updatedAt,
-      counts,
-      categories,
-    },
-    'tools.json': tools.map(({ _new, ...rest }) => rest),
-    'prompts.json': prompts,
-    'news.json': news,
-    'learn.json': learn,
-    'glossary.json': glossary,
-    'playbooks.json': playbooks,
-    'models.json': models,
-    'search.json': searchIndex,
-    'search-en.json': enSearchIndex,
-    'query-map.json': queryMap,
-    ...(feed ? { 'feed.json': feed } : {}),
-  };
-  for (const [f, v] of Object.entries(api)) write(`api/${f}`, JSON.stringify(v, null, 2));
+  /* ---- legacy dataset: kept available at /api/legacy for existing users ---- */
+  const legacyDir = path.join(DATA, 'legacy');
+  const legacyFiles = fs.readdirSync(legacyDir).filter((f) => f.endsWith('.json')).sort();
+  const datasets = {};
+  for (const f of legacyFiles) {
+    const json = fs.readFileSync(path.join(legacyDir, f), 'utf8');
+    write(`api/legacy/${f}`, json);
+    let count = '';
+    try { const j = JSON.parse(json); count = Array.isArray(j) ? j.length : (j.items ? j.items.length : ''); } catch { /* leave blank */ }
+    datasets[f.replace(/\.json$/, '')] = count;
+  }
+  write('api/legacy/index.json', JSON.stringify({
+    site: 'Ealoong Arcade',
+    note: 'The open dataset of the previous site, AI Wanxiang, frozen as it was when the site was retired. Code: MIT. Content: CC BY 4.0.',
+    license: 'CC BY 4.0',
+    datasets,
+  }, null, 2) + '\n');
 
-  /* ---------- 6. RSS ---------- */
+  /* ---- SEO: one entry per language, each naming its counterpart ---- */
   const base = (site.baseUrl || 'https://example.com').replace(/\/$/, '');
-  const rssItems = [...news.items]
-    .sort((a, b) => (a.date < b.date ? 1 : -1))
-    .map((n) => `    <item>
-      <title>${esc(n.title)}</title>
-      <link>${base}/news/${n.id}/</link>
-      <guid isPermaLink="true">${base}/news/${n.id}/</guid>
-      <description>${esc(n.summary)}</description>
-      <pubDate>${new Date(n.date + 'T09:00:00+08:00').toUTCString()}</pubDate>
-    </item>`)
-    .join('\n');
+  const byPath = new Map();
+  for (const m of manifest) {
+    if (!byPath.has(m.path)) byPath.set(m.path, {});
+    byPath.get(m.path)[m.lang] = m;
+  }
+  const urlEntry = (m) => {
+    const versions = byPath.get(m.path);
+    const alts = LANGS.filter((l) => versions[l])
+      .map((l) => `    <xhtml:link rel="alternate" hreflang="${LANG_ATTR[l]}" href="${base}${loc(m.path, l)}"/>`)
+      .join('\n');
+    return `  <url>\n    <loc>${base}${loc(m.path, m.lang)}</loc>\n${alts}\n    <xhtml:link rel="alternate" hreflang="x-default" href="${base}${loc(m.path, 'en')}"/>\n    <lastmod>${m.lastmod}</lastmod>\n  </url>`;
+  };
+  const urls = [...byPath.values()].flatMap((versions) => LANGS.filter((l) => versions[l]).map((l) => urlEntry(versions[l]))).join('\n');
+  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`);
 
-  write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>${esc(site.brand.name)} · 资讯与解读</title>
-    <link>${base}/news/</link>
-    <description>${esc(site.brand.description)}</description>
-    <language>zh-CN</language>
-    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="${base}/feed.xml" rel="self" type="application/rss+xml"/>
-${rssItems}
-  </channel>
-</rss>
-`);
-
-  /* ---------- 7. SEO ---------- */
-  /* 不进 sitemap 的页面类型：
-     · 404 —— 本来就不该被索引
-     · news-live —— 实时动态是自动抓取的标题摘要聚合，不是自己的原创内容。
-       它对人有用（发现入口），但不该占 SEO 名额、也不该和原创解读抢权重。
-       该页另外打了 noindex,follow，见 liveNewsPage。
-     · search / saved —— 这两个页面对爬虫是**空的**。实测正文只有 534 / 372 字，
-       内容还都在浏览器 localStorage 里（收藏）或要靠输入才出现（搜索）。
-       把它们写进 sitemap 等于主动请搜索引擎收录空页，只会拖累整站的质量评分；
-       而且搜索页一旦被索引，`?q=xxx` 变体会变成无穷多份重复内容。
-       两页同样打了 noindex,follow（见 searchPage / savedPage），内部链接照常传权重。 */
-  const NO_INDEX_TYPES = new Set(['404', 'news-live', 'search', 'saved']);
-  const urls = manifest
-    .filter((m) => !NO_INDEX_TYPES.has(m.type))
-    .map((m) => `  <url>\n    <loc>${base}${m.url}</loc>\n    <lastmod>${m.lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${m.type === 'home' ? '1.0' : m.type.includes('-detail') || m.type === 'about' ? '0.6' : '0.8'}</priority>\n  </url>`)
-    .join('\n');
-  write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
-  write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
-
-  /* ---------- 8. 部署配置 ---------- */
   write('_headers', `/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -567,64 +284,167 @@ ${rssItems}
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
 
-/api/*
+/api/legacy/*
   Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
+  Cache-Control: public, max-age=86400
 `);
-  // 部署配置以仓库根目录的 vercel.json 为唯一来源（重定向规则、响应头都在那里）。
-  // 这里把它复制进 dist，避免出现两份不一致的配置让人搞不清哪份生效。
-  // 注意：Vercel 真正读的是仓库根目录那份；dist 里的这份只是「构建产物里也留一份」，
-  // 便于别人直接把 dist 丢到别的主机（Netlify / Cloudflare Pages）时也能看到配置。
+  // vercel.json at the repo root is the one Vercel reads. The copy in dist is only there so
+  // that handing dist/ to another host still shows the intended redirects and headers.
   const rootVercel = path.join(ROOT, 'vercel.json');
-  if (fs.existsSync(rootVercel)) {
-    write('vercel.json', fs.readFileSync(rootVercel, 'utf8'));
-  }
-  write('_redirects', `# Netlify: 旧链接兼容（如未来调整 URL 结构，在这里加 301）\n`);
+  if (fs.existsSync(rootVercel)) write('vercel.json', fs.readFileSync(rootVercel, 'utf8'));
 
-  /* ---------- 9. 清理与报告 ---------- */
   const stale = pruneStale();
   const ms = Date.now() - t0;
   if (!quiet) {
     console.log('');
-    console.log('  AI 万象 · 构建完成');
-    console.log('  ' + '─'.repeat(48));
-    console.log(`  页面        ${manifest.length} 个`);
-    console.log(`  场景手册    ${counts.playbooks}  （${playbooks.groups.length} 个分组）`);
-    console.log(`  工具        ${counts.tools}  （NEW 标记 ${tools.filter((t) => t._new).length}）`);
-    console.log(`  提示词      ${counts.prompts}`);
-    console.log(`  模型        ${counts.models}  （${models.kinds.length} 个类型）`);
-    console.log(`  术语        ${counts.glossary}`);
-    console.log(`  学习资源    ${counts.learn}`);
-    console.log(`  资讯        ${counts.news}`);
-    console.log(`  英文版      ${manifest.filter((m) => m.url.startsWith("/en/")).length} 页（工具 / 模型 / 手册 / 提示词 / 术语 / 搜索）`);
-    console.log(`  实时动态    ${feed ? `${counts.live} 条（${feed.sources.filter((x) => x.ok).length}/${feed.sources.length} 源，抓取于 ${feed.updatedAt.slice(0, 16).replace('T', ' ')}）` : '无（未跑 fetch-news）'}`);
-    console.log(`  搜索索引    ${searchIndex.length} 条`);
-    console.log('  ' + '─'.repeat(48));
-    console.log(`  附带产物    sitemap.xml / robots.txt / feed.xml / api/ / _headers / vercel.json`);
-    console.log(`  清理陈旧    ${stale.length} 个文件${stale.length ? '（' + stale.slice(0, 3).join(', ') + (stale.length > 3 ? ' …' : '') + '）' : ''}`);
-    console.log(`  输出目录    dist/  （共 ${written.size} 个文件）`);
-    console.log(`  耗时        ${ms}ms`);
+    console.log('  Ealoong Arcade · build');
+    console.log('  ' + '─'.repeat(52));
+    console.log(`  Pages         ${manifest.length + 1} (${LANGS.map((l) => `${l}:${manifest.filter((m) => m.lang === l).length}`).join(', ')} + 404)`);
+    console.log(`  Games         ${games.map((g) => g.id).join(', ')}`);
+    console.log(`  Tools         ${tools.map((t) => t.id).join(', ')}`);
+    console.log(`  Legacy API    ${legacyFiles.length} files`);
+    console.log(`  Output        dist/  (${written.size} files)`);
+    console.log(`  Removed       ${stale.length} stale file(s)`);
+    console.log(`  Time          ${ms}ms`);
     console.log('');
   }
-  return { manifest, counts, ms, stale };
+  return { manifest, games, tools, ms, stale };
 }
 
-/* ---------- watch ---------- */
-const isMain = process.argv[1] && process.argv[1].endsWith('build.mjs');
-if (isMain) {
-  build();
-  if (process.argv.includes('--watch')) {
-    let timer = null;
-    const rebuild = () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        try { build({ quiet: true }); console.log(`  [${new Date().toLocaleTimeString()}] 已重建`); }
-        catch (e) { console.error('  构建失败：', e.message); }
-      }, 120);
-    };
-    for (const dir of [DATA, SRC]) {
-      if (fs.existsSync(dir)) fs.watch(dir, { recursive: true }, rebuild);
+/* ---------- portal packages ----------
+   A single self-contained index.html per game: no external requests, no links back to
+   this site, no ads. Game portals review exactly this file. */
+function crc32(buf) {
+  let c;
+  const table = crc32.table || (crc32.table = Array.from({ length: 256 }, (_, n) => {
+    c = n;
+    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+    return c >>> 0;
+  }));
+  c = 0xffffffff;
+  for (const b of buf) c = table[(c ^ b) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+/** Minimal ZIP writer (stored, no compression): one entry per file. */
+function zip(files) {
+  const local = [];
+  const central = [];
+  let offset = 0;
+  for (const [name, data] of files) {
+    const bytes = Buffer.from(data);
+    const nameBuf = Buffer.from(name, 'utf8');
+    const crc = crc32(bytes);
+    const header = Buffer.alloc(30);
+    header.writeUInt32LE(0x04034b50, 0);
+    header.writeUInt16LE(20, 4);      // version needed
+    header.writeUInt16LE(0, 6);       // flags
+    header.writeUInt16LE(0, 8);       // method: stored
+    header.writeUInt16LE(0, 10);      // time
+    header.writeUInt16LE(0x21, 12);   // date (1980-01-01)
+    header.writeUInt32LE(crc, 14);
+    header.writeUInt32LE(bytes.length, 18);
+    header.writeUInt32LE(bytes.length, 22);
+    header.writeUInt16LE(nameBuf.length, 26);
+    header.writeUInt16LE(0, 28);
+    local.push(header, nameBuf, bytes);
+
+    const ch = Buffer.alloc(46);
+    ch.writeUInt32LE(0x02014b50, 0);
+    ch.writeUInt16LE(20, 4); ch.writeUInt16LE(20, 6);
+    ch.writeUInt16LE(0, 8); ch.writeUInt16LE(0, 10); ch.writeUInt16LE(0, 12); ch.writeUInt16LE(0x21, 14);
+    ch.writeUInt32LE(crc, 16);
+    ch.writeUInt32LE(bytes.length, 20); ch.writeUInt32LE(bytes.length, 24);
+    ch.writeUInt16LE(nameBuf.length, 28);
+    ch.writeUInt32LE(offset, 42);
+    central.push(ch, nameBuf);
+    offset += 30 + nameBuf.length + bytes.length;
+  }
+  const localBuf = Buffer.concat(local);
+  const centralBuf = Buffer.concat(central);
+  const end = Buffer.alloc(22);
+  end.writeUInt32LE(0x06054b50, 0);
+  end.writeUInt16LE(files.length, 8); end.writeUInt16LE(files.length, 10);
+  end.writeUInt32LE(centralBuf.length, 12);
+  end.writeUInt32LE(localBuf.length, 16);
+  return Buffer.concat([localBuf, centralBuf, end]);
+}
+
+export function buildPortal({ quiet = false } = {}) {
+  const t0 = Date.now();
+  const site = readJSON('site.config.json');
+  const games = readJSON('games.json');
+  const gameCss = readSrc('styles/game.css');
+  const portalCss = readSrc('styles/portal.css');
+  const out = [];
+
+  for (const g of games) {
+    const config = readJSON(`games/${g.id}/config.json`);
+    const code = bundle([`game/${g.id}/logic.js`, `game/${g.id}/view.js`, `game/${g.id}/main.js`]);
+    // Portals are English-only, so this package carries the English strings.
+    const prelude = `const LANG = "en";\nconst CONFIG = ${JSON.stringify(config)};\nconst SAVE_KEY = ${JSON.stringify(`${site.saveKeyPrefix || 'ealoong'}.${g.id}.save`)};\nconst STANDALONE = true;\nconst L10N = ${JSON.stringify(stringsFor('en', ['gr.']))};`;
+    const script = classicScript(code, prelude);
+    // The standalone page has no site shell, so the sprite the game's icons point at must travel with it.
+    resetIcons();
+    const shell = gameShell(g, { standalone: true, lang: 'en' });
+    reserveIcons(GAME_RUNTIME_ICONS);
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>${g.name}</title>
+<meta name="description" content="${g.tagline}">
+<meta name="theme-color" content="#0b0e17">
+<style>${gameCss}\n${portalCss}</style>
+</head>
+<body class="standalone">
+${iconSprite()}
+${shell}
+<script>${script}</script>
+</body>
+</html>
+`;
+    fs.mkdirSync(path.join(DIST, 'portal', g.id), { recursive: true });
+    fs.writeFileSync(path.join(DIST, 'portal', g.id, 'index.html'), html);
+    const archive = zip([['index.html', html]]);
+    fs.writeFileSync(path.join(DIST, 'portal', `${g.id}.zip`), archive);
+    out.push({ id: g.id, html: html.length, zip: archive.length, gzip: zlib.gzipSync(Buffer.from(html)).length });
+  }
+
+  if (!quiet) {
+    console.log('');
+    console.log('  Portal packages (one self-contained file per game)');
+    console.log('  ' + '─'.repeat(52));
+    for (const o of out) {
+      console.log(`  ${o.id.padEnd(18)} index.html ${(o.html / 1024).toFixed(0)} KB  ·  zip ${(o.zip / 1024).toFixed(0)} KB  ·  gzip ${(o.gzip / 1024).toFixed(1)} KB`);
     }
-    console.log('  监听 data/ 与 src/ 变化中… (Ctrl+C 退出)');
+    console.log(`  Output        dist/portal/`);
+    console.log('');
+  }
+  return out;
+}
+
+/* ---------- entry ---------- */
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  if (process.argv.includes('--target=portal')) {
+    buildPortal();
+  } else {
+    // A default build always refreshes the portal packages too: build() deletes whatever
+    // it did not write, so a site-only run would silently remove them.
+    build();
+    buildPortal();
+    if (process.argv.includes('--watch')) {
+      let timer = null;
+      const rebuild = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          try { build({ quiet: true }); console.log(`  [${new Date().toLocaleTimeString()}] rebuilt`); }
+          catch (e) { console.error('  build failed:', e.message); }
+        }, 120);
+      };
+      for (const dir of [DATA, SRC]) fs.watch(dir, { recursive: true }, rebuild);
+      console.log('  watching data/ and src/ — Ctrl+C to stop');
+    }
   }
 }

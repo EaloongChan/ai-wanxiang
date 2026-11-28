@@ -73,7 +73,7 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, '127.0.0.1', () => {
   console.log('');
-  console.log(`  AI 万象 · 本地预览`);
+  console.log(`  Ealoong Arcade · local preview`);
   console.log(`  http://127.0.0.1:${PORT}`);
   console.log('');
 });

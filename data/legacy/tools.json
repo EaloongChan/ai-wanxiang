@@ -1,0 +1,4762 @@
+[
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "url": "https://chatgpt.com",
+    "cat": "chat",
+    "desc": "OpenAI 的通用对话助手，GPT 系列模型，生态最全。",
+    "tags": [
+      "GPT",
+      "多模态",
+      "插件"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "国内访问要自备方式，且价格在第一梯队。如果只是日常问答，国产免费版本已经够用，没必要为它额外折腾。",
+    "descEn": "OpenAI's flagship assistant. The most balanced all-rounder, with the largest third-party ecosystem.",
+    "caveatEn": "Needs a workaround to access from mainland China, and it sits in the top price tier. For everyday Q&A, free Chinese models are already enough — don't go to the trouble unless you need it."
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "url": "https://claude.ai",
+    "cat": "chat",
+    "desc": "Anthropic 出品，长文本与代码能力突出，Artifacts 可实时预览。",
+    "tags": [
+      "长上下文",
+      "代码",
+      "Artifacts"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "安全策略偏保守，「写一封强硬的催款邮件」这类正常商业请求可能被软化。国内同样需要自备访问方式。",
+    "descEn": "Anthropic's assistant. Excellent at long documents and code, and widely considered the most natural prose stylist.",
+    "caveatEn": "Its safety policy is conservative — a normal business request like writing a firm payment reminder may get softened. Access from mainland China also needs a workaround."
+  },
+  {
+    "id": "gemini",
+    "name": "Gemini",
+    "url": "https://gemini.google.com",
+    "cat": "chat",
+    "desc": "Google 多模态助手，深度整合搜索与 Workspace。",
+    "tags": [
+      "多模态",
+      "搜索",
+      "Google"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "产品线版本极多，同一个入口进去拿到的可能是完全不同档位的模型，选型时要看清具体型号。",
+    "descEn": "Google's assistant. Native multimodal with video understanding, tightly integrated with Search and Workspace.",
+    "caveatEn": "The product line is sprawling — the same entry point can hand you a completely different tier of model. Check the exact model name before committing."
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "url": "https://chat.deepseek.com",
+    "cat": "chat",
+    "desc": "国产开源强模型，推理与代码性价比极高。",
+    "tags": [
+      "国产",
+      "开源",
+      "推理"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "高峰期响应会明显变慢，做实时交互类产品前先压测。安全对齐相对宽松，面向公众时要自己加一层护栏。",
+    "descEn": "Chinese reasoning-focused models. Strong at maths and code, with API pricing far below the international flagships.",
+    "caveatEn": "Response times slow noticeably at peak hours — load-test before building a real-time product. Safety alignment is also loose, so add your own guardrails for public-facing use."
+  },
+  {
+    "id": "kimi",
+    "name": "Kimi",
+    "url": "https://www.kimi.com/",
+    "cat": "chat",
+    "desc": "月之暗面出品，超长上下文与文件解析见长。",
+    "tags": [
+      "国产",
+      "长文本"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "长上下文是主打，但再长的窗口也存在「中间段落召回下降」，关键信息尽量放开头或结尾。",
+    "descEn": "Moonshot AI's assistant, built around a very long context window and good file/web reading.",
+    "caveatEn": "Long context is the headline, but recall still drops for content buried in the middle. Put key information at the start or end of your prompt."
+  },
+  {
+    "id": "doubao",
+    "name": "豆包",
+    "url": "https://www.doubao.com",
+    "cat": "chat",
+    "desc": "字节跳动 AI 助手，语音与多模态体验好。",
+    "tags": [
+      "国产",
+      "语音"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "消费端产品能力比 API 开放度更高，做开发前先确认你要用的能力在 API 里有没有。",
+    "descEn": "ByteDance's assistant. Extremely cheap API, strong voice interaction, a complete multimodal product line.",
+    "caveatEn": "The consumer app is more capable than the API. Before building on it, confirm the specific capability you need is actually exposed."
+  },
+  {
+    "id": "qwen",
+    "name": "通义千问",
+    "url": "https://tongyi.aliyun.com",
+    "cat": "chat",
+    "desc": "阿里 Qwen 家族，开源系列覆盖多个尺寸。",
+    "tags": [
+      "国产",
+      "开源",
+      "Qwen"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "同一家族不同尺寸版本能力差距很大，别拿小尺寸的测试结果推断旗舰版表现。",
+    "descEn": "Alibaba's model family. The widest size coverage — from on-device to flagship — with solid Chinese and a permissive Apache licence.",
+    "caveatEn": "Capability varies a lot between sizes. Don't extrapolate from a small model's test results to infer how the flagship performs."
+  },
+  {
+    "id": "grok",
+    "name": "Grok",
+    "url": "https://grok.com",
+    "cat": "chat",
+    "desc": "xAI 出品，实时接入 X 平台信息。",
+    "tags": [
+      "实时",
+      "X"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "内容审核策略宽松，输出需要自己过滤——这既是优点也是风险，面向 C 端要格外注意。",
+    "descEn": "xAI's assistant with real-time access to social platform data. Some versions ship open weights.",
+    "caveatEn": "Content moderation is loose — useful in some cases, risky in others. Filter the output yourself if you're building anything public."
+  },
+  {
+    "id": "copilot",
+    "name": "Microsoft Copilot",
+    "url": "https://copilot.microsoft.com",
+    "cat": "chat",
+    "desc": "微软全家桶 AI，深度嵌入 Windows 与 Office。",
+    "tags": [
+      "Office",
+      "Windows"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "深度绑定微软生态，脱离 Office / Windows / Azure 之后优势会大打折扣。",
+    "descEn": "Microsoft's assistant, embedded across Windows, Office and Azure.",
+    "caveatEn": "Its value is mostly in Microsoft's ecosystem. Outside Office/Windows/Azure the advantage largely disappears."
+  },
+  {
+    "id": "lechat",
+    "name": "Le Chat",
+    "url": "https://chat.mistral.ai",
+    "cat": "chat",
+    "desc": "Mistral 官方助手，响应快、欧洲合规。",
+    "tags": [
+      "欧洲",
+      "开源"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "中文语感明显弱于国产模型，且国内访问不稳。选它通常是冲着欧洲合规而不是能力。",
+    "descEn": "Mistral's assistant. Fast, efficient, and built with European compliance requirements in mind.",
+    "caveatEn": "Chinese language quality lags noticeably behind domestic models, and access from China is unstable. People usually pick it for compliance, not capability."
+  },
+  {
+    "id": "zhipu",
+    "name": "智谱清言",
+    "url": "https://chatglm.cn",
+    "cat": "chat",
+    "desc": "智谱 GLM 系列官方对话产品。",
+    "tags": [
+      "国产",
+      "GLM"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "生态体量小于头部厂商，第三方教程和踩坑记录少，遇到问题更依赖官方文档。",
+    "descEn": "Zhipu AI's models. Solid tool calling among Chinese providers, with open-weight versions you can self-host.",
+    "caveatEn": "The ecosystem is smaller than the major labs', so third-party tutorials and troubleshooting notes are scarce — you'll rely more on official docs."
+  },
+  {
+    "id": "minimax-chat",
+    "name": "海螺 AI",
+    "url": "https://hailuoai.com",
+    "cat": "chat",
+    "desc": "MiniMax 出品，对话 + 语音 + 视频一条龙。",
+    "tags": [
+      "国产",
+      "多模态"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "通用对话不是它的强项，选它通常是为了语音或视频，别在文本任务上做主力。",
+    "descEn": "MiniMax's assistant, spanning text, speech and video in one family.",
+    "caveatEn": "General chat isn't its strength. People choose MiniMax for voice or video — don't make it your primary text model."
+  },
+  {
+    "id": "cursor",
+    "name": "Cursor",
+    "url": "https://cursor.com",
+    "cat": "coding",
+    "desc": "AI 优先的代码编辑器，代码库级理解与自动改写。",
+    "tags": [
+      "AI IDE",
+      "重构"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "按订阅收费，重度使用成本不低；且它对项目结构的依赖很强，代码库越乱效果越差。",
+    "descEn": "An AI-native code editor built on VS Code. Best-in-class at multi-file edits driven by natural language.",
+    "caveatEn": "Subscription pricing adds up under heavy use, and it leans hard on your project's structure — the messier the codebase, the worse the results."
+  },
+  {
+    "id": "claude-code",
+    "name": "Claude Code",
+    "url": "https://www.anthropic.com/claude-code",
+    "cat": "coding",
+    "desc": "终端里的编程智能体，能读代码、跑命令、改多文件。",
+    "tags": [
+      "CLI",
+      "Agent"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "命令行工作流，不习惯终端的人上手成本高。改动范围大时需要配合 git 才能安全回滚。",
+    "descEn": "Anthropic's command-line coding agent that reads your repo, runs commands and iterates on failures.",
+    "caveatEn": "A terminal-first workflow; people who don't live in a shell will find the ramp steep. Large changes need git discipline to stay safe."
+  },
+  {
+    "id": "copilot-code",
+    "name": "GitHub Copilot",
+    "url": "https://github.com/features/copilot",
+    "cat": "coding",
+    "desc": "最普及的代码补全，已扩展为多模型智能体。",
+    "tags": [
+      "补全",
+      "IDE"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "补全体验最好，但「按需求改多个文件」这类跨文件任务，能力弱于专门的 AI IDE。",
+    "descEn": "GitHub's AI pair programmer. The most polished inline completion experience available.",
+    "caveatEn": "Best at completion. For cross-file tasks like 'implement this across the project', dedicated AI IDEs are stronger."
+  },
+  {
+    "id": "windsurf",
+    "name": "Windsurf",
+    "url": "https://devin.ai/",
+    "cat": "coding",
+    "desc": "以 Cascade 为核心的 Agentic IDE。",
+    "tags": [
+      "AI IDE",
+      "Agent"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "已被 Cognition（Devin 的公司）收购，产品线正在并入 Devin。选它之前先确认官方目前把编辑器放在什么位置——接受一家刚被收购的产品做长期投入要谨慎。",
+    "descEn": "An agentic IDE with a well-designed flow between you and the AI.",
+    "caveatEn": "Its editor ecosystem and plugin compatibility lag VS Code — heavy users of specific extensions will feel the gap."
+  },
+  {
+    "id": "trae",
+    "name": "Trae",
+    "url": "https://www.trae.ai",
+    "cat": "coding",
+    "desc": "字节出品的 AI IDE，中文体验友好。",
+    "tags": [
+      "AI IDE",
+      "国产"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "国内可直连是优势，但底层模型可选项少于国际同类产品。",
+    "descEn": "ByteDance's AI IDE, directly accessible from mainland China.",
+    "caveatEn": "Direct access is the selling point, but you get fewer underlying model choices than international alternatives."
+  },
+  {
+    "id": "v0",
+    "name": "v0",
+    "url": "https://v0.app",
+    "cat": "coding",
+    "desc": "一句话生成可用的 React / Tailwind 界面。",
+    "tags": [
+      "前端",
+      "生成UI"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "只擅长前端界面生成，且产出偏「原型级」——接入真实业务逻辑后往往要大量改造。",
+    "descEn": "Vercel's tool for generating UI from prompts or screenshots. Excellent at producing presentable interfaces fast.",
+    "caveatEn": "Frontend-only, and the output is prototype-grade — wiring in real business logic usually means substantial rework."
+  },
+  {
+    "id": "bolt",
+    "name": "Bolt.new",
+    "url": "https://bolt.new",
+    "cat": "coding",
+    "desc": "浏览器里直接生成并部署全栈应用。",
+    "tags": [
+      "全栈",
+      "在线"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "一键出应用很爽，但生成的项目结构和依赖选择不一定符合你的工程规范。",
+    "descEn": "StackBlitz's tool for generating and running full-stack apps in the browser from a prompt.",
+    "caveatEn": "Generating an app in one shot is satisfying, but the project structure and dependencies it picks may not match your engineering standards."
+  },
+  {
+    "id": "codex",
+    "name": "OpenAI Codex",
+    "url": "https://openai.com/codex",
+    "cat": "coding",
+    "desc": "OpenAI 的云端软件工程智能体。",
+    "tags": [
+      "Agent",
+      "云端"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "偏云端异步任务模式，需要把上下文交给它，对私有代码库慎用。",
+    "descEn": "OpenAI's cloud-based coding agent that works asynchronously on delegated tasks.",
+    "caveatEn": "It works asynchronously in the cloud, which means handing over context. Think twice for private codebases."
+  },
+  {
+    "id": "replit",
+    "name": "Replit",
+    "url": "https://replit.com",
+    "cat": "coding",
+    "desc": "在线 IDE + Agent，边聊边把应用做出来。",
+    "tags": [
+      "在线",
+      "Agent"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "在线环境方便但性能和本地 IDE 差距明显，长期工程还是搬回本地更实际。",
+    "descEn": "A browser-based IDE with an integrated AI agent that can build and deploy from a description.",
+    "caveatEn": "Convenient online, but performance lags a local setup. For long-term engineering, moving back to a local IDE is more realistic."
+  },
+  {
+    "id": "qoder",
+    "name": "Qoder",
+    "url": "https://qoder.com",
+    "cat": "coding",
+    "desc": "阿里推出的 Agentic 编程平台。",
+    "tags": [
+      "国产",
+      "Agent"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-04-01",
+    "caveat": "较新的产品，生态和文档积累有限，关键项目建议先小范围试点。",
+    "descEn": "An agentic coding tool from Alibaba, focused on repository-level understanding.",
+    "caveatEn": "A relatively new product with limited ecosystem and documentation. Pilot it on something non-critical first."
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "url": "https://www.midjourney.com",
+    "cat": "image",
+    "desc": "美学标杆的文生图工具，出图质感强。",
+    "tags": [
+      "文生图",
+      "美学"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "精确控制能力弱——「把左边那棵树的颜色改成深绿」这类指令它做不到。需要精确改图请换工具。",
+    "descEn": "The aesthetic benchmark for AI image generation, with mature style-consistency tooling.",
+    "caveatEn": "Precise control is its weak spot — instructions like 'make the tree on the left dark green' simply don't work. Switch tools when you need exact edits."
+  },
+  {
+    "id": "gpt-image",
+    "name": "GPT Image",
+    "url": "https://chatgpt.com",
+    "cat": "image",
+    "desc": "OpenAI 图像模型，指令遵循与文字渲染好。",
+    "tags": [
+      "文生图",
+      "改图"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "审美偏保守，艺术性和氛围感不如 Midjourney；价格也属于高位。",
+    "descEn": "OpenAI's image model. The most accurate at following instructions and rendering legible text inside images.",
+    "caveatEn": "Its aesthetic is conservative — less artistic atmosphere than Midjourney — and it sits in the top price tier."
+  },
+  {
+    "id": "nano-banana",
+    "name": "Nano Banana",
+    "url": "https://gemini.google.com",
+    "cat": "image",
+    "desc": "Gemini 图像编辑模型，一致性改图出圈。",
+    "tags": [
+      "改图",
+      "一致性"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "主要通过对话产品使用，批量生成和 API 调用能力受限，不适合大规模生产。",
+    "descEn": "Google's image model, outstanding at character and object consistency, with a conversational editing flow.",
+    "caveatEn": "Primarily used through the chat product, so batch generation and API access are limited. Unsuitable for large-scale production."
+  },
+  {
+    "id": "flux",
+    "name": "FLUX",
+    "url": "https://bfl.ai/",
+    "cat": "image",
+    "desc": "Black Forest Labs 开源图像模型，可自部署。",
+    "tags": [
+      "开源",
+      "文生图"
+    ],
+    "pricing": "open",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "显存门槛高，且需要自己搭工作流。想要开箱即用请选云端产品。",
+    "descEn": "An open image model from Black Forest Labs with leading quality for open weights.",
+    "caveatEn": "High VRAM requirements and you have to build your own workflow. If you want something that just works, choose a cloud service."
+  },
+  {
+    "id": "comfyui",
+    "name": "ComfyUI",
+    "url": "https://comfy.org/",
+    "cat": "image",
+    "desc": "节点式图像生成工作流，自由度最高。",
+    "tags": [
+      "工作流",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "节点式工作流学习曲线陡，只做出图不动配置的人会被它的复杂度劝退。",
+    "descEn": "A node-based image generation workflow tool. The most flexible and controllable option available.",
+    "caveatEn": "The node graph has a steep learning curve. People who just want to generate images will be put off by the complexity."
+  },
+  {
+    "id": "jimeng",
+    "name": "即梦 AI",
+    "url": "https://jimeng.jianying.com",
+    "cat": "image",
+    "desc": "剪映系图像视频生成，中文提示词友好。",
+    "tags": [
+      "国产",
+      "图+视频"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "风格库偏商业设计，做纯艺术探索时选择面较窄。",
+    "descEn": "ByteDance's image tool. Strong Chinese prompt understanding, excellent text rendering and poster layout.",
+    "caveatEn": "The style library skews commercial design, so it's narrow for pure artistic exploration."
+  },
+  {
+    "id": "ideogram",
+    "name": "Ideogram",
+    "url": "https://ideogram.ai",
+    "cat": "image",
+    "desc": "文字排版与海报类图像生成见长。",
+    "tags": [
+      "文字渲染",
+      "海报"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "强项只在图内文字排版，画面质感和风格多样性不是它的优势。",
+    "descEn": "Distinctive at typography and text layout inside images.",
+    "caveatEn": "Its strength is text rendering only. Image quality and style variety are not where it wins."
+  },
+  {
+    "id": "recraft",
+    "name": "Recraft",
+    "url": "https://www.recraft.ai",
+    "cat": "image",
+    "desc": "面向设计的生成工具，可出矢量图。",
+    "tags": [
+      "矢量",
+      "设计"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "矢量与品牌风格一致性是卖点，但写实类图像质量一般。",
+    "descEn": "Vector output and brand-consistent styles. Popular for design assets that need to scale.",
+    "caveatEn": "Vector and brand consistency are the draw, but photorealistic quality is average."
+  },
+  {
+    "id": "krea",
+    "name": "Krea",
+    "url": "https://www.krea.ai",
+    "cat": "image",
+    "desc": "实时生成与增强，交互式创作体验。",
+    "tags": [
+      "实时",
+      "增强"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "实时生成体验好，但精细度和可控性弱于专业出图工具。",
+    "descEn": "Real-time image generation with a strong interactive feel.",
+    "caveatEn": "Great real-time experience, but precision and controllability trail professional image tools."
+  },
+  {
+    "id": "sora",
+    "name": "Sora",
+    "url": "https://sora.com",
+    "cat": "video",
+    "desc": "OpenAI 视频生成模型，物理一致性领先。",
+    "tags": [
+      "文生视频"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "额度与价格都在高位，且国内访问不便。做批量短视频的话成本会失控。",
+    "descEn": "OpenAI's video model. Leading physical consistency and long-shot coherence.",
+    "caveatEn": "Quota and pricing are both at the high end, and access from China is awkward. Batch short-video production gets expensive fast."
+  },
+  {
+    "id": "kling",
+    "name": "可灵 Kling",
+    "url": "https://klingai.com",
+    "cat": "video",
+    "desc": "快手视频生成，人物动作自然。",
+    "tags": [
+      "国产",
+      "图生视频"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "高峰期排队较长，做需要即时产出的工作流要留出等待时间。",
+    "descEn": "Kuaishou's video model. Natural, fluid human motion and excellent image-to-video, directly accessible in China.",
+    "caveatEn": "Long queues at peak times. If your workflow needs immediate output, budget for the wait."
+  },
+  {
+    "id": "veo",
+    "name": "Veo",
+    "url": "https://deepmind.google/models/veo",
+    "cat": "video",
+    "desc": "Google DeepMind 视频模型，原生带音频。",
+    "tags": [
+      "原生音频"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "生成时长仍有限制，长镜头要分段拼接，衔接处要注意一致性。",
+    "descEn": "Google DeepMind's video model with native synchronised audio and near-live-action texture.",
+    "caveatEn": "Output duration is still limited, so long shots must be stitched — watch consistency at the seams."
+  },
+  {
+    "id": "runway",
+    "name": "Runway",
+    "url": "https://runway.com",
+    "cat": "video",
+    "desc": "老牌 AI 视频平台，工具箱最全。",
+    "tags": [
+      "工具全"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "工具箱最全也最贵，中文提示词支持一般，非英语母语者需要额外适应。",
+    "descEn": "The most complete professional video toolkit, including inpainting and motion brush.",
+    "caveatEn": "The fullest toolbox is also the priciest, and Chinese prompt support is average — non-native English speakers need extra adaptation."
+  },
+  {
+    "id": "hailuo",
+    "name": "海螺视频",
+    "url": "https://hailuoai.video",
+    "cat": "video",
+    "desc": "MiniMax 视频生成，镜头语言丰富。",
+    "tags": [
+      "国产",
+      "文生视频"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "运动幅度大是优点，但细节稳定性略逊于第一梯队，人脸容易出现轻微变形。",
+    "descEn": "MiniMax's video model with rich camera language and large motion range.",
+    "caveatEn": "Big motion is the upside, but fine detail is less stable than the top tier — faces can warp slightly."
+  },
+  {
+    "id": "vidu",
+    "name": "Vidu",
+    "url": "https://www.vidu.cn",
+    "cat": "video",
+    "desc": "生数科技视频模型，参考一致性不错。",
+    "tags": [
+      "国产",
+      "参考一致性"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "国产可用性好，但在复杂物理场景的连贯性上和国际旗舰有差距。",
+    "descEn": "A Chinese video model with good accessibility and coherent short clips.",
+    "caveatEn": "Accessible in China, but coherence in complex physical scenes trails the international flagships."
+  },
+  {
+    "id": "pika",
+    "name": "Pika",
+    "url": "https://pika.art",
+    "cat": "video",
+    "desc": "轻量 AI 视频，特效玩法多。",
+    "tags": [
+      "特效"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "擅长风格化和小特效，写实长镜头不是它的强项。",
+    "descEn": "Video generation focused on stylised effects and short-form fun.",
+    "caveatEn": "Excellent at stylised effects, not at realistic long takes."
+  },
+  {
+    "id": "suno",
+    "name": "Suno",
+    "url": "https://suno.com",
+    "cat": "audio",
+    "desc": "一句话生成完整歌曲，含人声编曲。",
+    "tags": [
+      "音乐",
+      "人声"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "版权归属与商用范围必须看清条款——不同套餐的授权差别很大。",
+    "descEn": "Full-song generation with convincing vocals and arrangement, covering a wide range of styles.",
+    "caveatEn": "Copyright ownership and commercial scope must be checked per plan — the terms differ substantially between tiers."
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "url": "https://elevenlabs.io",
+    "cat": "audio",
+    "desc": "顶级语音合成与克隆，多语言配音。",
+    "tags": [
+      "TTS",
+      "克隆"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "价格偏高，且音色克隆功能有明确的授权要求，未授权克隆他人声音涉及侵权。",
+    "descEn": "The naturalness benchmark for speech synthesis, with convincing multilingual dubbing and fine emotional control.",
+    "caveatEn": "Expensive, and voice cloning has explicit authorisation requirements. Cloning someone's voice without consent is an infringement."
+  },
+  {
+    "id": "udio",
+    "name": "Udio",
+    "url": "https://www.udio.com",
+    "cat": "audio",
+    "desc": "音乐生成，编曲细节控制好。",
+    "tags": [
+      "音乐"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "音乐性不错但人声自然度略逊，且免费额度受限明显。",
+    "descEn": "Music generation with strong musicality across genres.",
+    "caveatEn": "Good musicianship but vocal naturalness lags slightly, and the free tier is clearly limited."
+  },
+  {
+    "id": "fish-audio",
+    "name": "Fish Audio",
+    "url": "https://fish.audio",
+    "cat": "audio",
+    "desc": "开源语音合成，中文音色丰富。",
+    "tags": [
+      "开源",
+      "中文TTS"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "中文音色不错，但多语言表现不均，做小语种要实测。",
+    "descEn": "Strong Chinese voice synthesis with a broad tone library and controllable prosody.",
+    "caveatEn": "Good Chinese voices, but multilingual performance is uneven — test your target languages before committing."
+  },
+  {
+    "id": "minimax-audio",
+    "name": "MiniMax 语音",
+    "url": "https://www.minimax.cn",
+    "cat": "audio",
+    "desc": "国产语音合成与音乐生成 API。",
+    "tags": [
+      "国产",
+      "API"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "语音质量高但和自家其他能力绑定，单独做 TTS 对比专门厂商优势不明显。",
+    "descEn": "MiniMax's speech models with high synthesis quality and emotion control.",
+    "caveatEn": "High quality but bundled with the rest of MiniMax's stack. For pure TTS it's not obviously better than dedicated vendors."
+  },
+  {
+    "id": "notion-ai",
+    "name": "Notion AI",
+    "url": "https://www.notion.com/product/ai",
+    "cat": "writing",
+    "desc": "知识库里的 AI 写作、总结与问答。",
+    "tags": [
+      "笔记",
+      "知识库"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "能力绑定在 Notion 里，脱离它的文档体系就没用了。中文语感也一般。",
+    "descEn": "AI layered into Notion — drafting, summarising and Q&A over your workspace.",
+    "caveatEn": "Capability is bound to Notion. Outside its document system it's useless, and Chinese language quality is average."
+  },
+  {
+    "id": "gamma",
+    "name": "Gamma",
+    "url": "https://gamma.app",
+    "cat": "writing",
+    "desc": "一句话生成 PPT / 网页 / 文档。",
+    "tags": [
+      "PPT",
+      "演示"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "生成的版式好看但常「不好讲」——信息密度不均，按实际投影效果调过再用。",
+    "descEn": "Presentation generation with a stronger narrative feel than traditional slide tools.",
+    "caveatEn": "The layouts look good but often present badly — uneven information density. Adjust for your actual projector before using it live."
+  },
+  {
+    "id": "grammarly",
+    "name": "Grammarly",
+    "url": "https://www.grammarly.com",
+    "cat": "writing",
+    "desc": "英文语法与语气润色，写作伴侣。",
+    "tags": [
+      "英文",
+      "润色"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "只适用于英文写作，中文内容用不上。",
+    "descEn": "English grammar, clarity and tone correction that integrates almost everywhere you type.",
+    "caveatEn": "English only. Useless for Chinese content."
+  },
+  {
+    "id": "metaso-write",
+    "name": "秘塔写作猫",
+    "url": "https://xiezuocat.com",
+    "cat": "writing",
+    "desc": "中文校对、改写与降重。",
+    "tags": [
+      "国产",
+      "校对"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "写作场景的垂直优化，通用问答能力不强。",
+    "descEn": "Metaso's writing-focused assistant for Chinese long-form content.",
+    "caveatEn": "Vertically optimised for writing. General Q&A is not strong."
+  },
+  {
+    "id": "wps-ai",
+    "name": "WPS AI",
+    "url": "https://ai.wps.cn",
+    "cat": "writing",
+    "desc": "国产办公套件 AI，文档表格演示全覆盖。",
+    "tags": [
+      "国产",
+      "Office"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "深度绑定 WPS，导出的文档在 Office 里可能有排版差异。",
+    "descEn": "Kingsoft's AI inside WPS Office, generating documents, sheets and slides in place.",
+    "caveatEn": "Tied to WPS. Documents exported to Microsoft Office can show layout differences."
+  },
+  {
+    "id": "tencent-docs-ai",
+    "name": "腾讯文档 AI",
+    "url": "https://docs.qq.com",
+    "cat": "writing",
+    "desc": "在线协作文档内置 AI 助手。",
+    "tags": [
+      "国产",
+      "协作"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "绑定腾讯文档生态，且协作场景的权限设置需要额外注意。",
+    "descEn": "AI inside Tencent Docs for drafting and summarising collaborative documents.",
+    "caveatEn": "Bound to the Tencent Docs ecosystem, and permission settings in shared scenarios need extra care."
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "url": "https://www.perplexity.ai",
+    "cat": "research",
+    "desc": "答案式 AI 搜索，带引用来源。",
+    "tags": [
+      "搜索",
+      "引用"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "中文内容的覆盖不如英文，问中文语境的问题时容易出现「用英文资料回答中文问题」的错位。",
+    "descEn": "Answer-style search that cites its sources for every claim.",
+    "caveatEn": "Chinese content coverage is thinner than English, so Chinese-context questions often get English-material answers that miss the point."
+  },
+  {
+    "id": "metaso",
+    "name": "秘塔 AI 搜索",
+    "url": "https://metaso.cn",
+    "cat": "research",
+    "desc": "国产无广告 AI 搜索，学术模式好用。",
+    "tags": [
+      "国产",
+      "学术"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "中文学术检索是强项，但通用问答深度不如综合型助手。",
+    "descEn": "Chinese AI search with a strong academic and Chinese-web focus.",
+    "caveatEn": "Academic search is the strength, but general Q&A depth is below a general-purpose assistant."
+  },
+  {
+    "id": "notebooklm",
+    "name": "NotebookLM",
+    "url": "https://notebooklm.google.com",
+    "cat": "research",
+    "desc": "上传资料生成播客与知识问答。",
+    "tags": [
+      "播客",
+      "资料问答"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "只回答你上传的资料，问它资料之外的东西会说不知道——这是特性不是缺陷，但要清楚。",
+    "descEn": "Google's tool for indexing your own documents and answering questions with citations.",
+    "caveatEn": "Only answers from what you upload and will say it doesn't know otherwise. That's a feature, but you must understand it."
+  },
+  {
+    "id": "elicit",
+    "name": "Elicit",
+    "url": "https://elicit.com",
+    "cat": "research",
+    "desc": "文献综述自动化，适合科研。",
+    "tags": [
+      "文献",
+      "科研"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "聚焦学术文献提取，做通用调研会显得局限。",
+    "descEn": "Extracts structured data from academic literature into tables.",
+    "caveatEn": "Focused on academic paper extraction. Too narrow for general research."
+  },
+  {
+    "id": "consensus",
+    "name": "Consensus",
+    "url": "https://consensus.app",
+    "cat": "research",
+    "desc": "从论文里找证据，回答是否/多少。",
+    "tags": [
+      "证据",
+      "论文"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "只汇总论文结论，不覆盖行业报告和新闻，做市场调研时不够用。",
+    "descEn": "Aggregates conclusions from peer-reviewed papers on a question.",
+    "caveatEn": "Covers papers only — no industry reports or news. Insufficient for market research."
+  },
+  {
+    "id": "tiangong",
+    "name": "天工 AI",
+    "url": "https://www.tiangong.cn",
+    "cat": "research",
+    "desc": "昆仑万维 AI 搜索与研究助手。",
+    "tags": [
+      "国产",
+      "搜索"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "国产搜索增强，英文和学术资料的覆盖弱于国际同类。",
+    "descEn": "A domestic AI search product with good Chinese web coverage.",
+    "caveatEn": "English and academic coverage trails international equivalents."
+  },
+  {
+    "id": "manus",
+    "name": "Manus",
+    "url": "https://manus.im",
+    "cat": "agent",
+    "desc": "通用型 AI 智能体，能自己规划并执行任务。",
+    "tags": [
+      "通用Agent",
+      "国产"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "自主执行能力强也意味着不可控——涉及写操作、发消息这类不可逆动作时务必人工确认。",
+    "descEn": "An autonomous agent that plans and executes multi-step tasks in a cloud environment.",
+    "caveatEn": "Autonomy also means unpredictability. For irreversible actions — writing, sending, deleting — insist on human confirmation."
+  },
+  {
+    "id": "coze",
+    "name": "扣子 Coze",
+    "url": "https://www.coze.cn",
+    "cat": "agent",
+    "desc": "字节的智能体搭建平台，可一键发布到多端。",
+    "tags": [
+      "国产",
+      "Bot"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "偏对话 Bot 场景，做复杂多步工作流时编排能力弱于专业工作流工具。",
+    "descEn": "ByteDance's platform for building chat bots with plugins and knowledge bases.",
+    "caveatEn": "Skewed towards conversational bots. For complex multi-step workflows, orchestration is weaker than dedicated tools."
+  },
+  {
+    "id": "dify",
+    "name": "Dify",
+    "url": "https://dify.ai",
+    "cat": "agent",
+    "desc": "开源 LLM 应用开发平台，可视化编排。",
+    "tags": [
+      "开源",
+      "工作流"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "功能全但配置项多，简单场景用它反而绕。自部署版运维成本要算进去。",
+    "descEn": "An open-source LLM app platform covering agents, workflows and RAG in one place.",
+    "caveatEn": "Feature-rich also means configuration-heavy — overkill for simple cases. Self-hosting adds operational cost."
+  },
+  {
+    "id": "n8n",
+    "name": "n8n",
+    "url": "https://n8n.io",
+    "cat": "agent",
+    "desc": "可自部署的自动化工作流，AI 节点丰富。",
+    "tags": [
+      "开源",
+      "自动化"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "自部署灵活，但节点众多学习曲线陡，且复杂流程的调试体验一般。",
+    "descEn": "Open-source workflow automation that can self-host and connect to anything with an API.",
+    "caveatEn": "Self-hosting is flexible, but the node count makes the learning curve steep and debugging complex flows is tedious."
+  },
+  {
+    "id": "zapier",
+    "name": "Zapier",
+    "url": "https://zapier.com",
+    "cat": "agent",
+    "desc": "老牌自动化平台，已全面 AI 化。",
+    "tags": [
+      "自动化",
+      "集成"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "按任务计费，流程跑多了成本上升很快，高频率场景建议自建。",
+    "descEn": "The most mature no-code automation platform, connecting thousands of SaaS tools.",
+    "caveatEn": "Priced per task, so costs climb quickly at volume. High-frequency flows are better self-hosted."
+  },
+  {
+    "id": "langchain",
+    "name": "LangChain",
+    "url": "https://www.langchain.com",
+    "cat": "agent",
+    "desc": "最流行的 LLM 应用开发框架。",
+    "tags": [
+      "框架",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "抽象层多，出问题时排查链路长。简单场景直接用官方 SDK 往往更清楚。",
+    "descEn": "The most widely used LLM application framework, with connectors for nearly everything.",
+    "caveatEn": "Many abstraction layers make problems hard to trace. For simple cases, using the vendor SDK directly is clearer."
+  },
+  {
+    "id": "flowise",
+    "name": "Flowise",
+    "url": "https://flowiseai.com",
+    "cat": "agent",
+    "desc": "拖拽式搭建 LLM 流程，开源。",
+    "tags": [
+      "开源",
+      "低代码"
+    ],
+    "pricing": "open",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "可视化拖拽方便但表达力受限，复杂逻辑最终还是要写代码。",
+    "descEn": "Drag-and-drop LLM app builder with a low barrier to entry.",
+    "caveatEn": "Visual building is convenient but expressive power is limited. Complex logic still ends up in code."
+  },
+  {
+    "id": "figma-ai",
+    "name": "Figma AI",
+    "url": "https://www.figma.com",
+    "cat": "design",
+    "desc": "设计工具内置生成、改写与原型能力。",
+    "tags": [
+      "UI",
+      "原型"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "AI 能力是插件生态的集合，没有统一的入口和一致的体验。",
+    "descEn": "AI integrated into Figma through plugins and native features.",
+    "caveatEn": "AI capability here is a collection of plugins — no single entry point and no consistent experience."
+  },
+  {
+    "id": "canva-ai",
+    "name": "Canva AI",
+    "url": "https://www.canva.com",
+    "cat": "design",
+    "desc": "模板 + AI 生成，非设计师也能出图。",
+    "tags": [
+      "模板",
+      "海报"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "模板化明显，做品牌视觉容易和别人的作品撞脸。",
+    "descEn": "AI generation and editing inside Canva, the easiest way to produce everyday design.",
+    "caveatEn": "Heavily templated. Brand visuals can end up looking like everyone else's."
+  },
+  {
+    "id": "magnific",
+    "name": "Magnific",
+    "url": "https://www.magnific.com",
+    "cat": "design",
+    "desc": "图像超分与细节增强，放大不糊。",
+    "tags": [
+      "超分",
+      "增强"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "放大与细节增强效果强，但会「重新创作」细节——产品图这类要求保真的场景要慎用。",
+    "descEn": "AI upscaling and detail enhancement that adds plausible texture to low-resolution images.",
+    "caveatEn": "It invents detail rather than recovering it. Avoid it for product photos and anything requiring fidelity."
+  },
+  {
+    "id": "gaoding",
+    "name": "稿定 AI",
+    "url": "https://www.gaoding.com",
+    "cat": "design",
+    "desc": "国产设计工具，电商图与抠图能力强。",
+    "tags": [
+      "国产",
+      "电商"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "国产模板量大，但定制深度有限，做品牌规范时不够用。",
+    "descEn": "A Chinese design platform with a large template library and AI generation.",
+    "caveatEn": "Huge template volume, but limited customisation depth — not enough for brand guidelines work."
+  },
+  {
+    "id": "julius",
+    "name": "Julius AI",
+    "url": "https://julius.ai",
+    "cat": "data",
+    "desc": "上传表格直接对话式分析并出图。",
+    "tags": [
+      "表格",
+      "可视化"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "自然语言分析上手快，但数据量大时性能和口径控制不如专业工具。",
+    "descEn": "Upload data and analyse it conversationally, with charts produced along the way.",
+    "caveatEn": "Natural-language analysis is fast to start, but performance and column-definition control fall short of professional tools."
+  },
+  {
+    "id": "hex",
+    "name": "Hex",
+    "url": "https://hex.tech",
+    "cat": "data",
+    "desc": "团队数据科学平台，内置 AI 助手。",
+    "tags": [
+      "BI",
+      "团队"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-04-01",
+    "caveat": "协作 Notebook 体验好，但绑定平台，本地环境迁移不顺畅。",
+    "descEn": "Collaborative notebooks for data science with AI assistance and sharing built in.",
+    "caveatEn": "Great collaboration experience, but platform-bound — migrating to a local environment is awkward."
+  },
+  {
+    "id": "meshy",
+    "name": "Meshy",
+    "url": "https://www.meshy.ai",
+    "cat": "3d",
+    "desc": "文生 3D 模型与贴图，游戏可用。",
+    "tags": [
+      "文生3D",
+      "贴图"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "生成模型拓扑不规整，直接进引擎前通常需要清理。",
+    "descEn": "Text-to-3D model generation with consistent styling and interactive preview.",
+    "caveatEn": "Generated topology is irregular — cleanup is usually needed before it goes into an engine."
+  },
+  {
+    "id": "tripo",
+    "name": "Tripo AI",
+    "url": "https://www.tripo3d.ai",
+    "cat": "3d",
+    "desc": "国产文生 3D，速度快、拓扑干净。",
+    "tags": [
+      "国产",
+      "文生3D"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-03-01",
+    "caveat": "出模速度快，但细节精度有限，适合占位与概念阶段。",
+    "descEn": "A Chinese text-to-3D platform supporting multi-view input and automatic rigging.",
+    "caveatEn": "Fast generation, but detail precision is limited — suited to placeholder and concept work."
+  },
+  {
+    "id": "rodin",
+    "name": "Rodin",
+    "url": "https://hyper3d.ai",
+    "cat": "3d",
+    "desc": "高质量 3D 资产生成，支持扫描输入。",
+    "tags": [
+      "3D资产"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-04-01",
+    "caveat": "质量不错但按次计费，大批量生成成本不低。",
+    "descEn": "High-quality text and image to 3D generation, from geometry through to texture.",
+    "caveatEn": "Good quality but billed per generation, so bulk production gets expensive."
+  },
+  {
+    "id": "ollama",
+    "name": "Ollama",
+    "url": "https://ollama.com",
+    "cat": "local",
+    "desc": "一行命令本地跑开源大模型。",
+    "tags": [
+      "本地",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "开箱即用但性能调优空间小，高并发场景请换 vLLM 或 SGLang。",
+    "descEn": "The easiest way to run open models locally — one command and it's working.",
+    "caveatEn": "Easy to start but limited tuning headroom. For high concurrency, move to vLLM or SGLang."
+  },
+  {
+    "id": "lmstudio",
+    "name": "LM Studio",
+    "url": "https://lmstudio.ai",
+    "cat": "local",
+    "desc": "图形界面的本地模型运行器，新手友好。",
+    "tags": [
+      "本地",
+      "GUI"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "桌面端体验好，但不适合做服务端，多用户并发支持弱。",
+    "descEn": "A desktop app for downloading and running local GGUF models with a clean interface.",
+    "caveatEn": "Great desktop experience, but not a server. Multi-user concurrency support is weak."
+  },
+  {
+    "id": "openwebui",
+    "name": "Open WebUI",
+    "url": "https://openwebui.com",
+    "cat": "local",
+    "desc": "自托管的类 ChatGPT 界面，兼容多种后端。",
+    "tags": [
+      "自托管",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "界面完善但功能堆叠多，资源占用不低，小机器上会吃紧。",
+    "descEn": "A self-hosted chat interface for local models, with RAG and user management.",
+    "caveatEn": "Feature-rich but resource-hungry. Small machines will struggle."
+  },
+  {
+    "id": "vllm",
+    "name": "vLLM",
+    "url": "https://docs.vllm.ai",
+    "cat": "local",
+    "desc": "高吞吐推理引擎，生产部署首选。",
+    "tags": [
+      "推理引擎",
+      "高性能"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "吞吐最强但配置项多，小规模场景用它是过度工程。",
+    "descEn": "The standard for deploying open models in production, with PagedAttention for high throughput.",
+    "caveatEn": "Highest throughput but heavy configuration. Over-engineering for small-scale use."
+  },
+  {
+    "id": "huggingface",
+    "name": "Hugging Face",
+    "url": "https://huggingface.co",
+    "cat": "local",
+    "desc": "AI 界的 GitHub，模型与数据集大本营。",
+    "tags": [
+      "模型库",
+      "社区"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-01-05",
+    "caveat": "国内网络不稳定，且模型许可差异极大，商用前逐个确认。",
+    "descEn": "The hub for open models, datasets and demo apps.",
+    "caveatEn": "Network access from China is unstable, and model licences vary enormously — check each one before commercial use."
+  },
+  {
+    "id": "llamacpp",
+    "name": "llama.cpp",
+    "url": "https://github.com/ggml-org/llama.cpp",
+    "cat": "local",
+    "desc": "极致轻量的本地推理，CPU 也能跑。",
+    "tags": [
+      "轻量",
+      "CPU"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-02-01",
+    "caveat": "CPU 也能跑是优势，但纯 CPU 推理速度只适合轻量场景。",
+    "descEn": "Runs quantised models efficiently across CPU, GPU and Apple Silicon.",
+    "caveatEn": "Running on CPU is the advantage, but pure-CPU inference is only fast enough for light use."
+  },
+  {
+    "id": "yuanbao",
+    "name": "腾讯元宝",
+    "url": "https://yuanbao.tencent.com",
+    "cat": "chat",
+    "desc": "腾讯混元大模型助手，深度接入微信生态与腾讯文档。",
+    "tags": [
+      "国产",
+      "混元",
+      "微信"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "深度依赖腾讯生态，脱离微信和腾讯文档场景后差异化不明显。",
+    "descEn": "Tencent's Hunyuan-powered assistant, wired into WeChat and Tencent Docs.",
+    "caveatEn": "Heavily tied to Tencent's ecosystem. Outside WeChat and Tencent Docs scenarios the differentiation is thin."
+  },
+  {
+    "id": "ernie",
+    "name": "文心一言",
+    "url": "https://wenxin.baidu.com",
+    "cat": "chat",
+    "desc": "百度文心大模型，中文理解与检索整合能力强。",
+    "tags": [
+      "国产",
+      "文心"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "产品线版本多，需要确认具体型号；开放能力相比头部有差距。",
+    "descEn": "Baidu's Wenxin models. Strong Chinese knowledge integration with a large enterprise customer base.",
+    "caveatEn": "Many product versions to wade through, and open capabilities trail the leading labs."
+  },
+  {
+    "id": "spark",
+    "name": "讯飞星火",
+    "url": "https://xinghuo.xfyun.cn",
+    "cat": "chat",
+    "desc": "科大讯飞大模型，语音交互与教育场景见长。",
+    "tags": [
+      "国产",
+      "语音"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "纯文本推理不在第一梯队，它的价值集中在语音识别与合成、以及教育场景。",
+    "descEn": "iFlytek's model. Industry-leading Chinese speech recognition and synthesis, with deep education-scenario tuning.",
+    "caveatEn": "Pure text reasoning isn't first tier — its value is concentrated in voice and education."
+  },
+  {
+    "id": "baichuan",
+    "name": "百小应",
+    "url": "https://yi.baichuan-ai.com",
+    "cat": "chat",
+    "desc": "百川智能的 AI 助手，医疗与健康问答有专门优化。",
+    "tags": [
+      "国产",
+      "医疗"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "定位偏医疗健康垂直，通用任务上没必要专门选它。",
+    "descEn": "Baichuan's assistant, with specific optimisation for medical and health Q&A.",
+    "caveatEn": "Positioned as a vertical medical assistant. For general tasks there's no reason to pick it specifically."
+  },
+  {
+    "id": "yuewen",
+    "name": "跃问",
+    "url": "https://yuewen.cn",
+    "cat": "chat",
+    "desc": "阶跃星辰多模态助手，图片理解与长文档解析突出。",
+    "tags": [
+      "国产",
+      "多模态"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "多模态理解是强项，纯文本长文写作并非它的主打方向。",
+    "descEn": "StepFun's multimodal assistant. Stands out at image understanding and long-document parsing.",
+    "caveatEn": "Multimodal understanding is the strength; long-form text writing is not its focus."
+  },
+  {
+    "id": "qwen-chat",
+    "name": "Qwen Chat",
+    "url": "https://chat.qwen.ai",
+    "cat": "chat",
+    "desc": "通义千问官方对话站，可直接切换 Qwen 各尺寸模型。",
+    "tags": [
+      "国产",
+      "Qwen",
+      "模型切换"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "这是官方对话站而不是 API 控制台，要接进自己的系统请去阿里云百炼。",
+    "descEn": "The official Qwen chat site, where you can switch between Qwen models of various sizes.",
+    "caveatEn": "This is a chat site, not an API console. To integrate into your own system, go to Alibaba Cloud Bailian instead."
+  },
+  {
+    "id": "sensetime",
+    "name": "商量 SenseChat",
+    "url": "https://chat.sensetime.com",
+    "cat": "chat",
+    "desc": "商汤日日新大模型，多模态与代码能力均衡。",
+    "tags": [
+      "国产"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "能力均衡但没有明显长板，同价位通常有更专精的选择。",
+    "descEn": "SenseTime's SenseChat. Balanced across multimodal and code, without an obvious weak spot.",
+    "caveatEn": "Balanced also means no standout strength. At the same price you can usually find something more specialised."
+  },
+  {
+    "id": "360zhinao",
+    "name": "360 智脑",
+    "url": "https://ai.360.com",
+    "cat": "chat",
+    "desc": "360 的 AI 助手，接入自家搜索做实时增强。",
+    "tags": [
+      "国产",
+      "搜索"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "搜索增强依赖自家检索质量，冷门问题的答案可靠性一般。",
+    "descEn": "360's assistant, augmenting answers with its own search index.",
+    "caveatEn": "Search augmentation depends on the quality of its own retrieval, so answers on niche topics are unreliable."
+  },
+  {
+    "id": "poe",
+    "name": "Poe",
+    "url": "https://poe.com",
+    "cat": "chat",
+    "desc": "Quora 出的模型聚合平台，一个订阅用遍各家模型和自建 Bot。",
+    "tags": [
+      "聚合",
+      "多模型"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "聚合层意味着你无法控制底层模型的版本和配额变化，做生产系统别依赖它。",
+    "descEn": "Quora's model aggregator — one subscription for many providers' models plus custom bots.",
+    "caveatEn": "As an aggregator you don't control the underlying model versions or quotas. Don't build a production system on it."
+  },
+  {
+    "id": "character-ai",
+    "name": "Character.AI",
+    "url": "https://character.ai",
+    "cat": "chat",
+    "desc": "角色扮演对话平台，可自制人设 Bot。",
+    "tags": [
+      "角色扮演"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "角色扮演向，事实类问答的准确性不能当通用助手用。",
+    "descEn": "Roleplay-focused chat where you can create your own persona bots.",
+    "caveatEn": "Built for roleplay. Its factual accuracy isn't good enough to use as a general assistant."
+  },
+  {
+    "id": "meta-ai",
+    "name": "Meta AI",
+    "url": "https://www.meta.ai",
+    "cat": "chat",
+    "desc": "Meta Llama 系列官方助手，已接入 WhatsApp / Instagram。",
+    "tags": [
+      "Llama"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "区域可用性限制多，且被整合进社交产品里，独立使用体验一般。",
+    "descEn": "Meta's Llama-powered assistant, integrated into WhatsApp and Instagram.",
+    "caveatEn": "Regional availability is patchy, and being bundled into social apps makes for a mediocre standalone experience."
+  },
+  {
+    "id": "huggingchat",
+    "name": "HuggingChat",
+    "url": "https://huggingface.co/chat",
+    "cat": "chat",
+    "desc": "Hugging Face 的免费对话入口，底层模型可自由切换。",
+    "tags": [
+      "开源",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "免费额度对应的是小尺寸开源模型，别拿它的表现评价整个模型家族。",
+    "descEn": "Hugging Face's free chat entry point, with freely switchable underlying models.",
+    "caveatEn": "The free tier runs small open models. Don't judge a whole model family by how HuggingChat performs."
+  },
+  {
+    "id": "openrouter",
+    "name": "OpenRouter",
+    "url": "https://openrouter.ai",
+    "cat": "chat",
+    "desc": "一个 API Key 调用几百个模型，价格与可用性统一比较，开发者必备。",
+    "tags": [
+      "API",
+      "聚合",
+      "开发"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "它只是转发，上游限流或故障会直接传到你这。生产环境建议同时配置直连备用通道。",
+    "descEn": "One API key for several hundred models, with pricing and availability in a single place. Essential for developers comparing providers.",
+    "caveatEn": "It only forwards requests — upstream rate limits and outages land on you. For production, configure a direct fallback channel alongside it."
+  },
+  {
+    "id": "cline",
+    "name": "Cline",
+    "url": "https://cline.bot",
+    "cat": "coding",
+    "desc": "VS Code 里的开源编程 Agent，自带浏览器操作与终端执行。",
+    "tags": [
+      "开源",
+      "VS Code",
+      "Agent"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "免费指的是插件本身，模型调用仍然要你自己付费，重度使用成本会明显上升。",
+    "descEn": "An open-source coding agent for VS Code, with browser control and terminal execution built in.",
+    "caveatEn": "'Free' refers to the extension — you still pay for model calls, and heavy use gets expensive fast."
+  },
+  {
+    "id": "roo-code",
+    "name": "Roomote",
+    "url": "https://roomote.dev",
+    "cat": "coding",
+    "desc": "原 Roo Code 团队转型的云端编程 Agent，从 Slack 派活，交回来的是 PR。",
+    "tags": [
+      "代码",
+      "自动化"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "VS Code 扩展已于 2026 年 5 月归档停更，想在编辑器里继续用可以转社区分支 ZooCode 或回到 Cline。",
+    "descEn": "Cloud coding agent from the team behind Roo Code. Dispatch it from Slack, get a reviewable PR back.",
+    "caveatEn": "The VS Code extension was archived in May 2026 and no longer maintained. To stay in the editor, move to the community fork ZooCode, or back to Cline."
+  },
+  {
+    "id": "aider",
+    "name": "Aider",
+    "url": "https://aider.chat",
+    "cat": "coding",
+    "desc": "命令行 AI 结对编程，改动自动提交 git，可回溯。",
+    "tags": [
+      "CLI",
+      "开源",
+      "Git"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "命令行 + git 驱动，不熟 git 的人容易把自己绕进去。它默认自动提交，要留意提交历史。",
+    "descEn": "Command-line AI pair programming that auto-commits each change to git, so everything is reversible.",
+    "caveatEn": "Git-driven from the command line — people who aren't comfortable with git can get tangled. It commits automatically, so watch your history."
+  },
+  {
+    "id": "continue",
+    "name": "Continue",
+    "url": "https://continue.dev",
+    "cat": "coding",
+    "desc": "开源 IDE 助手，模型可自选本地或云端，配置透明。",
+    "tags": [
+      "开源",
+      "可自托管"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "定位是助手而非 Agent，跨文件的大改动不是它的场景。",
+    "descEn": "An open-source IDE assistant with freely selectable local or cloud models and transparent configuration.",
+    "caveatEn": "It's an assistant, not an agent. Large cross-file changes aren't its scenario."
+  },
+  {
+    "id": "cody",
+    "name": "Sourcegraph Cody",
+    "url": "https://sourcegraph.com/cody",
+    "cat": "coding",
+    "desc": "擅长在超大型代码库里定位与理解上下文。",
+    "tags": [
+      "大代码库",
+      "检索"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "优势只在超大代码库，中小项目用它的性价比不如通用 AI IDE。",
+    "descEn": "Sourcegraph's assistant, exceptional at locating and understanding context in very large codebases.",
+    "caveatEn": "Its advantage only shows in huge repositories. For small and mid-sized projects, a general AI IDE is better value."
+  },
+  {
+    "id": "tabnine",
+    "name": "Tabnine",
+    "url": "https://www.tabnine.com",
+    "cat": "coding",
+    "desc": "老牌代码补全，主打企业私有部署与代码不外流。",
+    "tags": [
+      "企业",
+      "私有部署"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "主打私有部署和代码不外流，纯能力上落后于同价位竞品。",
+    "descEn": "A long-standing code completion tool built around enterprise self-hosting and keeping code in-house.",
+    "caveatEn": "Its focus is private deployment and keeping code off third-party servers. On raw capability it trails same-priced competitors."
+  },
+  {
+    "id": "amazon-q",
+    "name": "Amazon Q Developer",
+    "url": "https://aws.amazon.com/q/developer",
+    "cat": "coding",
+    "desc": "AWS 官方编程助手，云资源与 IaC 场景一体化。",
+    "tags": [
+      "AWS",
+      "云"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "深度绑定 AWS，不用 AWS 的话它的很多能力用不上。",
+    "descEn": "AWS's developer assistant, integrated with cloud resources and infrastructure-as-code.",
+    "caveatEn": "Deeply tied to AWS. If you don't use AWS, much of its capability is unreachable."
+  },
+  {
+    "id": "jetbrains-ai",
+    "name": "JetBrains AI",
+    "url": "https://www.jetbrains.com/ai",
+    "cat": "coding",
+    "desc": "IntelliJ 全家桶内置 AI，深度融入重构与导航。",
+    "tags": [
+      "JetBrains",
+      "IDE"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "只在 JetBrains 家族里好用，跨语言跨生态的支持不如独立产品。",
+    "descEn": "AI built into the IntelliJ family, closely woven into refactoring and navigation.",
+    "caveatEn": "Only good inside the JetBrains family. Cross-language and cross-ecosystem support is weaker than standalone products."
+  },
+  {
+    "id": "zed",
+    "name": "Zed",
+    "url": "https://zed.dev",
+    "cat": "coding",
+    "desc": "Rust 写的高性能编辑器，自带协作与 AI 面板。",
+    "tags": [
+      "高性能",
+      "协作"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "编辑器很新，插件生态远不及 VS Code，重度依赖特定插件的团队慎选。",
+    "descEn": "A high-performance Rust-based editor with built-in collaboration and an AI panel.",
+    "caveatEn": "A very new editor — the plugin ecosystem is nowhere near VS Code. Teams depending on specific extensions should think twice."
+  },
+  {
+    "id": "devin",
+    "name": "Devin",
+    "url": "https://devin.ai",
+    "cat": "coding",
+    "desc": "Cognition 的自主软件工程师，能独立完成中等规模的工单。",
+    "tags": [
+      "自主Agent",
+      "工单"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "按任务计费，复杂工单的成本不可预测。适合有明确验收标准的中等工单，不适合探索性需求。",
+    "descEn": "Cognition's autonomous software engineer, able to complete mid-sized tickets on its own.",
+    "caveatEn": "Billed per task, so costs on complex tickets are unpredictable. Suits well-specified mid-sized work, not exploratory requests."
+  },
+  {
+    "id": "lovable",
+    "name": "Lovable",
+    "url": "https://lovable.dev",
+    "cat": "coding",
+    "desc": "对话式生成全栈应用，产出可维护的代码而非黑盒。",
+    "tags": [
+      "全栈",
+      "生成应用"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "生成的是完整应用，但一旦需求偏离常规 CRUD，改造难度会陡增。",
+    "descEn": "Builds full-stack apps through conversation and produces maintainable code rather than a black box.",
+    "caveatEn": "It generates a complete application, but once requirements stray from conventional CRUD, reworking it gets steep fast."
+  },
+  {
+    "id": "firebase-studio",
+    "name": "Firebase Studio",
+    "url": "https://firebase.studio",
+    "cat": "coding",
+    "desc": "Google 的云端全栈 AI 工作台，从提示到部署一条龙。",
+    "tags": [
+      "Google",
+      "云端"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "绑定 Google Cloud 生态，且云端 IDE 对大型本地项目支持有限。",
+    "descEn": "Google's cloud full-stack AI workspace, from prompt to deployment.",
+    "caveatEn": "Locked to Google Cloud, and a cloud IDE has limited support for large local projects."
+  },
+  {
+    "id": "augment-code",
+    "name": "Augment Code",
+    "url": "https://www.augmentcode.com",
+    "cat": "coding",
+    "desc": "面向大型工程的上下文引擎，强调真实仓库理解。",
+    "tags": [
+      "企业",
+      "上下文"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "企业向定价，个人或小团队成本偏高。",
+    "descEn": "A context engine aimed at large engineering organisations, focused on real repository understanding.",
+    "caveatEn": "Enterprise pricing puts it out of reach for individuals and small teams."
+  },
+  {
+    "id": "lingma",
+    "name": "通义灵码",
+    "url": "https://lingma.aliyun.com",
+    "cat": "coding",
+    "desc": "阿里云免费 AI 编码助手，中文注释与文档友好。",
+    "tags": [
+      "国产",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "免费额度友好，但深度定制能力弱于付费竞品。",
+    "descEn": "Alibaba Cloud's free AI coding assistant. Good with Chinese comments and documentation.",
+    "caveatEn": "Generous free tier, but deep customisation is weaker than paid competitors."
+  },
+  {
+    "id": "comate",
+    "name": "文心快码",
+    "url": "https://comate.baidu.com",
+    "cat": "coding",
+    "desc": "百度 AI 编码助手，支持多语言与代码库问答。",
+    "tags": [
+      "国产"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "国产链路完整，但插件市场覆盖和更新速度落后于国际产品。",
+    "descEn": "Baidu's AI coding assistant with multi-language support and codebase Q&A.",
+    "caveatEn": "A complete domestic chain, but plugin-market coverage and update cadence trail international products."
+  },
+  {
+    "id": "codegeex",
+    "name": "CodeGeeX",
+    "url": "https://codegeex.cn",
+    "cat": "coding",
+    "desc": "智谱开源代码模型与插件，可本地部署。",
+    "tags": [
+      "国产",
+      "开源"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "开源模型适合本地化，但生成质量与商业旗舰有可感差距。",
+    "descEn": "Zhipu's open-source code model and plugin — deployable entirely on your own hardware.",
+    "caveatEn": "Open models are good for localisation, but generation quality is perceptibly behind commercial flagships."
+  },
+  {
+    "id": "stable-diffusion",
+    "name": "Stable Diffusion",
+    "url": "https://stability.ai",
+    "cat": "image",
+    "desc": "开源文生图奠基之作，权重可下载本地跑，生态最大。",
+    "tags": [
+      "开源",
+      "本地部署"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "名字指的是模型家族而非某个产品，直接用官方站体验远不如 ComfyUI 生态。",
+    "descEn": "The open-source foundation of text-to-image. The largest ecosystem by far, with weights you can run locally.",
+    "caveatEn": "This is a model family, not a product. The official site gives a far worse experience than the ComfyUI ecosystem around it."
+  },
+  {
+    "id": "firefly",
+    "name": "Adobe Firefly",
+    "url": "https://firefly.adobe.com",
+    "cat": "image",
+    "desc": "Adobe 官方生成模型，训练数据版权清晰，可商用放心。",
+    "tags": [
+      "版权安全",
+      "Adobe"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "版权干净是最大卖点，代价是风格保守、生成速度偏慢。",
+    "descEn": "Adobe's own generation models, trained on clearly licensed data — safe for commercial use.",
+    "caveatEn": "Clean licensing is the main draw. The cost is conservative styling and slower generation."
+  },
+  {
+    "id": "leonardo",
+    "name": "Leonardo.Ai",
+    "url": "https://leonardo.ai",
+    "cat": "image",
+    "desc": "游戏与概念美术方向，风格模型和资产管理做得好。",
+    "tags": [
+      "游戏美术",
+      "风格模型"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "偏游戏概念美术，做通用商业设计时风格会显得太「游戏」。",
+    "descEn": "Aimed at game and concept art, with strong style models and asset management.",
+    "caveatEn": "Skewed towards game concept art. For general commercial design, the style reads as too 'gamey'."
+  },
+  {
+    "id": "civitai",
+    "name": "Civitai",
+    "url": "https://civitai.com",
+    "cat": "image",
+    "desc": "最大的开源绘图模型社区，LoRA 与 Checkpoint 大本营。",
+    "tags": [
+      "社区",
+      "LoRA",
+      "开源"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "是模型社区不是出图平台，需要配合本地或云端运行环境才能真正用起来。",
+    "descEn": "The largest community for open image models — the home of LoRAs and checkpoints.",
+    "caveatEn": "It's a model community, not a generation platform. You need your own local or cloud runtime to actually use anything."
+  },
+  {
+    "id": "liblib",
+    "name": "LiblibAI",
+    "url": "https://www.liblib.art",
+    "cat": "image",
+    "desc": "国内最大的 AI 绘画模型社区与在线出图平台。",
+    "tags": [
+      "国产",
+      "社区",
+      "在线出图"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "在线出图方便但排队和额度受限，大批量生产还是本地更划算。",
+    "descEn": "China's largest AI art community and online generation platform.",
+    "caveatEn": "Online generation is convenient, but queues and quotas bite. For bulk production, local is still more economical."
+  },
+  {
+    "id": "tongyi-wanxiang",
+    "name": "通义万相",
+    "url": "https://tongyi.aliyun.com/wanxiang",
+    "cat": "image",
+    "desc": "阿里的图像与视频生成，中文提示词理解到位。",
+    "tags": [
+      "国产",
+      "阿里"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "中文提示理解好，但风格库和社区生态不如专业绘画平台丰富。",
+    "descEn": "Alibaba's image and video generation, with solid Chinese prompt understanding.",
+    "caveatEn": "Good Chinese comprehension, but the style library and community ecosystem are thinner than dedicated art platforms."
+  },
+  {
+    "id": "yige",
+    "name": "文心一格",
+    "url": "https://yige.baidu.com",
+    "cat": "image",
+    "desc": "百度 AI 绘画，中国风与国潮素材库丰富。",
+    "tags": [
+      "国产",
+      "中国风"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "中国风素材丰富，风格多样性上明显偏窄。",
+    "descEn": "Baidu's AI art tool, with a rich library of Chinese-style and guochao material.",
+    "caveatEn": "Strong on Chinese-style material, noticeably narrow in style diversity."
+  },
+  {
+    "id": "wujie",
+    "name": "无界 AI",
+    "url": "https://www.wujieai.com",
+    "cat": "image",
+    "desc": "国产绘画平台，模特换装与电商场景有专门模型。",
+    "tags": [
+      "国产",
+      "电商"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "电商场景专门优化，其他方向的通用性一般。",
+    "descEn": "A Chinese generation platform with dedicated models for model-swap and e-commerce scenarios.",
+    "caveatEn": "Optimised for e-commerce. Generality in other directions is average."
+  },
+  {
+    "id": "bing-image",
+    "name": "Microsoft Designer",
+    "url": "https://designer.microsoft.com/",
+    "cat": "image",
+    "desc": "微软的图像生成入口，原名 Bing 图像创建器。DALL·E 驱动，免费额度大方。",
+    "tags": [
+      "免费",
+      "DALL·E"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "免费额度大方但排队慢、内容过滤偏严，商业素材容易触发限制。入口已从 bing.com/images/create 迁到 Designer（旧地址 2026-09 实测 404），生成能力并入 Copilot；新地址 2026-09 直连实测可打开。",
+    "descEn": "Microsoft's image generation entry point, formerly Bing Image Creator. Powered by DALL·E with a generous free quota.",
+    "caveatEn": "Generous but slow queues, and content filtering is strict — commercial material often trips the limits. The entry moved from bing.com/images/create to Designer (the old address 404s as of our Sept 2026 check) and generation now sits inside Copilot; the new address did respond on a direct check in Sept 2026."
+  },
+  {
+    "id": "removebg",
+    "name": "remove.bg",
+    "url": "https://www.remove.bg",
+    "cat": "image",
+    "desc": "一键抠图去背景，边缘处理干净，有 API 可批量。",
+    "tags": [
+      "抠图",
+      "API"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "只做抠图，精细化（比如发丝、半透明物体）需要人工修补，且批量要付费。",
+    "descEn": "One-click background removal with clean edge handling and a batch API.",
+    "caveatEn": "Does one thing only. Fine detail — hair, semi-transparent objects — needs manual cleanup, and batch use is paid."
+  },
+  {
+    "id": "upscayl",
+    "name": "Upscayl",
+    "url": "https://upscayl.org",
+    "cat": "image",
+    "desc": "开源本地图像放大，免费无限制，离线可用。",
+    "tags": [
+      "开源",
+      "放大",
+      "本地"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "本地免费但吃显卡，放大倍数高时可能出现「塑料感」。",
+    "descEn": "Open-source local image upscaling. Free, unlimited, works offline.",
+    "caveatEn": "Free and local, but GPU-hungry, and high upscale factors can produce a plasticky look."
+  },
+  {
+    "id": "photoroom",
+    "name": "PhotoRoom",
+    "url": "https://www.photoroom.com",
+    "cat": "image",
+    "desc": "电商商品图专用：抠图、换背景、加场景一步到位。",
+    "tags": [
+      "电商",
+      "商品图"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "电商商品图专用，改动主体有虚假宣传风险——只换背景不要改商品本身。",
+    "descEn": "Purpose-built for e-commerce product shots: cutout, background swap and scene placement in one pass.",
+    "caveatEn": "E-commerce specific. Altering the product itself risks misrepresentation — change the background only, never the item."
+  },
+  {
+    "id": "luma-dream",
+    "name": "Luma Dream Machine",
+    "url": "https://lumalabs.ai/dream-machine",
+    "cat": "video",
+    "desc": "Luma 视频生成，镜头运动自然，支持关键帧控制。",
+    "tags": [
+      "文生视频"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "镜头运动自然，但部分场景人物一致性一般，连续多镜头要额外做角色锚定。",
+    "descEn": "Luma's video model with natural camera movement and keyframe control.",
+    "caveatEn": "Camera movement is natural, but character consistency is inconsistent in some scenes — multiple shots need explicit character anchoring."
+  },
+  {
+    "id": "hunyuan-video",
+    "name": "腾讯混元视频",
+    "url": "https://video.hunyuan.tencent.com",
+    "cat": "video",
+    "desc": "腾讯开源视频生成模型，国产算力上速度快。",
+    "tags": [
+      "国产",
+      "开源"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "开源版质量靠前，但自部署算力门槛很高，个人显卡基本跑不动。",
+    "descEn": "Tencent's open-source video model. Among the best open weights, and fast on domestic compute.",
+    "caveatEn": "Leading open quality, but self-hosting has a high compute bar — consumer GPUs won't manage it."
+  },
+  {
+    "id": "pixverse",
+    "name": "PixVerse",
+    "url": "https://pixverse.ai",
+    "cat": "video",
+    "desc": "爱诗科技视频生成，特效模板多，社交传播友好。",
+    "tags": [
+      "国产",
+      "特效"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "模板化痕迹明显，做品牌内容时原创度不足，容易被识别为「AI 味」。",
+    "descEn": "Aiseesoft's video model with a large library of effect templates, built for social sharing.",
+    "caveatEn": "Templates leave obvious fingerprints. For brand content the originality is too low and it reads as 'AI-generated'."
+  },
+  {
+    "id": "heygen",
+    "name": "HeyGen",
+    "url": "https://www.heygen.com",
+    "cat": "video",
+    "desc": "数字人口播视频，一次录音后可用任意语言输出。",
+    "tags": [
+      "数字人",
+      "口播"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "数字人口型效果好但「一眼AI」，严肃品牌场景慎用。价格按分钟计，长视频成本高。",
+    "descEn": "Digital human talking-head video. Record once, output in any language.",
+    "caveatEn": "Lip-sync is solid but it still looks obviously AI, so use it carefully for serious brand work. Priced per minute, which adds up for long videos."
+  },
+  {
+    "id": "synthesia",
+    "name": "Synthesia",
+    "url": "https://www.synthesia.io",
+    "cat": "video",
+    "desc": "企业级数字人视频，培训与内部沟通场景成熟。",
+    "tags": [
+      "企业",
+      "数字人"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "企业级定位，价格不在个人可承受范围，且模板感较强。",
+    "descEn": "Enterprise digital human video, mature for training and internal communications.",
+    "caveatEn": "Enterprise positioning means pricing outside individual budgets, and the output feels templated."
+  },
+  {
+    "id": "d-id",
+    "name": "D-ID",
+    "url": "https://www.d-id.com",
+    "cat": "video",
+    "desc": "让静态照片开口说话，老照片动起来这类效果。",
+    "tags": [
+      "照片动起来"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "让照片说话的效果偏「恐怖谷」，正式内容里容易显得诡异。",
+    "descEn": "Makes still photos speak — useful for bringing old photographs to life.",
+    "caveatEn": "Talking-photo output sits deep in the uncanny valley. In formal content it can come across as unsettling rather than impressive."
+  },
+  {
+    "id": "capcut",
+    "name": "剪映",
+    "url": "https://www.capcut.cn",
+    "cat": "video",
+    "desc": "国内最普及的剪辑工具，AI 成片、字幕、数字人一应俱全。",
+    "tags": [
+      "国产",
+      "剪辑",
+      "免费"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "免费版功能已受限，部分素材商用需要额外授权，做商业项目前确认清楚。",
+    "descEn": "The most widely used Chinese editing tool, with AI auto-edit, subtitles and digital humans all built in.",
+    "caveatEn": "The free tier is already limited, and some assets need extra licensing for commercial use. Check before using it on paid work."
+  },
+  {
+    "id": "descript",
+    "name": "Descript",
+    "url": "https://www.descript.com",
+    "cat": "video",
+    "desc": "像改文档一样剪视频，删掉某句话对应的画面就跟着没了。",
+    "tags": [
+      "剪辑",
+      "播客"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "中文支持不如英文，且它的核心是「改文档式剪辑」，复杂特效它做不了。",
+    "descEn": "Edit video like a document — delete a sentence and the matching footage goes with it.",
+    "caveatEn": "Chinese support is weaker than English, and its core is document-style editing. Complex effects are out of scope."
+  },
+  {
+    "id": "opus-clip",
+    "name": "OpusClip",
+    "url": "https://www.opus.pro",
+    "cat": "video",
+    "desc": "长视频自动切成高光短视频，直接适配竖屏平台。",
+    "tags": [
+      "切片",
+      "短视频"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "自动切片经常前半句没头没尾，人工过一遍开头结尾是必要的。",
+    "descEn": "Automatically cuts long videos into highlight shorts formatted for vertical platforms.",
+    "caveatEn": "Auto-cut clips frequently start or end mid-sentence. Reviewing the first and last few seconds by hand is not optional."
+  },
+  {
+    "id": "hedra",
+    "name": "Hedra",
+    "url": "https://www.hedra.com",
+    "cat": "video",
+    "desc": "角色表演驱动，上传照片配音频即可生成说话动画。",
+    "tags": [
+      "角色动画"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "角色表演驱动效果依赖源图质量，且生成时长有限制。",
+    "descEn": "Character performance driving — upload a photo and an audio track to generate a talking animation.",
+    "caveatEn": "Results depend heavily on the quality of the source image, and generation length is capped."
+  },
+  {
+    "id": "adobe-podcast",
+    "name": "Adobe Podcast",
+    "url": "https://podcast.adobe.com",
+    "cat": "audio",
+    "desc": "一键把手机录的嘈杂人声修成录音棚效果，免费额度够用。",
+    "tags": [
+      "降噪",
+      "免费"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "只解决降噪与音质，剪辑和转写要另找工具。免费额度也有限。",
+    "descEn": "Turns a phone recording into a studio-sounding voice track. Free tier is enough for casual use.",
+    "caveatEn": "Solves denoising and tone only. Editing and transcription need separate tools, and the free quota is limited."
+  },
+  {
+    "id": "murf",
+    "name": "Murf AI",
+    "url": "https://murf.ai",
+    "cat": "audio",
+    "desc": "商用配音为主，音色多、支持逐句微调语气。",
+    "tags": [
+      "配音",
+      "商用"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "商用配音为主，价格按字符计，长篇内容成本不低。",
+    "descEn": "Commercial voiceover-first platform with many voice options and per-sentence delivery control.",
+    "caveatEn": "Priced per character, so long-form content gets costly quickly."
+  },
+  {
+    "id": "playht",
+    "name": "PlayHT",
+    "url": "https://play.ht",
+    "cat": "audio",
+    "desc": "低延迟语音合成，适合做实时语音对话应用。",
+    "tags": [
+      "实时",
+      "API"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "低延迟是优势，但音色库的丰富度不如头部 TTS 厂商。",
+    "descEn": "Low-latency speech synthesis suited to real-time voice conversation applications.",
+    "caveatEn": "Low latency is the advantage, but the voice library is less rich than the leading TTS vendors."
+  },
+  {
+    "id": "whisper",
+    "name": "Whisper",
+    "url": "https://github.com/openai/whisper",
+    "cat": "audio",
+    "desc": "OpenAI 开源的语音识别模型，本地跑、多语言、可微调。",
+    "tags": [
+      "开源",
+      "ASR",
+      "本地"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "只做识别不做说话人分离，多人会议场景要配合其他工具（如 pyannote）。",
+    "descEn": "OpenAI's open-source speech recognition model. Runs locally, multilingual, fine-tunable.",
+    "caveatEn": "Does recognition only, no speaker separation. Multi-person meetings need a companion tool like pyannote."
+  },
+  {
+    "id": "stable-audio",
+    "name": "Stable Audio",
+    "url": "https://stableaudio.com",
+    "cat": "audio",
+    "desc": "生成音效与配乐片段，适合做视频背景音。",
+    "tags": [
+      "音效",
+      "配乐"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "生成的是短片段音效，做完整配乐要多次拼接，过渡容易生硬。",
+    "descEn": "Generates sound effects and short music beds, good for video background audio.",
+    "caveatEn": "It generates short clips, so full soundtracks require stitching — transitions tend to sound abrupt."
+  },
+  {
+    "id": "riffusion",
+    "name": "Google Flow Music",
+    "url": "https://www.flowmusic.app",
+    "cat": "audio",
+    "desc": "原 Riffusion，被 Google 收购后重做。像聊天一样反复改歌，能拆轨。",
+    "tags": [
+      "音乐",
+      "多模态"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "前身 Riffusion 已并入 Google Flow 系列，独立版本不再存在。输出嵌 SynthID 水印，商用前先看平台条款。",
+    "descEn": "Formerly Riffusion, rebuilt by Google after the acquisition. Iterate on a track by chatting, with stem splitting.",
+    "caveatEn": "Riffusion as a standalone product no longer exists — it became ProducerAI, then part of Google Flow. Output is SynthID-watermarked; read the platform terms before commercial use."
+  },
+  {
+    "id": "haimian",
+    "name": "海绵音乐",
+    "url": "https://www.haimian.com",
+    "cat": "audio",
+    "desc": "字节的音乐生成，中文歌词与和声处理贴合华语审美。",
+    "tags": [
+      "国产",
+      "音乐"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "中文歌词贴合度好，但编曲复杂度有限，成品听起来偏「模板歌」。",
+    "descEn": "ByteDance's music generation, with Chinese lyrics and harmony tuned to local taste.",
+    "caveatEn": "Chinese lyrics fit well, but arrangement complexity is limited — the output can sound like a template song."
+  },
+  {
+    "id": "krisp",
+    "name": "Krisp",
+    "url": "https://krisp.ai",
+    "cat": "audio",
+    "desc": "实时通话降噪与回声消除，开会时屏蔽键盘声和背景人声。",
+    "tags": [
+      "降噪",
+      "通话"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "实时降噪在极端噪声下会吃掉人声细节，重要会议建议同时本地录音备份。",
+    "descEn": "Real-time call denoising and echo cancellation — filters keyboard noise and background voices in meetings.",
+    "caveatEn": "Aggressive denoising can eat detail from the human voice. For important meetings, also record locally as a backup."
+  },
+  {
+    "id": "voice-clone-cosyvoice",
+    "name": "CosyVoice",
+    "url": "https://github.com/FunAudioLLM/CosyVoice",
+    "cat": "audio",
+    "desc": "阿里开源的语音合成，3 秒音频即可克隆音色。",
+    "tags": [
+      "开源",
+      "克隆",
+      "国产"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "自部署需要一定工程能力，且音色克隆务必获得本人授权。",
+    "descEn": "Alibaba's open-source speech synthesis — clone a voice from three seconds of audio.",
+    "caveatEn": "Self-hosting takes some engineering effort, and voice cloning absolutely requires the speaker's consent."
+  },
+  {
+    "id": "gpt-sovits",
+    "name": "GPT-SoVITS",
+    "url": "https://github.com/RVC-Boss/GPT-SoVITS",
+    "cat": "audio",
+    "desc": "社区最火的开源音色克隆方案，几分钟数据就能训出可用音色。",
+    "tags": [
+      "开源",
+      "克隆",
+      "社区"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": false,
+    "added": "2026-05-05",
+    "caveat": "社区项目，版本迭代快、配置容易踩坑，且同样有音色授权问题。",
+    "descEn": "The most popular open-source voice cloning approach in the community — a usable voice from a few minutes of data.",
+    "caveatEn": "A community project with fast-moving versions and fiddly configuration. The same voice-consent rules apply."
+  },
+  {
+    "id": "feishu-ai",
+    "name": "飞书智能伙伴",
+    "url": "https://www.feishu.cn/product/ai",
+    "cat": "writing",
+    "desc": "嵌入飞书文档、表格、会议的 AI，企业知识库问答是强项。",
+    "tags": [
+      "国产",
+      "协作",
+      "企业"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "绑定飞书，脱离企业套件后价值有限。知识库问答效果强依赖内部资料整理质量。",
+    "descEn": "AI embedded across Feishu documents, sheets and meetings — enterprise knowledge Q&A is the strong point.",
+    "caveatEn": "Tied to Feishu. Outside the suite its value drops, and knowledge-base answers depend heavily on how well your internal material is organised."
+  },
+  {
+    "id": "deepl",
+    "name": "DeepL",
+    "url": "https://www.deepl.com",
+    "cat": "writing",
+    "desc": "翻译质量标杆，长句和专业术语处理比通用模型稳。",
+    "tags": [
+      "翻译",
+      "专业"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "翻译质量高但免费额度有限，且它不做改写和润色，只做翻译。",
+    "descEn": "The translation quality benchmark, handling long sentences and terminology more reliably than general models.",
+    "caveatEn": "High quality but the free tier is limited, and it only translates — no rewriting or polishing."
+  },
+  {
+    "id": "immersive-translate",
+    "name": "沉浸式翻译",
+    "url": "https://immersivetranslate.com",
+    "cat": "writing",
+    "desc": "浏览器双语对照翻译插件，可接自己的 API Key，看外文资料神器。",
+    "tags": [
+      "插件",
+      "双语对照",
+      "免费"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "插件形态，手机端和 PDF 的支持不如网页正文稳定。要接自己的 API Key 才划算。",
+    "descEn": "Bilingual browser translation extension. Bring your own API key and read foreign material with two columns side by side.",
+    "caveatEn": "It's an extension, so mobile and PDF support is less stable than web body text. You need your own API key for it to be economical."
+  },
+  {
+    "id": "quillbot",
+    "name": "QuillBot",
+    "url": "https://quillbot.com",
+    "cat": "writing",
+    "desc": "英文改写与降重，同义替换比通用模型更自然。",
+    "tags": [
+      "英文",
+      "改写"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "主打英文降重，中文内容完全用不上。",
+    "descEn": "English paraphrasing and rewriting with more natural synonym choice than general models.",
+    "caveatEn": "Built for English rewriting. Completely unusable for Chinese content."
+  },
+  {
+    "id": "jasper",
+    "name": "Jasper",
+    "url": "https://www.jasper.ai",
+    "cat": "writing",
+    "desc": "面向品牌营销的文案平台，强调品牌语调一致性。",
+    "tags": [
+      "营销",
+      "品牌"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "价格在同类里偏高，且它的优势主要在品牌语调一致性，个人创作者性价比一般。",
+    "descEn": "Brand marketing copy platform emphasising consistent brand voice across materials.",
+    "caveatEn": "Priced high for its class, and its advantage is mainly brand-voice consistency — poor value for individual creators."
+  },
+  {
+    "id": "copyai",
+    "name": "Copy.ai",
+    "url": "https://www.copy.ai",
+    "cat": "writing",
+    "desc": "营销文案与销售外联自动化，自带工作流编排。",
+    "tags": [
+      "营销",
+      "工作流"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "营销文案模板化明显，产出常需要大改才能用。",
+    "descEn": "Marketing copy and sales outreach automation with built-in workflow orchestration.",
+    "caveatEn": "Output is noticeably templated and usually needs substantial editing before use."
+  },
+  {
+    "id": "tome",
+    "name": "Tome",
+    "url": "https://tome.app",
+    "cat": "writing",
+    "desc": "叙事型演示文稿生成，强调故事线而非版式（2025-04 已停运）。",
+    "tags": [
+      "演示",
+      "叙事"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "叙事化演示有特色，但严谨的商务汇报反而需要更朴素的版式。产品已于 2025-04-30 正式停运（官方公告「Goodbye, Tome」），未导出的演示文稿一并删除；团队转型做企业销售/CRM 产品 Lightfield，Tome 品牌于 2025-08 被 AngelList 收购。需要做演示文稿请改用 Gamma 或 Beautiful.ai。",
+    "descEn": "Narrative-style presentation generation, emphasising storyline over slide layout (shut down April 2025).",
+    "caveatEn": "Its narrative style is distinctive, but rigorous business reporting often needs a plainer layout. The product was formally shut down on 30 April 2025 (official \"Goodbye, Tome\" announcement) and decks that were never exported went with it; the team moved on to an enterprise sales/CRM product called Lightfield, and the Tome brand was acquired by AngelList in Aug 2025. Use Gamma or Beautiful.ai for decks instead."
+  },
+  {
+    "id": "napkin",
+    "name": "Napkin AI",
+    "url": "https://www.napkin.ai",
+    "cat": "writing",
+    "desc": "把文字段落自动转成示意图，写文档/博客配图很省事。",
+    "tags": [
+      "文字转图",
+      "配图"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "文字转示意图效果好，但不适合需要精确数据图表（坐标轴、比例）的场景。",
+    "descEn": "Turns written paragraphs into diagrams automatically — a real time-saver for document and blog illustrations.",
+    "caveatEn": "Good at conceptual diagrams, unsuitable for charts that need precise data — axes, proportions, exact values."
+  },
+  {
+    "id": "zhiwen",
+    "name": "讯飞智文",
+    "url": "https://zhiwen.xfyun.cn",
+    "cat": "writing",
+    "desc": "国产 AI 文档与 PPT 生成，中文排版模板贴合国内场景。",
+    "tags": [
+      "国产",
+      "PPT"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "模板贴合国内场景，但生成的 PPT 需要按实际投影效果重新调字号。",
+    "descEn": "iFlytek's AI document and slide generation, with Chinese templates tuned to local conventions.",
+    "caveatEn": "Templates fit Chinese scenarios, but generated slides need font-size adjustment for actual projection."
+  },
+  {
+    "id": "youdao-ai",
+    "name": "有道 AI 翻译",
+    "url": "https://ai.youdao.com",
+    "cat": "writing",
+    "desc": "国产翻译老牌，文档翻译与术语库管理成熟。",
+    "tags": [
+      "国产",
+      "翻译"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "文档翻译与术语库成熟，但纯翻译质量上 DeepL 在多数语对上更好。",
+    "descEn": "Youdao's long-standing translation service, with mature document translation and terminology management.",
+    "caveatEn": "Strong on documents and glossaries, but raw translation quality is better with DeepL for most language pairs."
+  },
+  {
+    "id": "semantic-scholar",
+    "name": "Semantic Scholar",
+    "url": "https://www.semanticscholar.org",
+    "cat": "research",
+    "desc": "AI 驱动的学术搜索，自动提炼论文要点与引用关系。",
+    "tags": [
+      "学术",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "偏计算机与生物医学领域，人文社科的文献覆盖明显更薄。",
+    "descEn": "AI-driven academic search that extracts key points and citation relationships automatically.",
+    "caveatEn": "Skewed towards computer science and biomedicine. Humanities and social sciences are noticeably thinner."
+  },
+  {
+    "id": "connected-papers",
+    "name": "Connected Papers",
+    "url": "https://www.connectedpapers.com",
+    "cat": "research",
+    "desc": "把一篇论文的引用网络画成图，找相关工作一目了然。",
+    "tags": [
+      "文献图谱",
+      "可视"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "免费额度限次数，且它只画引用关系，不判断论文质量。",
+    "descEn": "Draws a paper's citation network as a graph, making related work obvious at a glance.",
+    "caveatEn": "Free usage is capped, and it only maps citation relationships — it doesn't judge quality."
+  },
+  {
+    "id": "scispace",
+    "name": "SciSpace",
+    "url": "https://typeset.io",
+    "cat": "research",
+    "desc": "上传 PDF 直接对话，公式和表格也能追问。",
+    "tags": [
+      "论文问答"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "论文问答不错，但公式和复杂表格的解析仍会出错，关键结论要回原文核对。",
+    "descEn": "Upload a PDF and converse with it, including follow-up questions on formulas and tables.",
+    "caveatEn": "Paper Q&A is good, but parsing of formulas and complex tables still breaks. Cross-check key conclusions against the original."
+  },
+  {
+    "id": "scite",
+    "name": "Scite",
+    "url": "https://scite.ai",
+    "cat": "research",
+    "desc": "不只是引用次数，而是判断这篇论文是被支持还是被反驳。",
+    "tags": [
+      "引用分析"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "引用分类判断有价值但订阅价高，个人研究者性价比一般。",
+    "descEn": "Goes beyond citation counts to show whether a paper has been supported or refuted.",
+    "caveatEn": "Citation classification is valuable but the subscription is expensive — poor value for individual researchers."
+  },
+  {
+    "id": "storm",
+    "name": "STORM",
+    "url": "https://storm.genie.stanford.edu",
+    "cat": "research",
+    "desc": "斯坦福的写作式研究系统，先提问再检索再成稿。",
+    "tags": [
+      "学术",
+      "开源",
+      "深度研究"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "生成的是「带引用的长文草稿」，需要人工核对每一条引用是否真的支持该论断。",
+    "descEn": "Stanford's writing-oriented research system: ask questions, retrieve, then draft.",
+    "caveatEn": "It generates a cited long-form draft. Every citation must be checked to confirm it actually supports the claim."
+  },
+  {
+    "id": "gpt-researcher",
+    "name": "GPT Researcher",
+    "url": "https://github.com/assafelovic/gpt-researcher",
+    "cat": "research",
+    "desc": "开源深度研究 Agent，自动多轮检索并生成带引用的报告。",
+    "tags": [
+      "开源",
+      "Agent",
+      "报告"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": false,
+    "added": "2026-05-05",
+    "caveat": "开源可自定义，但默认配置的检索质量一般，要做生产系统需要调检索源和提示词。",
+    "descEn": "Open-source deep research agent that runs multiple retrieval rounds and produces a cited report.",
+    "caveatEn": "Open and customisable, but default retrieval quality is average. Production use needs tuning of sources and prompts."
+  },
+  {
+    "id": "exa",
+    "name": "Exa",
+    "url": "https://exa.ai",
+    "cat": "research",
+    "desc": "为 AI 设计的搜索引擎 API，支持语义检索与内容抓取。",
+    "tags": [
+      "API",
+      "语义搜索",
+      "开发"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "为 AI 设计的搜索 API，返回的是链接和摘要而非直接答案，要自己做后处理。",
+    "descEn": "A search API designed for AI, supporting semantic retrieval and content extraction.",
+    "caveatEn": "Returns links and snippets rather than direct answers — you handle the post-processing."
+  },
+  {
+    "id": "tavily",
+    "name": "Tavily",
+    "url": "https://tavily.com",
+    "cat": "research",
+    "desc": "给 Agent 用的联网搜索 API，返回结果已做清洗和摘要。",
+    "tags": [
+      "API",
+      "Agent",
+      "开发"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "返回结果已做清洗，但覆盖广度不如通用搜索引擎，冷门内容容易搜不到。",
+    "descEn": "A web search API for agents that returns cleaned, summarised results.",
+    "caveatEn": "Results are cleaned but coverage is narrower than a general search engine. Niche topics may simply not appear."
+  },
+  {
+    "id": "langgraph",
+    "name": "LangGraph",
+    "url": "https://www.langchain.com/langgraph",
+    "cat": "agent",
+    "desc": "把 Agent 当状态机来编排，复杂多步流程可控可调试。",
+    "tags": [
+      "框架",
+      "状态机",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "状态机模型强大但概念多，简单 Agent 用它是杀鸡用牛刀。",
+    "descEn": "Orchestrates agents as state machines, making complex multi-step flows controllable and debuggable.",
+    "caveatEn": "Powerful but concept-heavy. For a simple agent it's overkill."
+  },
+  {
+    "id": "crewai",
+    "name": "CrewAI",
+    "url": "https://www.crewai.com",
+    "cat": "agent",
+    "desc": "多智能体协作框架，用角色分工的方式拆解复杂任务。",
+    "tags": [
+      "多Agent",
+      "框架",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "多智能体协作效果强依赖角色分工设计，分工不合理时它们会互相干扰。",
+    "descEn": "Multi-agent collaboration framework that decomposes work by role.",
+    "caveatEn": "Results depend heavily on how roles are divided. Bad role design makes agents interfere with each other."
+  },
+  {
+    "id": "autogen",
+    "name": "AutoGen",
+    "url": "https://microsoft.github.io/autogen",
+    "cat": "agent",
+    "desc": "微软的多 Agent 对话框架，研究社区使用广。",
+    "tags": [
+      "微软",
+      "多Agent",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "研究社区用得多，生产实践案例相对少，文档和版本变动较快。",
+    "descEn": "Microsoft's multi-agent conversation framework, widely used in research.",
+    "caveatEn": "Popular in research but fewer production case studies, and documentation changes quickly between versions."
+  },
+  {
+    "id": "openai-agents",
+    "name": "OpenAI Agents SDK",
+    "url": "https://openai.github.io/openai-agents-python",
+    "cat": "agent",
+    "desc": "OpenAI 官方 Agent 开发套件，轻量、概念少、上手快。",
+    "tags": [
+      "官方",
+      "框架"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "概念少上手快，但深度定制能力不如 LangGraph，复杂控制流会受限。",
+    "descEn": "OpenAI's official agent SDK — lightweight, few concepts, quick to start.",
+    "caveatEn": "Few concepts means fast starts but less room for deep customisation. Complex control flow hits its ceiling."
+  },
+  {
+    "id": "llamaindex",
+    "name": "LlamaIndex",
+    "url": "https://www.llamaindex.ai",
+    "cat": "agent",
+    "desc": "数据接入与 RAG 最成熟的框架，各种数据源都有连接器。",
+    "tags": [
+      "RAG",
+      "框架",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "数据接入最全，但抽象层次高，调优时经常需要绕过它的默认实现。",
+    "descEn": "The most mature framework for data ingestion and RAG, with connectors for every source.",
+    "caveatEn": "The most complete data connectors, but the abstraction is high — tuning often means working around its defaults."
+  },
+  {
+    "id": "vercel-ai-sdk",
+    "name": "Vercel AI SDK",
+    "url": "https://ai-sdk.dev",
+    "cat": "agent",
+    "desc": "前端友好的 AI 应用 SDK，流式输出与工具调用开箱即用。",
+    "tags": [
+      "前端",
+      "TypeScript",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "前端体验最好，但后端复杂的编排逻辑不是它的场景。",
+    "descEn": "A frontend-friendly AI SDK where streaming and tool calling work out of the box.",
+    "caveatEn": "The best frontend experience, but complex backend orchestration isn't its scenario."
+  },
+  {
+    "id": "browser-use",
+    "name": "Browser Use",
+    "url": "https://github.com/browser-use/browser-use",
+    "cat": "agent",
+    "desc": "让 AI 直接操作浏览器，自动化填表、抓数据、跑流程。",
+    "tags": [
+      "浏览器自动化",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": false,
+    "added": "2026-05-05",
+    "caveat": "浏览器自动化稳定性受页面改版影响大，生产环境要加监控和失败重试。",
+    "descEn": "Lets AI drive a real browser — form filling, scraping, running flows end to end.",
+    "caveatEn": "Browser automation is fragile against page redesigns. Production use needs monitoring and retry logic."
+  },
+  {
+    "id": "openhands",
+    "name": "OpenHands",
+    "url": "https://github.com/All-Hands-AI/OpenHands",
+    "cat": "agent",
+    "desc": "开源的自主软件工程 Agent，能读写代码、跑命令、调浏览器。",
+    "tags": [
+      "开源",
+      "编程",
+      "Agent"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": false,
+    "added": "2026-05-05",
+    "caveat": "能力强的同时也意味着成本不可预测，跑长任务前设好步数上限。",
+    "descEn": "An open-source autonomous software engineering agent that reads and writes code, runs commands and browses.",
+    "caveatEn": "Capable also means unpredictably expensive. Set a step limit before running long tasks."
+  },
+  {
+    "id": "ragflow",
+    "name": "RAGFlow",
+    "url": "https://ragflow.io",
+    "cat": "agent",
+    "desc": "国产开源 RAG 引擎，文档解析（含表格公式）做得扎实。",
+    "tags": [
+      "国产",
+      "开源",
+      "RAG"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "文档解析扎实但资源占用较高，自部署要留足内存。",
+    "descEn": "A Chinese open-source RAG engine with notably solid document parsing, including tables and formulas.",
+    "caveatEn": "Parsing is solid but resource usage is high. Leave plenty of memory if you self-host."
+  },
+  {
+    "id": "fastgpt",
+    "name": "FastGPT",
+    "url": "https://fastgpt.in",
+    "cat": "agent",
+    "desc": "国产开源知识库问答系统，可视化编排、开箱可用。",
+    "tags": [
+      "国产",
+      "开源",
+      "知识库"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "国产开源易上手，但生态插件数量少于头部框架。",
+    "descEn": "A Chinese open-source knowledge-base Q&A system with visual orchestration, ready out of the box.",
+    "caveatEn": "Easy to start with, but the plugin ecosystem is smaller than the leading frameworks."
+  },
+  {
+    "id": "composio",
+    "name": "Composio",
+    "url": "https://composio.dev",
+    "cat": "agent",
+    "desc": "给 Agent 一键接上几百个 SaaS 工具的身份与调用管理。",
+    "tags": [
+      "工具集成",
+      "API"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "工具集成的便利性以「把凭证托管给第三方」为代价，安全要求高的场景要评估。",
+    "descEn": "Connects agents to hundreds of SaaS tools with managed authentication and invocation.",
+    "caveatEn": "Convenience comes at the cost of handing credentials to a third party. Assess carefully if your security requirements are strict."
+  },
+  {
+    "id": "mastra",
+    "name": "Mastra",
+    "url": "https://mastra.ai",
+    "cat": "agent",
+    "desc": "TypeScript 的 Agent 框架，工作流、记忆、评测一体。",
+    "tags": [
+      "TypeScript",
+      "框架",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "较新的框架，文档和社区案例还在积累中。",
+    "descEn": "A TypeScript agent framework integrating workflows, memory and evaluation.",
+    "caveatEn": "A newer framework — documentation and community examples are still accumulating."
+  },
+  {
+    "id": "uizard",
+    "name": "Uizard",
+    "url": "https://uizard.io",
+    "cat": "design",
+    "desc": "草图或截图转成可编辑原型，快速验证想法。",
+    "tags": [
+      "原型",
+      "线框图"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "草图转原型适合验证想法，产出的东西不能直接当设计稿交付。",
+    "descEn": "Turns sketches or screenshots into editable prototypes for quick validation.",
+    "caveatEn": "Good for validating an idea, but the output isn't deliverable as a design file."
+  },
+  {
+    "id": "framer",
+    "name": "Framer",
+    "url": "https://www.framer.com",
+    "cat": "design",
+    "desc": "设计即上线，做营销页和作品集的首选，动效能力强。",
+    "tags": [
+      "建站",
+      "动效"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "设计即上线的模式很方便，但绑定它的托管服务，迁移成本高。",
+    "descEn": "Design and publish in one place — the go-to for marketing pages and portfolios, with strong motion.",
+    "caveatEn": "Design-to-publish is convenient, but it binds you to their hosting. Migration is costly."
+  },
+  {
+    "id": "looka",
+    "name": "Looka",
+    "url": "https://looka.com",
+    "cat": "design",
+    "desc": "AI 生成 Logo 与整套品牌视觉，导出含各类物料。",
+    "tags": [
+      "Logo",
+      "品牌"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "生成的 Logo 适合初创快速起步，但独特性有限，做品牌时容易显得「模板感」。",
+    "descEn": "AI-generated logos and brand kits with exportable assets for every use.",
+    "caveatEn": "Fine for a startup getting off the ground, but the output isn't distinctive — brands tend to look templated."
+  },
+  {
+    "id": "huemint",
+    "name": "Huemint",
+    "url": "https://huemint.com",
+    "cat": "design",
+    "desc": "AI 配色方案生成，直接给到可用的品牌配色组合。",
+    "tags": [
+      "配色",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "只生成配色方案，不解决可用性和对比度问题，拿到后要自己验证可读性。",
+    "descEn": "AI colour palette generation that returns usable brand colour combinations.",
+    "caveatEn": "Generates palettes only. It doesn't solve accessibility or contrast — verify readability yourself."
+  },
+  {
+    "id": "visily",
+    "name": "Visily",
+    "url": "https://www.visily.ai",
+    "cat": "design",
+    "desc": "非设计师也能出高保真原型，模板和 AI 补全都友好。",
+    "tags": [
+      "原型",
+      "低门槛"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "低门槛的代价是可定制性弱，复杂交互原型做不了。",
+    "descEn": "High-fidelity prototyping for non-designers, with friendly templates and AI completion.",
+    "caveatEn": "The low barrier means low customisability. Complex interactive prototypes are out of reach."
+  },
+  {
+    "id": "motiff",
+    "name": "Motiff 妙多",
+    "url": "https://motiff.com",
+    "cat": "design",
+    "desc": "国产 AI 设计工具，界面设计与 Figma 高度兼容。",
+    "tags": [
+      "国产",
+      "UI设计"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "与 Figma 兼容是卖点，但生态和社区资源仍在建设期。",
+    "descEn": "A Chinese AI design tool with high compatibility with Figma files.",
+    "caveatEn": "Figma compatibility is the selling point, but the ecosystem and community resources are still being built."
+  },
+  {
+    "id": "jsdesign",
+    "name": "即时设计",
+    "url": "https://js.design",
+    "cat": "design",
+    "desc": "国产在线设计协作平台，内置 AI 生成与素材库。",
+    "tags": [
+      "国产",
+      "协作",
+      "免费"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "国产协作平台，插件生态和 Figma 差距明显。",
+    "descEn": "A Chinese online design collaboration platform with AI generation and built-in assets.",
+    "caveatEn": "A domestic collaboration platform, but the plugin ecosystem is far behind Figma."
+  },
+  {
+    "id": "khroma",
+    "name": "Khroma",
+    "url": "https://www.khroma.co",
+    "cat": "design",
+    "desc": "先学你喜欢的颜色，再生成无限配色组合。",
+    "tags": [
+      "配色",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "只用你喜欢的颜色做组合，不保证配色的可访问性（对比度）。",
+    "descEn": "Learns the colours you like, then generates unlimited palettes from them.",
+    "caveatEn": "Combines colours you like without checking accessibility. Contrast is on you."
+  },
+  {
+    "id": "rows",
+    "name": "Rows",
+    "url": "https://rows.com",
+    "cat": "data",
+    "desc": "在线表格内嵌 AI 与 API 数据源，做轻量看板很顺手。",
+    "tags": [
+      "表格",
+      "在线"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "在线表格内置 AI，但复杂数据量下性能受限。",
+    "descEn": "An online spreadsheet with AI and API data sources embedded — handy for light dashboards.",
+    "caveatEn": "AI inside a spreadsheet, but performance suffers at high data volumes."
+  },
+  {
+    "id": "quadratic",
+    "name": "Quadratic",
+    "url": "https://www.quadratichq.com",
+    "cat": "data",
+    "desc": "支持 Python/SQL 的现代电子表格，处理大数据不卡。",
+    "tags": [
+      "表格",
+      "Python"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "支持 Python/SQL 是优势，但学习成本高于普通表格。",
+    "descEn": "A modern spreadsheet with Python and SQL support that handles large data without stalling.",
+    "caveatEn": "Python and SQL support is the advantage, but the learning cost is higher than a plain spreadsheet."
+  },
+  {
+    "id": "deepnote",
+    "name": "Deepnote",
+    "url": "https://deepnote.com",
+    "cat": "data",
+    "desc": "协作式 Notebook，内置 AI 助手写代码和解释结果。",
+    "tags": [
+      "Notebook",
+      "协作"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "协作场景强，个人做重度计算时不如本地环境灵活。",
+    "descEn": "A collaborative notebook with an AI assistant that writes code and explains results.",
+    "caveatEn": "Strong for collaboration, but less flexible than a local environment for heavy computation."
+  },
+  {
+    "id": "akkio",
+    "name": "Akkio",
+    "url": "https://www.akkio.com",
+    "cat": "data",
+    "desc": "面向业务人员的预测建模，上传表格就能跑预测。",
+    "tags": [
+      "预测",
+      "低代码"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "面向业务人员的预测建模，黑盒程度高，模型可解释性弱。",
+    "descEn": "Predictive modelling for business users — upload a table and run forecasts.",
+    "caveatEn": "Built for business users, which means a high degree of black-box behaviour and weak model explainability."
+  },
+  {
+    "id": "wrenai",
+    "name": "Wren AI",
+    "url": "https://www.getwren.ai",
+    "cat": "data",
+    "desc": "开源 Text-to-SQL 方案，自然语言直接问数据库。",
+    "tags": [
+      "开源",
+      "Text2SQL"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "Text-to-SQL 准确率依赖表结构描述质量，脏库效果会明显下降。",
+    "descEn": "Open-source text-to-SQL that lets you ask a database questions in plain language.",
+    "caveatEn": "Accuracy depends on how well your schema is described. On a messy database results drop off noticeably."
+  },
+  {
+    "id": "vanna",
+    "name": "Vanna",
+    "url": "https://vanna.ai",
+    "cat": "data",
+    "desc": "用 RAG 提升 SQL 生成准确率的开源框架，可训练自己的库。",
+    "tags": [
+      "开源",
+      "Text2SQL"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "需要自己训练才能达到可用准确率，开箱效果一般。",
+    "descEn": "An open-source framework that uses RAG to improve SQL generation accuracy.",
+    "caveatEn": "Requires training before it reaches usable accuracy — out-of-the-box results are average."
+  },
+  {
+    "id": "powerbi-copilot",
+    "name": "Power BI Copilot",
+    "url": "https://powerbi.microsoft.com",
+    "cat": "data",
+    "desc": "微软 BI 内置 AI，用自然语言生成报表和 DAX。",
+    "tags": [
+      "BI",
+      "企业",
+      "微软"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "需要相应订阅档位才可用，且它生成的 DAX 要自己核对。",
+    "descEn": "Microsoft's AI inside Power BI, generating reports and DAX from natural language.",
+    "caveatEn": "Requires the right subscription tier, and the DAX it writes needs checking."
+  },
+  {
+    "id": "tableau-pulse",
+    "name": "Tableau Pulse",
+    "url": "https://www.tableau.com/products/pulse",
+    "cat": "data",
+    "desc": "自动监控指标变化并推送洞察，不用自己盯报表。",
+    "tags": [
+      "BI",
+      "指标监控"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "偏指标监控推送，探索式分析能力弱于传统 BI 界面。",
+    "descEn": "Monitors metric changes automatically and pushes insights instead of making you watch dashboards.",
+    "caveatEn": "Focused on metric monitoring and alerts. Exploratory analysis is weaker than a traditional BI interface."
+  },
+  {
+    "id": "luma-genie",
+    "name": "Luma Genie",
+    "url": "https://lumalabs.ai/genie",
+    "cat": "3d",
+    "desc": "文生 3D 模型，Luma 出品，风格统一、可交互预览。",
+    "tags": [
+      "文生3D"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "文生 3D 质量对提示词敏感，且导出的模型面数偏高。",
+    "descEn": "Luma's text-to-3D model with consistent style and interactive preview.",
+    "caveatEn": "Highly sensitive to prompt wording, and exported meshes carry a high polygon count."
+  },
+  {
+    "id": "spline",
+    "name": "Spline",
+    "url": "https://spline.design",
+    "cat": "3d",
+    "desc": "浏览器里的 3D 设计工具，做网页 3D 交互最简单。",
+    "tags": [
+      "网页3D",
+      "交互"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "网页 3D 交互友好，但做游戏资产不是它的场景。",
+    "descEn": "3D design in the browser — the simplest route to interactive 3D on a web page.",
+    "caveatEn": "Great for web 3D interaction, but not a game asset pipeline."
+  },
+  {
+    "id": "kaedim",
+    "name": "Kaedim",
+    "url": "https://www.kaedim3d.com",
+    "cat": "3d",
+    "desc": "2D 原画转 3D 模型，面向游戏美术流程，有专人质检。",
+    "tags": [
+      "游戏",
+      "2D转3D"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "2D 转 3D 有专人质检，质量好但交付周期长、价格高。",
+    "descEn": "Converts 2D concept art into 3D models for game art pipelines, with human quality control.",
+    "caveatEn": "Human QC means good quality but long turnaround and high cost."
+  },
+  {
+    "id": "csm",
+    "name": "CSM",
+    "url": "https://www.csm.ai",
+    "cat": "3d",
+    "desc": "单张照片或视频重建 3D 场景，适合做数字孪生底图。",
+    "tags": [
+      "重建",
+      "场景"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "场景重建适合数字孪生，但精细物体重建质量一般。",
+    "descEn": "Reconstructs 3D scenes from a single photo or video, good for digital-twin basemaps.",
+    "caveatEn": "Suited to scene reconstruction. Fine object reconstruction quality is average."
+  },
+  {
+    "id": "alpha3d",
+    "name": "Alpha3D",
+    "url": "https://www.alpha3d.io",
+    "cat": "3d",
+    "desc": "2D 图片批量转 3D 资产，电商与虚拟试穿场景用得多。",
+    "tags": [
+      "电商",
+      "2D转3D"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "电商资产批量转换方便，但复杂结构的重建容易失败。",
+    "descEn": "Batch-converts 2D images into 3D assets for e-commerce and virtual try-on.",
+    "caveatEn": "Convenient for e-commerce assets, but complex structures often fail to reconstruct."
+  },
+  {
+    "id": "hunyuan3d",
+    "name": "腾讯混元 3D",
+    "url": "https://3d.hunyuan.tencent.com",
+    "cat": "3d",
+    "desc": "腾讯开源的 3D 生成模型，从文生到贴图全链路。",
+    "tags": [
+      "国产",
+      "开源"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "全链路开源，但推理需要一定显存，且贴图质量与商用方案仍有差距。",
+    "descEn": "Tencent's open 3D generation model, covering the full chain from text to texture.",
+    "caveatEn": "A full open pipeline, but inference needs meaningful VRAM and texture quality still trails commercial options."
+  },
+  {
+    "id": "sloyd",
+    "name": "Sloyd",
+    "url": "https://www.sloyd.ai",
+    "cat": "3d",
+    "desc": "参数化 3D 资产生成，拓扑规整、可直接进引擎。",
+    "tags": [
+      "参数化",
+      "游戏"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "参数化生成拓扑规整，但资产风格偏程式化。",
+    "descEn": "Parametric 3D asset generation with clean topology, ready to drop into an engine.",
+    "caveatEn": "Topology is clean, but the asset style is noticeably formulaic."
+  },
+  {
+    "id": "trellis",
+    "name": "TRELLIS",
+    "url": "https://github.com/microsoft/TRELLIS",
+    "cat": "3d",
+    "desc": "微软开源的结构化 3D 生成，输出质量接近商用方案。",
+    "tags": [
+      "开源",
+      "微软"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "开源质量领先，但部署和调参需要一定研究能力。",
+    "descEn": "Microsoft's open structured 3D generation — output quality close to commercial options.",
+    "caveatEn": "Leading open quality, but deployment and tuning need real research capability."
+  },
+  {
+    "id": "blender-mcp",
+    "name": "Blender MCP",
+    "url": "https://github.com/ahujasid/blender-mcp",
+    "cat": "3d",
+    "desc": "用 MCP 让 AI 直接操控 Blender 建模与调整场景。",
+    "tags": [
+      "MCP",
+      "Blender",
+      "开源"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": false,
+    "added": "2026-05-05",
+    "caveat": "通过 MCP 操控 Blender，复杂建模任务仍不稳定，适合做重复性调整。",
+    "descEn": "Uses MCP to let AI drive Blender directly for modelling and scene adjustments.",
+    "caveatEn": "Complex modelling tasks remain unreliable. It's best for repetitive adjustments."
+  },
+  {
+    "id": "tripo-brush",
+    "name": "Tripo 3D 生成工作流",
+    "url": "https://www.tripo3d.ai",
+    "cat": "3d",
+    "desc": "国产文生 3D 平台，支持多视图输入与自动绑定骨骼。",
+    "tags": [
+      "国产",
+      "骨骼绑定"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "骨骼绑定是亮点，但自动绑定的质量对模型姿势有要求。",
+    "descEn": "Part of the Tripo workflow, adding multi-view input and automatic skeleton binding.",
+    "caveatEn": "Automatic rigging is the highlight, but quality depends on the model's pose."
+  },
+  {
+    "id": "jan",
+    "name": "Jan",
+    "url": "https://jan.ai",
+    "cat": "local",
+    "desc": "开源本地 AI 桌面客户端，界面像 ChatGPT 但完全离线。",
+    "tags": [
+      "开源",
+      "桌面端",
+      "离线"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "桌面客户端体验好，但生态和插件不如 Open WebUI 丰富。",
+    "descEn": "An open-source local AI desktop client — a ChatGPT-like interface, fully offline.",
+    "caveatEn": "Good desktop client, but its ecosystem and plugins are less rich than Open WebUI."
+  },
+  {
+    "id": "gpt4all",
+    "name": "GPT4All",
+    "url": "https://www.nomic.ai/gpt4all",
+    "cat": "local",
+    "desc": "本地运行模型并支持对本地文档问答，纯离线。",
+    "tags": [
+      "开源",
+      "本地文档问答"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "本地文档问答方便，但检索质量一般，正式场景建议换 RAG 框架。",
+    "descEn": "Runs models locally and answers questions over your own documents, entirely offline.",
+    "caveatEn": "Convenient for local document Q&A, but retrieval quality is average. For serious use, switch to a RAG framework."
+  },
+  {
+    "id": "anythingllm",
+    "name": "AnythingLLM",
+    "url": "https://anythingllm.com",
+    "cat": "local",
+    "desc": "一站式本地知识库，把文档、模型、向量库打包成一个桌面应用。",
+    "tags": [
+      "开源",
+      "知识库",
+      "RAG"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "一站式打包省事，但各部分都可替换时你未必需要它这层封装。",
+    "descEn": "An all-in-one local knowledge base that packages documents, models and a vector store into one desktop app.",
+    "caveatEn": "The all-in-one packaging saves time, but if you'd replace every component anyway, you may not need the wrapper."
+  },
+  {
+    "id": "textgen-webui",
+    "name": "Text Generation WebUI",
+    "url": "https://github.com/oobabooga/text-generation-webui",
+    "cat": "local",
+    "desc": "老牌本地模型前端，功能最全、插件生态大。",
+    "tags": [
+      "开源",
+      "本地"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": false,
+    "added": "2026-06-01",
+    "caveat": "功能最全也最杂，配置项多到容易出问题，新手建议先用 Ollama。",
+    "descEn": "The veteran local model frontend — the most complete feature set and the largest plugin ecosystem.",
+    "caveatEn": "Most complete also means most cluttered. So many options that breakage is common; beginners should start with Ollama."
+  },
+  {
+    "id": "localai",
+    "name": "LocalAI",
+    "url": "https://localai.io",
+    "cat": "local",
+    "desc": "本地提供兼容 OpenAI 的 API，可直接替换现有代码。",
+    "tags": [
+      "开源",
+      "API兼容"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "兼容 OpenAI 接口是优势，但性能和功能完整性弱于专门推理引擎。",
+    "descEn": "Serves a local OpenAI-compatible API you can drop straight into existing code.",
+    "caveatEn": "API compatibility is the advantage, but performance and feature completeness trail purpose-built inference engines."
+  },
+  {
+    "id": "sglang",
+    "name": "SGLang",
+    "url": "https://github.com/sgl-project/sglang",
+    "cat": "local",
+    "desc": "高吞吐推理框架，擅长多轮对话和结构化输出场景。",
+    "tags": [
+      "开源",
+      "推理引擎",
+      "高性能"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "吞吐高且擅长结构化输出，但生态和文档积累少于 vLLM。",
+    "descEn": "A high-throughput inference framework, strong at multi-turn dialogue and structured output.",
+    "caveatEn": "High throughput and good structured output, but less ecosystem and documentation than vLLM."
+  },
+  {
+    "id": "llamafile",
+    "name": "llamafile",
+    "url": "https://github.com/Mozilla-Ocho/llamafile",
+    "cat": "local",
+    "desc": "把模型和运行时打包成一个可执行文件，双击就能跑。",
+    "tags": [
+      "开源",
+      "单文件",
+      "跨平台"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "单文件分发很优雅，但性能不是它的目标，只适合轻量体验。",
+    "descEn": "Packages model and runtime into a single executable file — double-click and it runs.",
+    "caveatEn": "Elegant single-file distribution, but performance isn't the goal. Fine for light experimentation only."
+  },
+  {
+    "id": "pinokio",
+    "name": "Pinokio",
+    "url": "https://pinokio.computer",
+    "cat": "local",
+    "desc": "一键安装各种开源 AI 应用的启动器，省掉环境配置。",
+    "tags": [
+      "开源",
+      "一键安装"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "一键安装省去环境配置，但项目本身的质量参差不齐，要挑。",
+    "descEn": "A one-click installer for open-source AI apps, skipping environment setup.",
+    "caveatEn": "Saves setup pain, but project quality varies widely — be selective."
+  },
+  {
+    "id": "xinference",
+    "name": "Xinference",
+    "url": "https://github.com/xorbitsai/inference",
+    "cat": "local",
+    "desc": "国产开源模型推理与部署平台，多模型统一管理。",
+    "tags": [
+      "国产",
+      "开源",
+      "部署"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "多模型统一管理方便，国内硬件适配好，但社区案例少于 vLLM。",
+    "descEn": "A Chinese open-source inference and deployment platform with unified multi-model management.",
+    "caveatEn": "Convenient multi-model management and good domestic hardware support, but fewer community examples than vLLM."
+  },
+  {
+    "id": "lmdeploy",
+    "name": "LMDeploy",
+    "url": "https://github.com/InternLM/lmdeploy",
+    "cat": "local",
+    "desc": "上海 AI Lab 的推理部署工具箱，国内硬件适配好。",
+    "tags": [
+      "国产",
+      "开源",
+      "部署"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "国产硬件适配是亮点，但主要面向 InternLM 系列，通用性略窄。",
+    "descEn": "Shanghai AI Lab's inference and deployment toolkit, well adapted to domestic hardware.",
+    "caveatEn": "Domestic hardware support is the highlight, but it's aimed mainly at the InternLM family — less general-purpose."
+  },
+  {
+    "id": "ahrefs",
+    "name": "Ahrefs",
+    "url": "https://ahrefs.com",
+    "cat": "marketing",
+    "desc": "SEO 数据最全的工具之一，关键词与外链分析是核心。",
+    "tags": [
+      "SEO",
+      "关键词"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "数据最全但价格高，个人站长用不起；且它的中文站数据覆盖不如英文站。",
+    "descEn": "One of the most complete SEO datasets, built around keyword and backlink analysis.",
+    "caveatEn": "The most complete data but priced accordingly — individual site owners can't justify it. Chinese-site coverage is also thinner than English."
+  },
+  {
+    "id": "semrush",
+    "name": "Semrush",
+    "url": "https://www.semrush.com",
+    "cat": "marketing",
+    "desc": "SEO + 竞品 + 广告的综合营销工具箱。",
+    "tags": [
+      "SEO",
+      "竞品分析"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "功能全但界面复杂，且同时覆盖 SEO 和广告意味着每一项都不是最深。",
+    "descEn": "A combined SEO, competitor and advertising toolkit.",
+    "caveatEn": "Comprehensive but the interface is complex, and covering both SEO and ads means being the deepest in neither."
+  },
+  {
+    "id": "surfer",
+    "name": "Surfer SEO",
+    "url": "https://surferseo.com",
+    "cat": "marketing",
+    "desc": "按竞品内容结构给写作打分，做内容 SEO 的量化工具。",
+    "tags": [
+      "内容SEO"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "内容评分是参考不是标准，完全按它打分写会产出「很 SEO 但没人读」的内容。",
+    "descEn": "Scores your writing against competitor content structure — a way to quantify content SEO.",
+    "caveatEn": "The score is a reference, not a standard. Writing purely to it produces content that ranks but nobody wants to read."
+  },
+  {
+    "id": "buffer",
+    "name": "Buffer",
+    "url": "https://buffer.com",
+    "cat": "marketing",
+    "desc": "多平台社媒排期发布，自带 AI 改写与配图建议。",
+    "tags": [
+      "社媒",
+      "排期"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "社媒排期成熟，但数据分析深度一般，需要深度洞察要配合专门工具。",
+    "descEn": "Multi-platform social scheduling with AI rewriting and image suggestions.",
+    "caveatEn": "Mature scheduling, but analytics depth is average — deep insight needs a dedicated tool."
+  },
+  {
+    "id": "later",
+    "name": "Later",
+    "url": "https://later.com",
+    "cat": "marketing",
+    "desc": "以图片社交为主，Instagram / 小红书类平台适配好。",
+    "tags": [
+      "社媒",
+      "图文"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "以图片社交为主，图文平台适配好，但短视频平台支持较弱。",
+    "descEn": "Built around visual social platforms, with good Instagram and image-first support.",
+    "caveatEn": "Image-first focus means weaker support for short-video platforms."
+  },
+  {
+    "id": "adcreative",
+    "name": "AdCreative.ai",
+    "url": "https://www.adcreative.ai",
+    "cat": "marketing",
+    "desc": "批量生成广告素材并预测点击率，投放测试提效明显。",
+    "tags": [
+      "广告",
+      "素材",
+      "A/B"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "批量生成素材方便，但创意同质化明显，长期投放容易疲劳。",
+    "descEn": "Generates ad creatives in bulk and predicts click-through rates.",
+    "caveatEn": "Bulk generation is convenient but creative homogeneity sets in, and long campaigns fatigue the audience."
+  },
+  {
+    "id": "pencil",
+    "name": "Pencil",
+    "url": "https://www.trypencil.com",
+    "cat": "marketing",
+    "desc": "广告创意预测平台，上线前先估算胜出概率。",
+    "tags": [
+      "广告",
+      "预测"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "预测胜率的参考价值有限，且它的训练数据主要来自特定平台的素材。",
+    "descEn": "Predicts ad creative performance before you spend on media.",
+    "caveatEn": "Predicted win rates are of limited value, and its training data comes mainly from specific platforms' creatives."
+  },
+  {
+    "id": "oceanengine",
+    "name": "巨量创意",
+    "url": "https://cc.oceanengine.com",
+    "cat": "marketing",
+    "desc": "字节官方的创意工具，抖音生态素材与脚本生产。",
+    "tags": [
+      "国产",
+      "抖音",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "字节官方工具，主要服务抖音生态，做其他平台价值有限。",
+    "descEn": "ByteDance's official creative tool for producing Douyin-ecosystem assets and scripts.",
+    "caveatEn": "A ByteDance tool serving the Douyin ecosystem, so limited value for other platforms."
+  },
+  {
+    "id": "chanmama",
+    "name": "蝉妈妈",
+    "url": "https://www.chanmama.com",
+    "cat": "marketing",
+    "desc": "抖音电商数据与达人分析，选品和找达人前先查这里。",
+    "tags": [
+      "国产",
+      "电商",
+      "数据"
+    ],
+    "pricing": "paid",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "抖音数据权威，但只看抖音；且核心数据在付费档位。",
+    "descEn": "Douyin e-commerce data and creator analysis — check here before picking products or creators.",
+    "caveatEn": "Authoritative for Douyin and Douyin only, with core data behind the paid tier."
+  },
+  {
+    "id": "newrank",
+    "name": "新榜",
+    "url": "https://www.newrank.cn",
+    "cat": "marketing",
+    "desc": "公众号与多平台内容数据榜，看选题趋势和爆款规律。",
+    "tags": [
+      "国产",
+      "内容分析"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "公众号数据是强项，其他平台覆盖深度参差。",
+    "descEn": "Content rankings across WeChat public accounts and other platforms — useful for spotting topic trends.",
+    "caveatEn": "WeChat public accounts are the strength; coverage depth varies on other platforms."
+  },
+  {
+    "id": "mailchimp",
+    "name": "Mailchimp",
+    "url": "https://mailchimp.com",
+    "cat": "marketing",
+    "desc": "邮件营销老牌工具，自动化旅程和受众分层成熟。",
+    "tags": [
+      "邮件营销"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "邮件营销老牌，但国内送达率和合规上与本土服务商有差距。",
+    "descEn": "A long-standing email marketing tool with mature automation journeys and audience segmentation.",
+    "caveatEn": "A veteran in email marketing, but deliverability and compliance in China lag behind domestic providers."
+  },
+  {
+    "id": "hubspot",
+    "name": "HubSpot",
+    "url": "https://www.hubspot.com",
+    "cat": "marketing",
+    "desc": "CRM + 营销自动化一体，AI 助手可写邮件和总结客户记录。",
+    "tags": [
+      "CRM",
+      "自动化",
+      "企业"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "功能全面也意味着价格阶梯陡，小团队很容易为用不到的功能付费。",
+    "descEn": "CRM and marketing automation in one, with AI that drafts emails and summarises customer records.",
+    "caveatEn": "Comprehensive also means a steep pricing ladder. Small teams easily end up paying for features they never touch."
+  },
+  {
+    "id": "feishu-minutes",
+    "name": "飞书妙记",
+    "url": "https://www.feishu.cn/product/minutes",
+    "cat": "meeting",
+    "desc": "会议录音自动转文字并生成纪要，说话人分离准。",
+    "tags": [
+      "国产",
+      "转写",
+      "纪要"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "转写质量依赖录音环境，多人抢话和强口音场景会明显下降。录音前要征得同意。",
+    "descEn": "Automatic meeting transcription and minutes generation, with accurate speaker separation.",
+    "caveatEn": "Transcription quality depends on the recording environment — multiple people talking over each other and heavy accents degrade it noticeably. Get consent before recording."
+  },
+  {
+    "id": "tencent-meeting-ai",
+    "name": "腾讯会议 AI 小助手",
+    "url": "https://meeting.tencent.com",
+    "cat": "meeting",
+    "desc": "会中实时纪要、会后待办提取，直接发到群里。",
+    "tags": [
+      "国产",
+      "实时纪要"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "绑定腾讯会议，且会中纪要在网络不稳时容易漏段。",
+    "descEn": "Live minutes during a meeting and task extraction afterwards, posted straight into the group chat.",
+    "caveatEn": "Bound to Tencent Meeting, and live minutes can drop segments when the connection is unstable."
+  },
+  {
+    "id": "tingwu",
+    "name": "通义听悟",
+    "url": "https://tingwu.aliyun.com",
+    "cat": "meeting",
+    "desc": "阿里音视频转写与摘要，长会议与课程录制都适用。",
+    "tags": [
+      "国产",
+      "转写",
+      "摘要"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "长音视频处理强，但免费额度有限，且转写质量受音源影响大。",
+    "descEn": "Alibaba's audio and video transcription and summarisation, good for long meetings and recorded lectures.",
+    "caveatEn": "Strong on long audio and video, but the free quota is limited and quality depends heavily on the source audio."
+  },
+  {
+    "id": "iflyrec",
+    "name": "讯飞听见",
+    "url": "https://www.iflyrec.com",
+    "cat": "meeting",
+    "desc": "科大讯飞转写，中文方言与专业词汇识别率高。",
+    "tags": [
+      "国产",
+      "转写"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "中文方言识别率高，但实时性不如专门的会议助手。",
+    "descEn": "iFlytek's transcription service with high accuracy on Chinese dialects and technical vocabulary.",
+    "caveatEn": "High dialect accuracy, but real-time performance trails dedicated meeting assistants."
+  },
+  {
+    "id": "otter",
+    "name": "Otter.ai",
+    "url": "https://otter.ai",
+    "cat": "meeting",
+    "desc": "英文会议转录标杆，自动识别说话人并生成待办。",
+    "tags": [
+      "英文",
+      "转写"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "英文会议标杆，中文识别质量明显下降，国内团队慎选。",
+    "descEn": "The benchmark for English meeting transcription, identifying speakers and generating action items.",
+    "caveatEn": "The English benchmark, but Chinese recognition quality drops sharply — domestic teams should look elsewhere."
+  },
+  {
+    "id": "fireflies",
+    "name": "Fireflies.ai",
+    "url": "https://fireflies.ai",
+    "cat": "meeting",
+    "desc": "自动加入会议录制并结构化，可搜索历史所有会议。",
+    "tags": [
+      "自动记录",
+      "可搜索"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "自动加入会议需要授权，部分企业 IT 策略会拦截这类机器人。",
+    "descEn": "Joins meetings automatically, records and structures them, and makes all history searchable.",
+    "caveatEn": "The bot needs authorisation to join meetings, and some corporate IT policies block exactly this kind of bot."
+  },
+  {
+    "id": "tldv",
+    "name": "tl;dv",
+    "url": "https://tldv.io",
+    "cat": "meeting",
+    "desc": "录屏后自动打时间戳，回看时点摘要直接跳到那段。",
+    "tags": [
+      "时间戳",
+      "回看"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "时间戳回看是亮点，但免费额度限制会议时长。",
+    "descEn": "Timestamps recordings automatically so you can jump straight to the relevant moment from a summary.",
+    "caveatEn": "Timestamped review is the highlight, but the free tier caps meeting length."
+  },
+  {
+    "id": "granola",
+    "name": "Granola",
+    "url": "https://www.granola.ai",
+    "cat": "meeting",
+    "desc": "不录屏只记要点，把你的手写笔记和转录合并成纪要。",
+    "tags": [
+      "轻量",
+      "笔记合并"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "不录屏是隐私友好的设计，代价是依赖你的手动笔记质量。",
+    "descEn": "Records only key points rather than video, merging your handwritten notes with the transcript.",
+    "caveatEn": "Not recording video is privacy-friendly, at the cost of depending on the quality of your own notes."
+  },
+  {
+    "id": "fathom",
+    "name": "Fathom",
+    "url": "https://fathom.video",
+    "cat": "meeting",
+    "desc": "免费额度大方的会议记录助手，个人版基本够用。",
+    "tags": [
+      "免费额度"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "免费额度大方，但深度分析和团队协作功能在付费档。",
+    "descEn": "A meeting recorder with a generous free tier — the personal plan covers most individual use.",
+    "caveatEn": "Generous free tier, but deep analytics and team collaboration sit behind the paid plan."
+  },
+  {
+    "id": "dingtalk-ai",
+    "name": "钉钉 AI 助理",
+    "url": "https://www.dingtalk.com",
+    "cat": "meeting",
+    "desc": "钉钉内置助理，会议纪要、待办、日程一体化。",
+    "tags": [
+      "国产",
+      "办公"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "绑定钉钉生态，且会议记录涉及他人隐私，使用前要确认合规要求。",
+    "descEn": "DingTalk's built-in assistant, unifying minutes, tasks and scheduling.",
+    "caveatEn": "Tied to the DingTalk ecosystem, and meeting records involve other people's privacy — confirm compliance requirements first."
+  },
+  {
+    "id": "khanmigo",
+    "name": "Khanmigo",
+    "url": "https://www.khanmigo.ai",
+    "cat": "edu",
+    "desc": "可汗学院 AI 导师，不直接给答案而是引导你自己想出来。",
+    "tags": [
+      "苏格拉底式",
+      "K12"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "引导式教学不适合赶时间的人，且内容体系绑定可汗学院的课程。",
+    "descEn": "Khan Academy's AI tutor. Doesn't hand over the answer — it guides you to work it out.",
+    "caveatEn": "Guided teaching doesn't suit people in a hurry, and the content is bound to Khan Academy's curriculum."
+  },
+  {
+    "id": "duolingo-max",
+    "name": "Duolingo Max",
+    "url": "https://www.duolingo.com",
+    "cat": "edu",
+    "desc": "多邻国 AI 版，可以和 AI 角色做真实场景对话练习。",
+    "tags": [
+      "语言学习",
+      "对话练习"
+    ],
+    "pricing": "paid",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "AI 对话练习是增值项，但语言学习本身仍要靠持续投入。",
+    "descEn": "Duolingo's AI tier, where you can hold realistic conversations with AI characters.",
+    "caveatEn": "AI conversation is an add-on. Learning a language still depends on sustained effort from you."
+  },
+  {
+    "id": "quizlet",
+    "name": "Quizlet AI",
+    "url": "https://quizlet.com",
+    "cat": "edu",
+    "desc": "上传资料自动生成闪卡与测验，备考复习效率高。",
+    "tags": [
+      "闪卡",
+      "备考"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "闪卡适合记忆类知识，理解型内容用它效果有限。",
+    "descEn": "Turns your material into flashcards and quizzes automatically — efficient for exam revision.",
+    "caveatEn": "Flashcards suit memorisation. For conceptual understanding they help much less."
+  },
+  {
+    "id": "socratic",
+    "name": "Socratic",
+    "url": "https://socratic.org",
+    "cat": "edu",
+    "desc": "Google 出的解题助手，拍照提问，讲思路不讲答案。",
+    "tags": [
+      "拍照解题",
+      "免费"
+    ],
+    "pricing": "free",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "只讲思路不给答案，急需答案时会被它「绕」得着急。",
+    "descEn": "Google's homework helper. Photograph a question and it explains the reasoning, not the answer.",
+    "caveatEn": "Explains the approach without giving the answer, which is frustrating when you just need the answer quickly."
+  },
+  {
+    "id": "photomath",
+    "name": "Photomath",
+    "url": "https://photomath.com",
+    "cat": "edu",
+    "desc": "拍数学题给出分步解法，题目覆盖到大学基础课。",
+    "tags": [
+      "数学",
+      "分步解题"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "数学解题强，但复杂证明题的步骤解释仍可能出错。",
+    "descEn": "Photograph a maths problem for a step-by-step solution, covering up to undergraduate foundation courses.",
+    "caveatEn": "Strong on maths problems, but step explanations for complex proofs can still be wrong."
+  },
+  {
+    "id": "gauth",
+    "name": "Gauth",
+    "url": "https://www.gauthmath.com",
+    "cat": "edu",
+    "desc": "字节的解题 App，多学科覆盖，中文题目支持好。",
+    "tags": [
+      "国产",
+      "多学科"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "多学科覆盖广，但每科的深度都有限，专业难题要另找资料。",
+    "descEn": "ByteDance's solver app with broad subject coverage and good Chinese question support.",
+    "caveatEn": "Broad subject coverage means shallow depth in each. Genuinely hard problems need other sources."
+  },
+  {
+    "id": "magicschool",
+    "name": "MagicSchool AI",
+    "url": "https://www.magicschool.ai",
+    "cat": "edu",
+    "desc": "给老师用的工具集：出题、写评语、做教案、分层作业。",
+    "tags": [
+      "教师",
+      "备课"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "给老师用的工具集，学生直接用它意义不大。",
+    "descEn": "A toolset for teachers: question generation, report comments, lesson plans and differentiated homework.",
+    "caveatEn": "Built for teachers. Students using it directly won't get much."
+  },
+  {
+    "id": "curipod",
+    "name": "Curipod",
+    "url": "https://curipod.com",
+    "cat": "edu",
+    "desc": "几分钟生成一节课的互动课件，含投票和开放题。",
+    "tags": [
+      "课堂互动",
+      "课件"
+    ],
+    "pricing": "freemium",
+    "cn": false,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "课堂互动课件生成快，但内容深度依赖你的输入质量。",
+    "descEn": "Generates an interactive lesson deck in minutes, including polls and open questions.",
+    "caveatEn": "Generates classroom material quickly, but depth depends entirely on the quality of your input."
+  },
+  {
+    "id": "jiuzhang",
+    "name": "学而思九章",
+    "url": "https://www.zhihuizhuxue.com",
+    "cat": "edu",
+    "desc": "好未来的数学大模型，讲题风格贴近国内教学体系。",
+    "tags": [
+      "国产",
+      "数学",
+      "K12"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "hot": false,
+    "official": true,
+    "added": "2026-06-01",
+    "caveat": "数学讲题贴合国内教学，但其他学科不是它的覆盖范围。",
+    "descEn": "TAL's maths model, explaining problems in a style that fits the Chinese curriculum.",
+    "caveatEn": "Explanations fit Chinese maths teaching, but other subjects are outside its scope."
+  },
+  {
+    "id": "doubao-learn",
+    "name": "豆包爱学",
+    "url": "https://www.doubao.com/chat",
+    "cat": "edu",
+    "desc": "字节的学习向助手，拍照讲题与作文批改免费。",
+    "tags": [
+      "国产",
+      "免费",
+      "讲题"
+    ],
+    "pricing": "free",
+    "cn": true,
+    "hot": true,
+    "official": true,
+    "added": "2026-05-05",
+    "caveat": "免费讲题与批改好用，但不要把它当权威答案——理科计算题务必自己复核。",
+    "descEn": "ByteDance's learning assistant — photo-based problem explanation and essay marking, free.",
+    "caveatEn": "Free and convenient, but don't treat it as an authority. Always re-check science and maths calculations yourself."
+  },
+  {
+    "id": "gemini-cli",
+    "name": "Gemini CLI / Antigravity CLI",
+    "url": "https://github.com/google-gemini/gemini-cli",
+    "cat": "coding",
+    "pricing": "freemium",
+    "cn": false,
+    "official": true,
+    "hot": true,
+    "added": "2026-09-21",
+    "desc": "Google 的终端编程 Agent。开源、上下文大，是免费额度最慷慨的一档。",
+    "caveat": "2026-06-18 起 Google 把消费版入口迁到了新工具 Antigravity CLI —— 你现在装的可能是要换的那个。用之前先确认自己该用哪个。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "长上下文"
+    ],
+    "descEn": "Google's terminal coding agent. Open source, large context, and the most generous free tier in this category.",
+    "caveatEn": "Since 18 Jun 2026 Google has been moving consumer access to a new tool called Antigravity CLI — the one you install today may not be the one you should. Check which you want first."
+  },
+  {
+    "id": "grok-build",
+    "name": "Grok Build",
+    "url": "https://x.ai/cli",
+    "cat": "coding",
+    "pricing": "paid",
+    "cn": false,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "xAI 的终端编程 Agent，可并行开多个子 Agent，上下文窗口是同类里最长的。",
+    "caveat": "目前只对 SuperGrok 高阶档开放，价格是同类里最贵的。并行开多个 Agent 的收益在复杂任务上才明显，日常改几个文件用不上。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "并行"
+    ],
+    "descEn": "xAI's terminal coding agent. Runs multiple parallel subagents, with the longest context window in this category.",
+    "caveatEn": "Currently gated to the top SuperGrok tier and the priciest option here. Parallel subagents only pay off on complex work — overkill for editing a few files."
+  },
+  {
+    "id": "qwen-code",
+    "name": "Qwen Code",
+    "url": "https://github.com/QwenLM/qwen-code",
+    "cat": "coding",
+    "pricing": "open",
+    "cn": true,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "阿里的开源终端编程 Agent，对接 Qwen 与任意兼容 OpenAI 协议的服务。",
+    "caveat": "定位是「模型无关」的壳，能力取决于你自己接哪个模型；接了小模型效果会明显打折。国内直连方便，但官方文档以英文为主。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "国产"
+    ],
+    "descEn": "Alibaba's open-source terminal agent, working with Qwen or any OpenAI-compatible endpoint.",
+    "caveatEn": "A model-agnostic shell — quality depends entirely on what you plug in, and small models visibly disappoint. Convenient in China, but docs lean English."
+  },
+  {
+    "id": "opencode-cli",
+    "name": "OpenCode",
+    "url": "https://opencode.ai",
+    "cat": "coding",
+    "pricing": "open",
+    "cn": false,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "开源终端 Agent，支持 75+ 家模型提供商，也能接本地模型。",
+    "caveat": "支持的提供商越多，配置项越多，第一次上手要花时间选模型和调参数。它不提供托管服务，模型费用要自己另外算。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "多模型"
+    ],
+    "descEn": "Open-source terminal agent supporting 75+ providers, including local models.",
+    "caveatEn": "More providers means more configuration — expect to spend time on model choice and parameters. No hosted offering, so model costs are separate."
+  },
+  {
+    "id": "kilo-cli",
+    "name": "Kilo CLI",
+    "url": "https://kilo.ai",
+    "cat": "coding",
+    "pricing": "open",
+    "cn": false,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "开源多模型终端 Agent，能串起 CLI、VS Code、JetBrains 与云端任务。",
+    "caveat": "它的优势是「到处都能接」，如果你只用命令行或只用 IDE，这些额外集成就是多余的复杂度。平台本身免费，模型另计费。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "多模型"
+    ],
+    "descEn": "Open-source multi-model terminal agent connecting CLI, VS Code, JetBrains and cloud tasks.",
+    "caveatEn": "Its strength is reaching everywhere. If you only use the terminal or only an IDE, those extra integrations are needless complexity. The platform is free; models are billed separately."
+  },
+  {
+    "id": "kimi-cli",
+    "name": "Kimi Code CLI",
+    "url": "https://github.com/MoonshotAI/kimi-cli",
+    "cat": "coding",
+    "pricing": "open",
+    "cn": true,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "月之暗面的开源终端编程 Agent，配合 Kimi 的开放权重模型使用。",
+    "caveat": "社区规模明显小于同类开源项目，遇到问题能找到的第三方资料少。「开源 + 可接自家模型」是卖点，但配套生态还在早期。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "国产"
+    ],
+    "descEn": "Moonshot's open-source terminal coding agent, built to pair with Kimi's open-weight models.",
+    "caveatEn": "The community is markedly smaller than comparable open projects, so third-party troubleshooting material is scarce. Open source plus first-party models is the pitch, but the ecosystem is early."
+  },
+  {
+    "id": "weknora",
+    "name": "WeKnora",
+    "url": "https://github.com/Tencent/WeKnora",
+    "cat": "agent",
+    "pricing": "open",
+    "cn": true,
+    "official": true,
+    "added": "2026-09-21",
+    "desc": "腾讯开源的知识平台：文档 → 可检索 RAG → 会动手的 Agent → 自维护 Wiki。",
+    "caveat": "功能铺得很开（RAG / Agent / Wiki 三套），意味着部署与配置比单一用途方案重，团队要有运维能力。适合已有文档沉淀的场景，空手起家价值有限。",
+    "tags": [
+      "知识库",
+      "RAG",
+      "Agent",
+      "开源",
+      "国产"
+    ],
+    "descEn": "Tencent's open-source knowledge platform: documents into queryable RAG, an acting agent, and a self-maintaining wiki.",
+    "caveatEn": "It spans three products (RAG, agent, wiki), so deployment and configuration are heavier than a single-purpose tool — your team needs ops capability. Best where documents already exist; less value from scratch.",
+    "review": {
+      "status": "source-verified",
+      "reviewedAt": "2026-09-21"
+    },
+    "evidence": [
+      "https://github.com/Tencent/WeKnora"
+    ]
+  },
+  {
+    "id": "mica-voice",
+    "name": "mica-voice",
+    "url": "https://github.com/lets-mica/mica-voice",
+    "cat": "audio",
+    "pricing": "open",
+    "cn": true,
+    "official": false,
+    "added": "2026-09-21",
+    "desc": "Java 生态的语音 AI 套件：一行代码接入识别、合成、声纹、降噪等七项能力。",
+    "caveat": "面向 Java 后端开发者，非 Java 技术栈基本用不上。它是封装层，底层跑的是通用的语音模型，效果取决于底层而非这个库本身。",
+    "tags": [
+      "TTS",
+      "ASR",
+      "开源",
+      "国产"
+    ],
+    "descEn": "A speech AI suite for the Java ecosystem: recognition, synthesis, voiceprint and denoising in one line of code.",
+    "caveatEn": "Aimed at Java backend developers — useless outside that stack. It is a wrapper, so quality comes from the underlying speech models, not this library."
+  },
+  {
+    "id": "zcode",
+    "name": "ZCode",
+    "url": "https://zcode.z.ai",
+    "cat": "coding",
+    "desc": "智谱出品的桌面 AI 编程工具，对标 Claude Code，配 GLM 系列模型使用。",
+    "tags": [
+      "Agent",
+      "代码",
+      "国产",
+      "桌面端"
+    ],
+    "pricing": "freemium",
+    "cn": true,
+    "official": true,
+    "added": "2026-09-21",
+    "caveat": "2026-09 曾被曝登录后静默打包 .git 历史上传云端，引发信任风波；现已整改、开源并过第三方审计。对敏感项目仍建议先关代码库索引、盯紧权限。",
+    "descEn": "Zhipu's desktop AI coding agent, positioned as a Claude Code counterpart and paired with the GLM model family.",
+    "caveatEn": "In Sep 2026 it was caught silently uploading full .git history while signed in — since fixed, open-sourced and third-party audited. For sensitive repos, still disable repo indexing and watch permissions."
+  },
+  {
+    "id": "minimax-code-cli",
+    "name": "MiniMax Code CLI",
+    "url": "https://github.com/MiniMax-AI/minimax-code",
+    "cat": "coding",
+    "desc": "MiniMax 开源的终端编程智能体（MIT），支持 BYOK 接任意兼容模型的 API。",
+    "tags": [
+      "CLI",
+      "Agent",
+      "开源",
+      "代码"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "open": true,
+    "official": true,
+    "added": "2026-09-21",
+    "caveat": "工具本体开源免费，但算力按 MiniMax 套餐或自有 API 计费；评测数字（76.7%）来自第三方 30 题小样本，别当排行榜看。",
+    "descEn": "MiniMax's open-source (MIT) terminal coding agent. BYOK-friendly: bring any OpenAI- or Anthropic-compatible API.",
+    "caveatEn": "The tool is free and open, but compute bills through a MiniMax plan or your own API. Its 76.7% eval number comes from a small 30-task third-party run — not a leaderboard."
+  },
+  {
+    "id": "moneyprinter-turbo",
+    "name": "MoneyPrinterTurbo",
+    "url": "https://github.com/harry0703/MoneyPrinterTurbo",
+    "cat": "video",
+    "desc": "给一个主题或关键词，自动写脚本、配素材、上字幕和配乐，直接合成竖屏短视频。",
+    "tags": [
+      "开源",
+      "短视频",
+      "自动化"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "added": "2026-10-05",
+    "caveat": "素材取自公开库，成片偏模板化，平台原创度审核容易不通过；配乐与画面素材的商用版权要自己核。想精细控画面，最后还是得手动剪。",
+    "descEn": "Give it a topic and it writes the script, sources footage, adds subtitles and music, then renders a vertical short video.",
+    "caveatEn": "Footage comes from public libraries, so the output looks templated and may fail platform originality checks. Clear the commercial rights on music and clips yourself; for fine control you still edit by hand."
+  },
+  {
+    "id": "voicestudio",
+    "name": "VoiceStudio",
+    "url": "https://github.com/debpalash/VoiceStudio",
+    "cat": "audio",
+    "desc": "本地跑的开源语音工具：音色克隆、声音设计、视频配音、听写与有声书，覆盖 646 种语言。",
+    "tags": [
+      "开源",
+      "配音",
+      "克隆",
+      "本地"
+    ],
+    "pricing": "open",
+    "cn": true,
+    "added": "2026-10-05",
+    "caveat": "要自己部署、吃显存，换来的是音频不出本机；克隆他人音色涉及声音权，商用前必须确认授权。只想快速出活，云端服务更省事。",
+    "descEn": "A local, open-source voice toolkit: cloning, voice design, video dubbing, dictation and audiobooks, across 646 languages.",
+    "caveatEn": "You deploy it yourself and it wants VRAM — the payoff is that your audio never leaves your machine. Cloning a voice needs that person's consent for commercial use; for quick jobs a cloud service is less work."
+  }
+]

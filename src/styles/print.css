@@ -1,55 +1,13 @@
-/* AI 万象 · 打印样式
-   目标：把网页变成一份能读的纸质资料 —— 去掉所有交互外壳，保留内容与层级 */
-
-@page { margin: 18mm 16mm; }
-
-html, body {
-  background: #fff !important;
-  color: #000 !important;
-  font-size: 11pt;
-}
-
-.header, .footer, .toolbar, .skip-link,
-.copy-btn, .prompt-fill, .prompt-toggle,
-.hero-kicker, .search-hero, #typeFilters,
-.section-more, .card-foot .btn, .source-row .sr-go { display: none !important; }
-
-.hero, .section, .section-sm { padding: 0 !important; }
-.container, .container-narrow { max-width: none !important; padding: 0 !important; }
-
-.hero h1 { font-size: 22pt !important; margin-bottom: 8pt; }
-.hero h1 .hl { color: #000 !important; -webkit-text-stroke: 0 !important; }
-.hero p.lead { font-size: 11pt; }
-
-.card, .news-list, .gloss-item, .source-row, .stats, .prompt-code pre, .prompt-fill {
-  border: 1px solid #999 !important;
-  box-shadow: none !important;
-  background: #fff !important;
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-.card:hover, .cat-card:hover, .gloss-item:hover { transform: none !important; box-shadow: none !important; }
-.card::before { display: none !important; }
-
-.stats { display: flex !important; gap: 16pt; }
-.stat { border: 0 !important; padding: 0 16pt 0 0 !important; }
-.stat b { font-size: 16pt !important; color: #000 !important; }
-
-.grid, .grid-2, .grid-4, .grid-6 { display: block !important; }
-.grid > *, .grid-2 > *, .grid-4 > *, .grid-6 > * { margin-bottom: 8pt; }
-
-.section-head { border-bottom: 1.5pt solid #000 !important; margin-bottom: 10pt; }
-.idx { color: #000 !important; }
-.tag, .badge-pill, .gloss-item .g-abbr { border: 1px solid #666 !important; color: #000 !important; background: none !important; }
-.avatar { border: 1px solid #666 !important; background: #eee !important; color: #000 !important; }
-
-/* 提示词正文：打印出来就是要能直接照着用的 */
-.prompt-body { display: block !important; border-top: 1px solid #999 !important; }
-.prompt-code pre { padding: 8pt !important; max-height: none !important; font-size: 9.5pt; white-space: pre-wrap; }
-.var-hl { color: #000 !important; font-weight: 700; border-bottom: 0 !important; }
-
-.article-body p { max-width: none !important; }
-.article-body p:first-of-type { border-left: 3pt solid #000 !important; }
-
-a { text-decoration: none; color: #000 !important; }
-a[href^='http']::after { content: ' (' attr(href) ')'; font-size: 8pt; color: #555; }
+/* Print: the article parts of a page, without navigation or interactive furniture. */
+.header,.footer,.toc,.drawer,.game,.tool,.drawer-toggle,.skip-link,.hero-actions{display:none !important}
+body{background:#fff;color:#000;font:11pt/1.5 Georgia,'Times New Roman',serif}
+a{color:#000;text-decoration:none}
+a[href^="http"]::after{content:' (' attr(href) ')';font-size:9pt;color:#444}
+.container,.article-body{max-width:none;padding:0;margin:0}
+.article-layout{display:block;padding:0}
+h1,h2,h3{break-after:avoid}
+table,.faq,.prose-section{break-inside:avoid}
+th,td,td:first-child,p,li,.prose-section p,.prose-section li{color:#000}
+th{background:#eee}
+.table-wrap{overflow:visible;border-color:#999}
+.faq p{padding:0 0 8pt}

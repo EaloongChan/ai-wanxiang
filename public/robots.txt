@@ -1,0 +1,9 @@
+# Search engines may crawl everything. Sitemap: see the last line.
+# Note for the site owner: if "AI crawl control" is on in the Cloudflare dashboard it
+# appends its own block below this file, which blocks GPTBot, ClaudeBot and other
+# assistants. That setting lives in Cloudflare, not here.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.ealoongchan.top/sitemap.xml

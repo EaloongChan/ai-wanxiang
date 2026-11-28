@@ -1,6 +1,6 @@
 @echo off
 rem ============================================================
-rem  AI WANXIANG - local preview launcher
+rem  EALOONG ARCADE - local preview launcher
 rem
 rem  IMPORTANT - keep this file PURE ASCII with CRLF line endings.
 rem  cmd.exe parses .bat using the system OEM codepage (GBK on
@@ -14,12 +14,12 @@ rem  node.exe's UTF-8 output. It does not change how this file is
 rem  parsed.
 rem ============================================================
 chcp 65001 >nul
-title AI WANXIANG - Local Preview
+title EALOONG ARCADE - Local Preview
 cd /d "%~dp0"
 
 echo.
 echo   ==============================================
-echo     AI WANXIANG  /  Local Preview
+echo     EALOONG ARCADE  /  Local Preview
 echo   ==============================================
 echo.
 
@@ -38,7 +38,7 @@ if errorlevel 1 goto BUILDFAIL
 
 echo.
 echo   [2/3] Starting local server in a new window...
-start "AI WANXIANG Server - keep this window open" cmd /c "chcp 65001 >nul & node scripts\serve.mjs 4173"
+start "EALOONG ARCADE Server - keep this window open" cmd /c "chcp 65001 >nul & node scripts\serve.mjs 4173"
 
 echo   [3/3] Opening browser...
 ping -n 3 127.0.0.1 >nul
@@ -47,7 +47,7 @@ start "" "http://127.0.0.1:4173/"
 echo.
 echo   ==============================================
 echo     Preview    : http://127.0.0.1:4173/
-echo     To stop    : close the "AI WANXIANG Server" window
+echo     To stop    : close the "EALOONG ARCADE Server" window
 echo     To rebuild : run this file again
 echo   ==============================================
 echo.

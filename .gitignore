@@ -7,6 +7,8 @@ dist/
 
 # 项目内部记录（给 AI 看的，不发布）
 .workbuddy/
+.codebuddy/
+.serve.err
 
 # 送外部 AI 审查的文档（含项目弱点清单，默认不公开）
 审查请求-给ChatGPT.md

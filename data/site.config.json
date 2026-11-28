@@ -1,128 +1,33 @@
 {
   "brand": {
-    "name": "AI 万象",
-    "nameEn": "AI WANXIANG",
-    "slogan": "收录 AI 世界的一切",
-    "description": "AI 万象是一个长期维护的 AI 资料站：收录 AI 工具、提示词、资讯、学习资源，帮你在一处找到并上手任何 AI 能力。",
-    "logoText": "象"
+    "name": "Ealoong Arcade",
+    "tagline": "Free browser games and quick gamer tools",
+    "description": "Free browser games and lightweight gamer tools. No download, no sign-up, no uploads. Everything runs in your browser.",
+    "logoText": "EA",
+    "zh": {
+      "tagline": "免费网页游戏与实用的玩家工具",
+      "description": "免费网页游戏与轻量的玩家工具。不用下载、不用注册、不上传任何内容，全部在浏览器里运行。"
+    }
   },
   "domain": "www.ealoongchan.top",
   "baseUrl": "https://www.ealoongchan.top",
-  "locale": "zh-CN",
-  "theme": {
-    "default": "light",
-    "allowToggle": true
-  },
+  "locale": "en-US",
   "nav": [
-    {
-      "label": "场景",
-      "href": "/playbooks/",
-      "icon": "compass"
-    },
-    {
-      "label": "工具",
-      "href": "/tools/",
-      "icon": "grid"
-    },
-    {
-      "label": "提示词",
-      "href": "/prompts/",
-      "icon": "spark"
-    },
-    {
-      "label": "模型",
-      "href": "/models/",
-      "icon": "cpu"
-    },
-    {
-      "label": "对比",
-      "href": "/compare/",
-      "icon": "layers"
-    },
-    {
-      "label": "资讯",
-      "href": "/news/",
-      "icon": "news"
-    },
-    {
-      "label": "学习",
-      "href": "/learn/",
-      "icon": "book"
-    },
-    {
-      "label": "关于",
-      "href": "/about/",
-      "icon": "info"
-    }
+    { "label": "Games", "href": "/games/", "zh": { "label": "游戏" } },
+    { "label": "Tools", "href": "/tools/", "zh": { "label": "工具" } }
   ],
   "footer": {
     "links": [
-      {
-        "label": "我的收藏",
-        "href": "/saved/"
-      },
-      {
-        "label": "工具对比",
-        "href": "/compare/"
-      },
-      {
-        "label": "提交收录",
-        "href": "/about/#submit"
-      },
-      {
-        "label": "AI 术语表",
-        "href": "/glossary/"
-      },
-      {
-        "label": "开放数据",
-        "href": "/open-data/"
-      },
-      {
-        "label": "更新日志",
-        "href": "/changelog/"
-      },
-      {
-        "label": "友情链接",
-        "href": "/about/#links"
-      }
+      { "label": "About", "href": "/about/", "zh": { "label": "关于" } },
+      { "label": "Contact", "href": "/contact/", "zh": { "label": "联系" } },
+      { "label": "Privacy", "href": "/privacy/", "zh": { "label": "隐私" } }
     ],
-    "icp": "",
-    "copyright": "© 2026 AI 万象 · 收录 AI 世界的一切"
-  },
-  "stats": {
-    "showOnHome": true
-  },
-  "review": {
-    "policy": "本站的工具信息与编辑点评，是在公开资料和一套固定的编辑规则（选型要点、常见坑、不该用的场景）基础上整理出来的，不是逐一手工实测的结果。每条都标注核验状态与更新日期；发现错误欢迎指出，我们会核对后修正。",
-    "defaultStatus": "editorial",
-    "policyEn": "Tool information and editorial notes on this site are compiled from public sources against a fixed set of editing rules (what to pick, common pitfalls, when not to use it). They are not hands-on test results for every entry. Each entry states how it was verified and when it was last reviewed; corrections are welcome.",
-    "statusLabelsEn": {
-      "tested": "Hands-on tested",
-      "source-verified": "Checked against official docs",
-      "editorial": "Compiled from public sources",
-      "needs-review": "Due for re-check"
-    },
-    "statusLabels": {
-      "tested": "编辑实测",
-      "source-verified": "按官方资料核验",
-      "editorial": "按公开资料整理",
-      "needs-review": "待重新核验"
-    }
-  },
-  "contentDates": {
-    "tools": "2026-09-20",
-    "playbooks": "2026-09-20",
-    "prompts": "2026-09-20",
-    "models": "2026-09-20",
-    "glossary": "2026-09-20",
-    "learn": "2026-09-20",
-    "news": "2026-09-20",
-    "note": "内容真的变了才改这里。改一个值会让该模块所有页面的 lastmod 跟着变，所以不要为了「看起来新」而动它。"
+    "repoUrl": "https://github.com/EaloongChan/ai-wanxiang",
+    "copyright": "© 2026 Ealoong Arcade"
   },
   "verify": {
-    "note": "搜索引擎站点验证。把 token 填在这里，构建时自动输出对应 meta；留空则不输出。填完必须重新构建，check.mjs 会核对 token 是否真的出现在页面里。Google 用 HTML 标签验证（或换成 HTML 文件，放 public/ 即可）；Bing 的 msvalidate.01 同理。百度已放弃：要求真实姓名/职务/微信等实名信息，换来的是一个无备案海外站的极低配额，不值得。",
+    "note": "Search engine verification. Tokens are emitted as meta tags at build time; leave empty to skip. Keep the Google token: it is what keeps Search Console verified for this domain.",
     "google": "HSLSJ3BGMo7acl1WJQ2R8lzHa-hw4ElXSXuXjobaxbY",
-    "bing": "",
-    "baidu": ""
+    "bing": ""
   }
 }

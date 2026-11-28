@@ -14,8 +14,8 @@
  *
  * 两条纪律：
  *   1. **只推新增/变更的 URL**，不要每次推全站（记录在 data/indexnow-submitted.json）
- *   2. URL 清单**直接读 dist/sitemap.xml** —— 那份清单已经被 build 精心裁剪过
- *      （排除了 404 / 实时动态 / 搜索页 / 收藏页），在这里再维护一套必然分叉
+ *   2. URL 清单**直接读 dist/sitemap.xml** —— 那份清单已经被 build 裁剪过
+ *      （排除了 404），在这里再维护一套必然分叉
  *
  * 密钥文件放在 public/<key>.txt，构建时会被原样复制到 dist/ 根目录。
  * 生成/更换：node scripts/indexnow.mjs --new-key
@@ -101,7 +101,7 @@ if (!pending.length) {
 }
 
 /* ---------- 决定这次推哪些 ---------- */
-const PRIORITY = ['/$', '/tools/$', '/playbooks/$', '/prompts/$', '/models/$', '/glossary/$', '/learn/$', '/news/$'];
+const PRIORITY = ['/$', '/games/$', '/tools/$', '/about/'];
 let picked;
 if (ALL) {
   /* 一次性补推：站点刚在 Bing 后台验证过、而 sitemap 那边还停在几个月前的旧记录

@@ -1,0 +1,260 @@
+{
+  "$comment": "Long-form pages. Paragraphs may contain simple inline HTML. Internal links are written once and the build prefixes /zh for Chinese, so the same href never has to be written twice. A section with \"flag\" is only rendered while that flag is enabled, so the privacy page never promises more or less than the site actually does.",
+  "about": {
+    "title": "About",
+    "updated": "2026-11-28",
+    "metaDescription": "Ealoong Arcade is a small site of free browser games and gamer tools built by one independent developer. No downloads, no accounts, nothing uploaded.",
+    "lead": "Ealoong Arcade is a small collection of browser games and quick tools for gamers, built by one independent developer.",
+    "sections": [
+      {
+        "id": "what",
+        "h": "What you will find here",
+        "p": [
+          "A growing set of <b>games that run in the browser</b>. They load in one click, work with touch or mouse and keyboard, and save progress locally.",
+          "<b>Tools that solve one small problem</b>: converting mouse sensitivity between games, working out field of view, changing Steam ID formats, writing Discord timestamps. Each tool does one job and does it entirely on your device."
+        ]
+      },
+      {
+        "id": "how",
+        "h": "How the site is built",
+        "p": [
+          "Everything is static. Pages are generated ahead of time and served from a content network, so there is no application server and nothing to log in to. The site is built without third-party libraries or trackers: one stylesheet and one small script per page. The source is <a href=\"https://github.com/EaloongChan/ai-wanxiang\" rel=\"noopener\">open on GitHub</a> under the MIT licence."
+        ]
+      },
+      {
+        "id": "history",
+        "h": "Where it came from",
+        "p": [
+          "This address used to host AI Wanxiang, a directory of AI tools and prompts. That project is retired. Its open dataset of 246 tools and 86 prompts is still available under <a href=\"/api/legacy/index.json\">/api/legacy</a> for anyone who was using it, and several of those prompts live on inside the prompt template builder."
+        ]
+      }
+    ],
+    "zh": {
+      "title": "关于",
+      "metaDescription": "Ealoong Arcade 是一个只有网页游戏和玩家小工具的小站，由一位独立开发者维护。不用下载、不用账号、不上传任何内容。",
+      "lead": "Ealoong Arcade 是一个小站，收录几款网页游戏和给玩家用的小工具，由一位独立开发者维护。",
+      "sections": [
+        {
+          "id": "what",
+          "h": "这里有什么",
+          "p": [
+            "一组<b>在浏览器里直接运行的游戏</b>。点开即玩，触屏和键鼠都支持，进度存在本地。",
+            "<b>只解决一个小问题的工具</b>：换算游戏之间的鼠标灵敏度、算视野角、转 Steam ID 格式、写 Discord 时间戳。每个工具只做一件事，而且完全在你的设备上完成。"
+          ]
+        },
+        {
+          "id": "how",
+          "h": "站点是怎么做的",
+          "p": [
+            "全静态。页面在构建时生成好，直接由内容网络发出，没有应用服务器，也没有需要登录的地方。站点不含第三方库和跟踪脚本：一个样式表，加每页一个很小的脚本。源码<a href=\"https://github.com/EaloongChan/ai-wanxiang\" rel=\"noopener\">在 GitHub 上开源</a>，MIT 许可。"
+          ]
+        },
+        {
+          "id": "history",
+          "h": "它从哪里来",
+          "p": [
+            "这个地址以前放的是 AI 万象，一个 AI 工具与提示词的导航站。那个项目已经下线。它开放的 246 个工具、86 条提示词数据集仍然留在 <a href=\"/api/legacy/index.json\">/api/legacy</a>，原来在用的人可以继续取用；其中一些提示词仍然活在这里的提示词模板工具里。"
+          ]
+        }
+      ]
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "updated": "2026-11-28",
+    "metaDescription": "Report a bug, suggest a game or a tool, or send feedback about Ealoong Arcade.",
+    "lead": "The most reliable way to reach us is a GitHub issue. It keeps the conversation in one place and does not depend on email.",
+    "sections": [
+      {
+        "id": "issues",
+        "h": "Open an issue",
+        "p": [
+          "Go to <a href=\"https://github.com/EaloongChan/ai-wanxiang/issues\" rel=\"noopener\">the issue tracker</a> and click <b>New issue</b>. A GitHub account is required.",
+          "Please include the page address, what you expected, and what happened. For the game, the save code from Settings lets us reproduce the exact state."
+        ]
+      },
+      {
+        "id": "bugs",
+        "h": "If something is broken",
+        "list": [
+          "<b>A tool gives a wrong answer.</b> Tell us the exact inputs and the result you expected.",
+          "<b>The game will not load or stutters.</b> Name your browser and device.",
+          "<b>A link or an old address does not work.</b> Paste the address as it appears."
+        ]
+      },
+      {
+        "id": "ideas",
+        "h": "Suggestions",
+        "p": [
+          "Ideas for new games and tools are welcome. We favour small things that work well over large things that half work, so expect a short list that grows slowly."
+        ]
+      }
+    ],
+    "zh": {
+      "title": "联系",
+      "metaDescription": "报告问题、建议新游戏或新工具，或者给 Ealoong Arcade 提反馈。",
+      "lead": "最可靠的找人的方式是开一个 GitHub issue：对话能留在同一个地方，也不依赖邮箱。",
+      "sections": [
+        {
+          "id": "issues",
+          "h": "开一个 issue",
+          "p": [
+            "打开<a href=\"https://github.com/EaloongChan/ai-wanxiang/issues\" rel=\"noopener\">问题追踪</a>，点 <b>New issue</b>。需要 GitHub 账号。",
+            "请写清页面地址、你期望的结果、实际发生了什么。游戏相关的问题，附上设置里导出的存档码，我们就能复现到完全一样的状态。"
+          ]
+        },
+        {
+          "id": "bugs",
+          "h": "遇到问题时",
+          "list": [
+            "<b>工具算错了。</b>把具体的输入和期望结果告诉我们。",
+            "<b>游戏打不开或卡顿。</b>说明用的浏览器和设备。",
+            "<b>链接或旧地址打不开。</b>把地址原样贴过来。"
+          ]
+        },
+        {
+          "id": "ideas",
+          "h": "建议",
+          "p": [
+            "欢迎提新游戏和新工具的想法。我们更偏好小而做得好的东西，而不是大而只做了一半的东西，所以列表会慢慢变长。"
+          ]
+        }
+      ]
+    }
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "updated": "2026-11-28",
+    "metaDescription": "Privacy policy for Ealoong Arcade: no accounts, no tracking, tools that run in your browser, and game saves stored on your device.",
+    "lead": "The short version: we do not have accounts, we do not track you across the site, and nothing you type into a tool is sent to us.",
+    "sections": [
+      {
+        "id": "summary",
+        "h": "At a glance",
+        "list": [
+          "<b>No accounts.</b> Nothing here needs a sign-up.",
+          "<b>No advertising or analytics scripts.</b> Pages load one stylesheet and one script, both from this site.",
+          "<b>No uploads.</b> Tools calculate in your browser. What you type stays on your device.",
+          "<b>Game saves live in your browser</b>, not on our servers."
+        ]
+      },
+      {
+        "id": "tools",
+        "h": "The tools",
+        "p": [
+          "Every tool on this site is a small program that runs inside your browser tab. Numbers, dates and IDs you enter are processed locally and are never transmitted. Closing the tab discards them."
+        ]
+      },
+      {
+        "id": "saves",
+        "h": "Game progress",
+        "p": [
+          "Game progress is stored in your browser's local storage for this site only. It is not linked to any identity and is not sent anywhere. You can delete it at any time in the game's settings or by clearing site data for this domain. The export code in settings is the only way to move a save between devices, and it contains only game progress."
+        ]
+      },
+      {
+        "id": "analytics",
+        "flag": "analytics",
+        "h": "Visitor counts",
+        "p": [
+          "This site uses Cloudflare Web Analytics. It counts page views with aggregate, cookie-free measurement: no cookies, no fingerprinting and no cross-site tracking. Individual visitors cannot be identified from it."
+        ]
+      },
+      {
+        "id": "servers",
+        "h": "Servers and networks",
+        "p": [
+          "Like every website, this one is delivered by computers. Our hosting and content network providers process each request, which includes your IP address, to send the page back to you and to block abuse. Their retention of standard request logs is governed by their own policies and is outside this site's control. Fonts are served from this site, so no font service receives your visits."
+        ]
+      },
+      {
+        "id": "children",
+        "h": "Children",
+        "p": [
+          "The game is suitable for all ages and collects no personal information from anyone, including children."
+        ]
+      },
+      {
+        "id": "changes",
+        "h": "Changes to this policy",
+        "p": [
+          "If we add something that changes what leaves your device, this page will say so before it goes live. The date at the top shows the last change."
+        ]
+      },
+      {
+        "id": "questions",
+        "h": "Questions",
+        "p": [
+          "Ask on <a href=\"/contact/\">the contact page</a> and we will answer as soon as we can."
+        ]
+      }
+    ],
+    "zh": {
+      "title": "隐私政策",
+      "metaDescription": "Ealoong Arcade 的隐私政策：没有账号、没有跟踪，工具在浏览器里运行，游戏存档只留在你自己的设备上。",
+      "lead": "一句话版本：我们没有账号，不跨站跟踪你，工具里输入的内容也不会发给我们。",
+      "sections": [
+        {
+          "id": "summary",
+          "h": "一目了然",
+          "list": [
+            "<b>没有账号。</b>这里没有任何需要注册的东西。",
+            "<b>没有广告和统计脚本。</b>每页只加载一个样式表和一个脚本，都来自本站。",
+            "<b>不上传。</b>工具在你的浏览器里算，输入的内容留在你的设备上。",
+            "<b>游戏存档在浏览器里</b>，不在我们的服务器上。"
+          ]
+        },
+        {
+          "id": "tools",
+          "h": "工具",
+          "p": [
+            "本站每个工具都是跑在浏览器标签页里的小程序。你输入的数字、日期和 ID 都在本地处理，不会被传输。关掉标签页就没了。"
+          ]
+        },
+        {
+          "id": "saves",
+          "h": "游戏进度",
+          "p": [
+            "游戏进度存在这个站点的浏览器本地存储里，不与任何身份关联，也不会发到别处。你可以随时在游戏设置里删除，或者清除本站的站点数据。设置里的导出码是唯一能把存档搬到别的设备的方式，里面只有游戏进度。"
+          ]
+        },
+        {
+          "id": "analytics",
+          "flag": "analytics",
+          "h": "访问统计",
+          "p": [
+            "本站使用 Cloudflare Web Analytics 统计访问量。它用聚合、无 Cookie 的方式计数：没有 Cookie，不做指纹识别，也不跨站跟踪，无法从数据里识别到个人。"
+          ]
+        },
+        {
+          "id": "servers",
+          "h": "服务器与网络",
+          "p": [
+            "和其他网站一样，这个站也要靠计算机把页面送出去。我们的托管和内容网络服务商要为每次请求处理 IP 地址，才能把页面发回给你并挡住滥用。它们对标准请求日志的保留遵循各自的政策，不在本站的控制范围内。字体由本站自己提供，没有字体服务会收到你的访问。"
+          ]
+        },
+        {
+          "id": "children",
+          "h": "儿童",
+          "p": [
+            "游戏适合所有年龄，不收集任何人的个人信息，包括儿童。"
+          ]
+        },
+        {
+          "id": "changes",
+          "h": "政策变更",
+          "p": [
+            "如果新增了会改变「数据离开你的设备」的功能，这一页会在上线前先写明。顶部的日期是最后修改的时间。"
+          ]
+        },
+        {
+          "id": "questions",
+          "h": "有疑问",
+          "p": [
+            "到<a href=\"/contact/\">联系页</a>提问，我们会尽快回复。"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -24,6 +24,7 @@ const KEY_PATH = '~/.ssh/id_ed25519_github.pub';
 const DRY = process.argv.includes('--dry');
 const BACKUP = process.argv.includes('--backup');
 const FORCE = process.argv.includes('--force');
+const SKIP_VERIFY = process.argv.includes('--skip-verify');
 
 /* 22 端口被代理接管时的备用通道：GitHub 官方支持 SSH 走 443。
    检测到之后，本次所有 git 操作都带上它。
@@ -94,7 +95,7 @@ async function main() {
      放在最前面：仓库结构不对就别谈推送，先按提示恢复。
      用 process.execPath 而不是 'node' —— 沙箱里 PATH 不一定能解析到 node。 */
   line('');
-  line('  [0/3] 仓库体检');
+  line('  [0/4] 仓库体检');
   try {
     execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'git-doctor.mjs')], { stdio: 'inherit' });
   } catch {
@@ -104,7 +105,7 @@ async function main() {
 
   /* ---------- 1. 验证 SSH 密钥可用 ---------- */
   line('');
-  line('  [1/3] 检查 SSH 授权');
+  line('  [1/4] 检查 SSH 授权');
   /* 重试几次再下结论。
      踩过一次：网络抖动导致 ssh -T 超时，脚本立刻判定「没配公钥」，
      让用户去 GitHub 加 key —— 但 key 本来就是好的，再推一次就成功了。
@@ -188,7 +189,7 @@ async function main() {
   /* ---------- 2. 可选：归档 ---------- */
   line('');
   if (BACKUP) {
-    line('  [2/3] 归档远端现有的 main');
+    line('  [2/4] 归档远端现有的 main');
     let remoteMain = '';
     try {
       remoteMain = (git(['ls-remote', '--heads', 'origin', 'main']).trim().split(/\s+/)[0] || '');
@@ -209,21 +210,44 @@ async function main() {
       }
     }
   } else {
-    line('  [2/3] 跳过归档（默认直接覆盖）');
+    line('  [2/4] 跳过归档（默认直接覆盖）');
     line('  真正的回滚安全网是 Vercel：它保留每次部署，面板上可一键回滚到旧版本');
     line('  想保留 git 归档就加 --backup');
   }
 
-  /* ---------- 3. 推送 ---------- */
+  /* ---------- 3. 上线前全量校验 ----------
+     这一步把「数据校验 → 单元测试 → 构建 → 内链 → 孤儿页 → 体积」整条链跑一遍。
+     任何一环失败就不推送：线上不该出现一个本地就过不了检查的版本。 */
+  line('');
+  if (SKIP_VERIFY) {
+    line('  [3/4] --skip-verify：跳过上线前校验（请明确知道自己在做什么）');
+  } else {
+    line('  [3/4] 上线前校验：check → unit → build → links → orphans → perf');
+    try {
+      execFileSync(process.execPath, ['--test', 'src/**/*.test.js'], { cwd: ROOT, stdio: 'inherit' });
+      for (const s of ['check.mjs', 'build.mjs', 'links.mjs', 'orphans.mjs', 'perf.mjs']) {
+        execFileSync(process.execPath, [path.join(ROOT, 'scripts', s)], { cwd: ROOT, stdio: 'inherit' });
+      }
+      line('  ✓ 校验全部通过');
+    } catch {
+      line('');
+      line('  ✗ 校验没有通过，已中止推送。先修好上面报出的问题。');
+      line('    （确认要带着问题上线，就加 --skip-verify。）');
+      line('');
+      process.exit(1);
+    }
+  }
+
+  /* ---------- 4. 推送 ---------- */
   line('');
   if (DRY) {
-    line('  [3/3] --dry：不推送');
+    line('  [4/4] --dry：不推送');
     rule();
     line('  检查完成，远端未改动。');
     line('');
     return;
   }
-  line(`  [3/3] 推送到远端 ${branch}:main`);
+  line(`  [4/4] 推送到远端 ${branch}:main`);
   /* ★ 先看远端有没有本地没有的提交。
      踩过一次（差点抹掉）：每日资讯是 GitHub Actions 直接提交到 main 的，
      本地放几天没推，远端就会领先十几个提交。而这里原来是**无条件 --force**，
@@ -314,6 +338,11 @@ async function main() {
     line('');
   } else if (final === 'success') {
     line('  ✓ Vercel 部署成功，线上已是最新版本');
+    line('');
+    line('  接下来：');
+    line('    1. node scripts/verify-live.mjs   确认线上页面、旧地址跳转、新工具页都没问题');
+    line('    2. 到 Cloudflare 后台确认 robots.txt 里没有再追加屏蔽爬虫的托管段');
+    line('    3. 游戏门户提交用的是 dist/portal/<游戏>.zip（构建时自动生成）');
     line('');
   } else if (final === 'pending') {
     line('  ! 4 分钟内没等到结果，去 Vercel 面板确认一下');

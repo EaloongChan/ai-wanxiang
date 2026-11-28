@@ -1,7 +1,14 @@
 /**
  * 交互自测（CDP 驱动真实浏览器点击）
- *   node scripts/selftest.mjs
- * 前置：dist/ 已构建，且 node scripts/serve.mjs 已启动。
+ *
+ *   node scripts/selftest.mjs            全部用例
+ *   node scripts/selftest.mjs game        只跑名字里含 "game" 的用例
+ *   node scripts/selftest.mjs tool       只跑工具用例
+ *
+ * 前置：dist/ 已构建，且 node scripts/serve.mjs 已在 4173 端口启动。
+ *
+ * 单元测试验证的是规则；这里验证的是「规则接上了界面」：点击画布能砍到树、买按钮扣钱、
+ * 刷新页面读得回档、离开再回来有收益。每个用例都从干净的本地存储开始。
  */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -13,6 +20,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const PORT = Number(process.env.AUDIT_PORT || 9223);
 const SERVE = process.env.AUDIT_URL || 'http://127.0.0.1:4173';
+const ONLY = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : '';
+
+const GAME_CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'games', 'lumber-tycoon', 'config.json'), 'utf8'));
+const TOOL_IDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tools.json'), 'utf8')).map((t) => t.id);
 
 const CHROME = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -30,7 +41,8 @@ function cdp(url) {
     const ws = new WebSocket(url);
     let id = 0;
     const pending = new Map();
-    ws.addEventListener('open', () => resolve({ send, close: () => ws.close() }));
+    const events = [];
+    ws.addEventListener('open', () => resolve({ send, close: () => ws.close(), events }));
     ws.addEventListener('error', reject);
     ws.addEventListener('message', (ev) => {
       const m = JSON.parse(ev.data);
@@ -38,6 +50,8 @@ function cdp(url) {
         const { res, rej } = pending.get(m.id);
         pending.delete(m.id);
         m.error ? rej(new Error(JSON.stringify(m.error))) : res(m.result);
+      } else if (m.method) {
+        events.push(m);
       }
     });
     function send(method, params = {}) {
@@ -47,1138 +61,399 @@ function cdp(url) {
   });
 }
 
+/** Uncaught exceptions and console errors seen since the caller last emptied the list. */
+function pageErrors(c) {
+  return c.events.filter((e) => e.method === 'Runtime.exceptionThrown' || (e.method === 'Log.entryAdded' && e.params.entry.level === 'error'));
+}
+const firstErrorText = (errors) => (errors[0].params.exception ? errors[0].params.exception.exception?.description || errors[0].params.exception.text : errors[0].params.entry?.text);
+
 const tests = [];
 const test = (name, path_, fn) => tests.push({ name, path: path_, fn });
 
-/* ---- 用例 ---- */
-test('提示词卡可展开', '/prompts/', async (c) => {
-  const before = await c.eval(`document.querySelector('.prompt-card').classList.contains('open')`);
-  await c.eval(`document.querySelector('.prompt-head').click()`);
-  const after = await c.eval(`document.querySelector('.prompt-card').classList.contains('open')`);
-  return { ok: before === false && after === true, detail: `展开前 ${before} → 展开后 ${after}` };
-});
-
-test('提示词"全部展开"生效', '/prompts/', async (c) => {
-  await c.eval(`document.querySelector('[data-all-open]').click()`);
-  const n = await c.eval(`[...document.querySelectorAll('.prompt-card')].filter(x=>x.classList.contains('open')).length`);
-  const total = await c.eval(`document.querySelectorAll('.prompt-card').length`);
-  return { ok: n === total, detail: `${n}/${total} 张已展开` };
-});
-
-test('深链 #hash 自动展开对应提示词', '/prompts/?cat=meta#p-prompt-improve', async (c) => {
-  const open = await c.eval(`document.getElementById('p-prompt-improve').classList.contains('open')`);
-  return { ok: open === true, detail: `open=${open}` };
-});
-
-test('工具页筛选：分类', '/tools/', async (c) => {
-  const before = await c.eval(`document.querySelector('[data-count]').textContent`);
-  await c.eval(`document.querySelector('[data-facet="cat"][data-value="coding"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const cats = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].map(x=>x.dataset.cat).filter((v,i,a)=>a.indexOf(v)===i)`);
-  return { ok: shown > 0 && cats.length === 1 && cats[0] === 'coding', detail: `显示 ${shown} 条，分类 [${cats}]（原 ${before}）` };
-});
-
-test('工具页筛选：搜索框', '/tools/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='midjourney';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const name = await c.eval(`(document.querySelector('[data-list] > *:not(.hidden) .name')||{}).textContent||''`);
-  return { ok: shown === 1 && /Midjourney/i.test(name), detail: `${shown} 条，命中「${name}」` };
-});
-
-test('工具页筛选：无限结果时显示空态', '/tools/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='zzzz不存在的工具zzz';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const emptyVisible = await c.eval(`!document.querySelector('[data-empty]').classList.contains('hidden')`);
-  return { ok: shown === 0 && emptyVisible === true, detail: `显示 ${shown} 条，空态可见 ${emptyVisible}` };
-});
-
-test('重置按钮恢复全量', '/tools/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='xxx';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await c.eval(`document.querySelector('[data-reset]').click()`);
-  const v = await c.eval(`document.querySelector('[data-query]').value`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const total = await c.eval(`document.querySelectorAll('[data-list] > *').length`);
-  return { ok: v === '' && shown === total, detail: `输入框已清空，${shown}/${total} 条可见` };
-});
-
-test('"仅国内直连"开关生效', '/tools/', async (c) => {
-  await c.eval(`document.querySelector('[data-toggle="cn"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const bad = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].filter(x=>x.dataset.cn!=='1').length`);
-  return { ok: shown > 0 && bad === 0, detail: `显示 ${shown} 条，非国内直连残留 ${bad}` };
-});
-
-test('全站搜索返回结果', '/search/?q=RAG', async (c) => {
-  const n = await c.eval(`document.querySelectorAll('#searchResults > *').length`);
-  const count = await c.eval(`document.querySelector('#searchCount').textContent`);
-  return { ok: n > 0, detail: `${n} 张结果卡 · ${count}` };
-});
-
-test('全站搜索类型筛选', '/search/?q=RAG', async (c) => {
-  await c.eval(`document.querySelector('[data-type="glossary"]').click()`);
-  const subs = await c.eval(`[...document.querySelectorAll('#searchResults .card-top > div > div')].map(x=>x.textContent.trim())`);
-  const allGloss = subs.every((s) => s.startsWith('术语'));
-  return { ok: subs.length > 0 && allGloss, detail: `${subs.length} 条，全部为术语类 ${allGloss}` };
-});
-
-test('主题切换写入 localStorage', '/', async (c) => {
-  const before = await c.eval(`document.documentElement.getAttribute('data-theme')`);
-  await c.eval(`document.querySelector('#themeBtn').click()`);
-  await sleep(120);
-  const after = await c.eval(`document.documentElement.getAttribute('data-theme')`);
-  const ls = await c.eval(`localStorage.getItem('aiwx-theme')`);
-  return { ok: before !== after && ls === after, detail: `${before} → ${after}（localStorage=${ls}）` };
-});
-
-test('URL ?theme=light 生效', '/tools/?theme=light', async (c) => {
-  const t = await c.eval(`document.documentElement.getAttribute('data-theme')`);
-  return { ok: t === 'light', detail: `data-theme=${t}` };
-});
-
-test('移动端菜单可展开', '/', async (c) => {
-  await c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
-  await c.send('Page.navigate', { url: SERVE + '/' });
-  await sleep(800);
-  await c.eval(`document.querySelector('#menuBtn').click()`);
-  await sleep(250);
-  const open = await c.eval(`document.querySelector('#nav').classList.contains('open')`);
-  const visible = await c.eval(`getComputedStyle(document.querySelector('#nav')).opacity`);
-  return { ok: open === true && Number(visible) > 0.9, detail: `open=${open} opacity=${visible}` };
-});
-
-test('资讯详情页可访问', '/news/n-what-is-mcp/', async (c) => {
-  const h1 = await c.eval(`(document.querySelector('.article-head h1')||{}).textContent||''`);
-  const paras = await c.eval(`document.querySelectorAll('.article-body p').length`);
-  return { ok: h1.length > 0 && paras >= 3, detail: `标题「${h1.slice(0, 20)}…」，正文 ${paras} 段` };
-});
-
-test('数据 API 可访问且为合法 JSON', '/api/index.json', async () => {
-  const d = JSON.parse(await get(SERVE + '/api/index.json'));
-  return { ok: !!d.counts && d.counts.tools > 0, detail: `counts.tools=${d.counts?.tools}` };
-});
-
-/* ---- v2 新增能力的回归测试 ---- */
-
-test('提示词变量填充器：填入值后正文同步更新', '/prompts/?cat=meta#p-prompt-improve', async (c) => {
-  // 注意：被筛选隐藏的卡片仍在 DOM 中，必须用 ID 精确定位到目标卡片
-  const S = '#p-prompt-improve ';
-  const before = await c.eval(`(document.querySelector('${S}.prompt-code pre')||{}).textContent||''`);
-  await c.eval(`(function(){const i=document.querySelector('${S}[data-var="原始提示词"]');i.value='帮我写一份周报';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const after = await c.eval(`document.querySelector('${S}.prompt-code pre').textContent`);
-  const filled = await c.eval(`document.querySelectorAll('${S}.prompt-code pre .filled').length`);
-  const remain = await c.eval(`document.querySelectorAll('${S}.prompt-code pre .var-hl').length`);
-  return {
-    ok: before.indexOf('{{原始提示词}}') !== -1 && after.indexOf('帮我写一份周报') !== -1 && after.indexOf('{{原始提示词}}') === -1 && filled === 1 && remain === 0,
-    detail: `填值前含占位符=${before.indexOf('{{原始提示词}}') !== -1}，填值后插入成功=${after.indexOf('帮我写一份周报') !== -1}，已填标记 ${filled}，剩余占位 ${remain}`,
-  };
-});
-
-test('变量填充器：清空按钮恢复占位符', '/prompts/?cat=meta#p-prompt-improve', async (c) => {
-  const S = '#p-prompt-improve ';
-  await c.eval(`(function(){const i=document.querySelector('${S}[data-var="原始提示词"]');i.value='临时内容';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await c.eval(`document.querySelector('${S}[data-fill-clear]').click()`);
-  const v = await c.eval(`document.querySelector('${S}[data-var="原始提示词"]').value`);
-  const back = await c.eval(`document.querySelector('${S}.prompt-code pre').textContent.indexOf('{{原始提示词}}') !== -1`);
-  const filled = await c.eval(`document.querySelectorAll('${S}.prompt-code pre .filled').length`);
-  return { ok: v === '' && back === true && filled === 0, detail: `输入框="${v}"，占位符已恢复=${back}，残留已填标记 ${filled}` };
-});
-
-test('变量填充不影响其他卡片', '/prompts/?cat=meta#p-prompt-improve', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('#p-prompt-improve [data-var="原始提示词"]');i.value='X';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const scope = await c.eval(`document.querySelectorAll('#p-extract-json .prompt-code pre .filled').length`);
-  // 原始模板不再由服务端输出 data-raw，改为前端从 <pre> 的 textContent 取一次并缓存。
-  // 所以这里验证的是：未被动过的卡片，正文里仍保留 {{变量}} 占位符。
-  const untouched = await c.eval(`/\\{\\{[^}]+\\}\\}/.test(document.querySelector('#p-extract-json .prompt-code pre').textContent)`);
-  const noRawAttr = await c.eval(`document.querySelector('#p-extract-json .prompt-code pre').getAttribute('data-raw') === null`);
-  return {
-    ok: scope === 0 && untouched === true && noRawAttr === true,
-    detail: `相邻卡片已填标记 ${scope}，占位符仍完整=${untouched}，不再重复输出 data-raw=${noRawAttr}`,
-  };
-});
-
-test('变量填充面板按需生成（服务端不渲染这部分）', '/prompts/?cat=meta', async (c) => {
-  const before = await c.eval(`document.querySelectorAll('.prompt-fill').length`);
-  const varsAttr = await c.eval(`document.querySelector('.prompt-card[data-vars]') ? document.querySelector('.prompt-card[data-vars]').getAttribute('data-vars') : ''`);
-  await c.eval(`document.querySelector('.prompt-card[data-vars] .prompt-head').click()`);
-  const after = await c.eval(`document.querySelectorAll('.prompt-fill').length`);
-  const inputs = await c.eval(`document.querySelectorAll('.prompt-card.open .prompt-fill input[data-var]').length`);
-  return {
-    ok: before === 0 && after === 1 && inputs > 0,
-    detail: `展开前 ${before} 个面板，展开后 ${after} 个 / ${inputs} 个输入框；data-vars="${varsAttr}"`,
-  };
-});
-
-test('工具页排序：切换到「最新收录」', '/tools/', async (c) => {
-  await c.eval(`(function(){const s=document.querySelector('[data-sort]');s.value='new';s.dispatchEvent(new Event('change',{bubbles:true}));return 0})()`);
-  const dates = await c.eval(`[...document.querySelectorAll('[data-list] > *')].map(x=>x.dataset.added).filter(Boolean).slice(0,5)`);
-  const desc = dates.every((d, i) => i === 0 || dates[i - 1] >= d);
-  const first = await c.eval(`(document.querySelector('[data-list] > * .name')||{}).textContent||''`);
-  return { ok: desc && dates.length > 0, detail: `前 5 个收录日期 ${dates.join(' > ')}，首项「${first}」` };
-});
-
-test('工具页排序：按名称', '/tools/', async (c) => {
-  await c.eval(`(function(){const s=document.querySelector('[data-sort]');s.value='name';s.dispatchEvent(new Event('change',{bubbles:true}));return 0})()`);
-  const names = await c.eval(`[...document.querySelectorAll('[data-list] > *')].map(x=>(x.querySelector('.name')||{}).textContent||'').slice(0,4)`);
-  return { ok: names.length === 4, detail: `前 4 项：${names.join(' / ')}` };
-});
-
-test('NEW 标记出现在最新收录的工具上', '/tools/?sort=new', async (c) => {
-  const total = await c.eval(`document.querySelectorAll('.badge-new').length`);
-  return { ok: total > 0, detail: `${total} 个工具带 NEW 标记` };
-});
-
-test('RSS 订阅源格式正确', '/feed.xml', async () => {
-  const xml = await get(SERVE + '/feed.xml');
-  const ok = xml.startsWith('<?xml') && xml.indexOf('<rss') !== -1 && xml.indexOf('<item>') !== -1;
-  const n = (xml.match(/<item>/g) || []).length;
-  return { ok, detail: `合法 RSS，含 ${n} 条 item` };
-});
-
-test('搜索索引 API 可用', '/api/search.json', async () => {
-  const d = JSON.parse(await get(SERVE + '/api/search.json'));
-  const types = [...new Set(d.map((x) => x.t))].sort();
-  return { ok: Array.isArray(d) && d.length > 100, detail: `${d.length} 条，覆盖类型 [${types.join(', ')}]` };
-});
-
-test('社交分享图与图标已生成', '/og.png', async () => {
-  const buf = await new Promise((res, rej) => {
-    http.get(SERVE + '/og.png', (r) => {
-      const chunks = [];
-      r.on('data', (c) => chunks.push(c));
-      r.on('end', () => res(Buffer.concat(chunks)));
-    }).on('error', rej);
-  });
-  const isPng = buf.slice(0, 8).toString('hex') === '89504e470d0a1a0a';
-  const w = buf.readUInt32BE(16), h = buf.readUInt32BE(20);
-  return { ok: isPng && w === 1200 && h === 630, detail: `PNG ${w}×${h}，${(buf.length / 1024).toFixed(0)} KB` };
-});
-
-test('结构化数据 JSON-LD 可解析', '/tools/', async (c) => {
-  const raw = await c.eval(`[...document.querySelectorAll('script[type="application/ld+json"]')].map(s=>s.textContent)`);
-  let ok = raw.length > 0, types = [];
-  try {
-    types = raw.map((s) => JSON.parse(s)['@type']);
-  } catch (e) { ok = false; }
-  return { ok: ok && types.length >= 2, detail: `${raw.length} 段：${types.join(' / ')}` };
-});
-
-test('字体文件自托管可访问', '/fonts/ibm-plex-mono-latin-500-normal.woff2', async () => {
-  const buf = await new Promise((res, rej) => {
-    http.get(SERVE + '/fonts/ibm-plex-mono-latin-500-normal.woff2', (r) => {
-      const chunks = [];
-      r.on('data', (c) => chunks.push(c));
-      r.on('end', () => res(Buffer.concat(chunks)));
-    }).on('error', rej);
-  });
-  const isWoff2 = buf.slice(0, 4).toString('ascii') === 'wOF2';
-  return { ok: isWoff2, detail: `${isWoff2 ? 'WOFF2 合法' : '格式错误'}，${(buf.length / 1024).toFixed(1)} KB` };
-});
-
-/* ---- v3 新模块：场景手册 / 模型库 ---- */
-
-test('场景手册：分组筛选生效', '/playbooks/', async (c) => {
-  await c.eval(`document.querySelector('[data-facet="group"][data-value="code"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const groups = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].map(x=>x.dataset.group).filter((v,i,a)=>a.indexOf(v)===i)`);
-  return { ok: shown > 0 && groups.length === 1 && groups[0] === 'code', detail: `显示 ${shown} 条，分组 [${groups}]` };
-});
-
-test('场景手册：搜索能按「想做的事」命中', '/playbooks/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='周报';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const title = await c.eval(`(document.querySelector('[data-list] > *:not(.hidden) .name')||{}).textContent||''`);
-  return { ok: shown >= 1 && title.indexOf('周报') !== -1, detail: `${shown} 条，命中「${title}」` };
-});
-
-test('场景详情页：流程步骤与 HowTo 结构化数据', '/playbooks/pb-weekly-report/', async (c) => {
-  const steps = await c.eval(`document.querySelectorAll('.steps .step').length`);
-  const chips = await c.eval(`document.querySelectorAll('.step-refs .tag').length`);
-  const warns = await c.eval(`document.querySelectorAll('.warn-item').length`);
-  const ld = await c.eval(`[...document.querySelectorAll('script[type="application/ld+json"]')].map(s=>JSON.parse(s.textContent)['@type'])`);
-  return {
-    ok: steps >= 2 && chips > 0 && warns > 0 && ld.includes('HowTo'),
-    detail: `${steps} 步 / ${chips} 个引用 / ${warns} 条避坑，JSON-LD [${ld.join(', ')}]`,
-  };
-});
-
-test('场景详情页：关联提示词可展开并带变量填充', '/playbooks/pb-weekly-report/', async (c) => {
-  const cards = await c.eval(`document.querySelectorAll('.prompt-card').length`);
-  const fills = await c.eval(`document.querySelectorAll('.prompt-fill').length`);
-  await c.eval(`document.querySelector('.prompt-card .prompt-head').click()`);
-  const open = await c.eval(`document.querySelector('.prompt-card').classList.contains('open')`);
-  return { ok: cards > 0 && open === true, detail: `${cards} 张提示词卡，其中 ${fills} 张带变量填充，展开=${open}` };
-});
-
-test('模型库：类型筛选', '/models/', async (c) => {
-  await c.eval(`document.querySelector('[data-facet="kind"][data-value="video"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const kinds = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].map(x=>x.dataset.kind).filter((v,i,a)=>a.indexOf(v)===i)`);
-  return { ok: shown > 0 && kinds.length === 1 && kinds[0] === 'video', detail: `${shown} 个，类型 [${kinds}]` };
-});
-
-test('模型库：「只要开源」开关', '/models/', async (c) => {
-  await c.eval(`document.querySelector('[data-toggle="open"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const bad = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].filter(x=>x.dataset.open!=='1').length`);
-  return { ok: shown > 0 && bad === 0, detail: `${shown} 个开源模型，非开源残留 ${bad}` };
-});
-
-test('模型库：「国内可直连」开关', '/models/', async (c) => {
-  await c.eval(`document.querySelector('[data-toggle="cn"]').click()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const bad = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden)')].filter(x=>x.dataset.cn!=='1').length`);
-  return { ok: shown > 0 && bad === 0, detail: `${shown} 个国内可直连，残留 ${bad}` };
-});
-
-test('全站搜索按类型分组，高数量类型不淹没其他类型', '/search/?q=开源', async (c) => {
-  const heads = await c.eval(`[...document.querySelectorAll('.search-group-head .label')].map(x=>x.textContent)`);
-  const capOk = await c.eval(`[...document.querySelectorAll('.search-group')].every(g=>g.querySelectorAll('.grid > *').length<=12)`);
-  const more = await c.eval(`document.querySelectorAll('.search-more').length`);
-  const total = await c.eval(`document.querySelector('#searchCount').textContent`);
-  return {
-    ok: heads.length >= 3 && heads.indexOf('模型') !== -1 && capOk === true,
-    detail: `分组 [${heads.join(', ')}]，每组上限 12 = ${capOk}，${more} 组带「还有更多」提示，${total}`,
-  };
-});
-
-test('全站搜索：点类型标签切换到平铺视图', '/search/?q=开源', async (c) => {
-  await c.eval(`document.querySelector('[data-type="model"]').click()`);
-  const grouped = await c.eval(`document.querySelector('#searchResults').classList.contains('search-grouped')`);
-  const items = await c.eval(`document.querySelectorAll('#searchResults > *').length`);
-  const cats = await c.eval(`[...document.querySelectorAll('#searchResults .card-cat')].map(x=>x.textContent.split('/')[0].trim()).filter((v,i,a)=>a.indexOf(v)===i)`);
-  return { ok: grouped === false && items > 0 && cats.length === 1 && cats[0] === '模型', detail: `平铺=${!grouped}，${items} 条，类型 [${cats}]` };
-});
-
-test('首页展示新模块统计', '/', async (c) => {
-  const labels = await c.eval(`[...document.querySelectorAll('.stat span')].map(x=>x.textContent)`);
-  const hasPlaybook = labels.some((l) => l.indexOf('场景') !== -1);
-  const hasModel = labels.some((l) => l.indexOf('模型') !== -1);
-  return { ok: hasPlaybook && hasModel, detail: labels.join(' / ') };
-});
-
-test('站点地图包含场景与模型页面', '/sitemap.xml', async () => {
-  const xml = await get(SERVE + '/sitemap.xml');
-  const pb = (xml.match(/\/playbooks\//g) || []).length;
-  const md = (xml.match(/\/models\//g) || []).length;
-  const total = (xml.match(/<url>/g) || []).length;
-  return { ok: pb > 10 && md > 5, detail: `共 ${total} 个 URL，场景 ${pb} 条、模型 ${md} 条` };
-});
-
-test('数据 API 覆盖新模块', '/api/index.json', async () => {
-  const d = JSON.parse(await get(SERVE + '/api/index.json'));
-  const c2 = d.counts || {};
-  const ok = c2.playbooks > 0 && c2.models > 0 && c2.tools > 100;
-  return { ok, detail: `工具 ${c2.tools} / 场景 ${c2.playbooks} / 模型 ${c2.models} / 提示词 ${c2.prompts} / 术语 ${c2.glossary}` };
-});
-
-/* ---- v4 新增：工具详情页 ---- */
-
-test('工具详情页：结构与结构化数据', '/tools/coding/cursor/', async (c) => {
-  const h1 = await c.eval(`(document.querySelector('.tool-hero h1')||{}).textContent||''`);
-  const guide = await c.eval(`document.querySelectorAll('.card p').length`);
-  const rows = await c.eval(`document.querySelectorAll('.data-table tbody tr').length`);
-  const ld = await c.eval(`[...document.querySelectorAll('script[type="application/ld+json"]')].map(s=>JSON.parse(s.textContent)['@type'])`);
-  return {
-    ok: h1 === 'Cursor' && rows >= 3 && ld.includes('SoftwareApplication'),
-    detail: `标题「${h1}」，对比表 ${rows} 行，JSON-LD [${ld.join(', ')}]`,
-  };
-});
-
-test('工具详情页：对比表高亮当前工具', '/tools/coding/cursor/', async (c) => {
-  const cur = await c.eval(`[...document.querySelectorAll('.data-table tbody tr.is-current')].map(r=>r.querySelector('td a').textContent)`);
-  const ext = await c.eval(`[...document.querySelectorAll('.data-table td a')].filter(a=>a.target==='_blank').length`);
-  return { ok: cur.length === 1 && cur[0] === 'Cursor' && ext > 0, detail: `高亮行 [${cur}]，表内 ${ext} 个外链` };
-});
-
-test('工具详情页：关联到使用它的场景手册', '/tools/coding/cursor/', async (c) => {
-  const heads = await c.eval(`[...document.querySelectorAll('.section-head h2')].map(x=>x.textContent)`);
-  const cards = await c.eval(`document.querySelectorAll('.playbook-card').length`);
-  const hasSection = heads.some((h) => h.indexOf('它出现在哪些场景里') !== -1);
-  return { ok: hasSection && cards > 0, detail: `章节 [${heads.join(' / ')}]，关联 ${cards} 个场景` };
-});
-
-test('工具详情页：分类选型提示不为空（回归：曾因分类 id 撞车导致空白）', '/tools/marketing/', async (c) => {
-  const names = await c.eval(`[...document.querySelectorAll('[data-list] .card-cat')].map(x=>x.textContent).filter((v,i,a)=>a.indexOf(v)===i)`);
-  await c.send('Page.navigate', { url: SERVE + '/tools/marketing/ahrefs/' });
-  await sleep(700);
-  const guideLen = await c.eval(`((document.querySelector('.section .card p')||{}).textContent||'').length`);
-  const color = await c.eval(`(document.querySelector('.section .card')||{}).getAttribute?document.querySelector('.section .card').getAttribute('style'):''`);
-  return {
-    ok: names.length === 1 && names[0] === '营销增长' && guideLen > 40 && color.indexOf('#BE123C') !== -1,
-    detail: `分类名 [${names}]，选型提示 ${guideLen} 字，强调色 ${(color.match(/#[0-9A-F]{6}/) || ['—'])[0]}`,
-  };
-});
-
-test('工具卡标题指向站内详情页（而非直接外跳）', '/tools/coding/', async (c) => {
-  const hrefs = await c.eval(`[...document.querySelectorAll('[data-list] .card-title a.name')].slice(0,5).map(a=>a.getAttribute('href'))`);
-  const allInternal = hrefs.every((h) => h && h.startsWith('/tools/') && h.split('/').length >= 4);
-  const extBtn = await c.eval(`[...document.querySelectorAll('[data-list] .card-foot a[target="_blank"]')].length`);
-  return { ok: allInternal && extBtn > 0, detail: `前 5 个标题链接 ${hrefs[0]} …，外跳按钮 ${extBtn} 个` };
-});
-
-test('搜索结果的工具标题指向详情页，访问按钮仍直达官网', '/search/?q=cursor', async (c) => {
-  const titleHref = await c.eval(`(document.querySelector('#searchResults .card-title a.name')||{}).getAttribute?document.querySelector('#searchResults .card-title a.name').getAttribute('href'):''`);
-  const extHref = await c.eval(`(document.querySelector('#searchResults .card-foot a[target="_blank"]')||{}).href||''`);
-  return {
-    ok: titleHref.indexOf('/tools/') === 0 && extHref.indexOf('http') === 0,
-    detail: `标题 → ${titleHref}；访问 → ${extHref.slice(0, 40)}`,
-  };
-});
-
-/* ---- v5 新增：实时动态（RSS 聚合） ---- */
-
-test('实时动态页：列表、来源筛选与语种筛选', '/news/live/', async (c) => {
-  const items = await c.eval(`document.querySelectorAll('.live-item').length`);
-  await c.eval(`document.querySelector('[data-facet="lang"][data-value="中文"]').click()`);
-  const cn = await c.eval(`[...document.querySelectorAll('.live-item')].filter(x=>!x.classList.contains('hidden')).length`);
-  const bad = await c.eval(`[...document.querySelectorAll('.live-item:not(.hidden)')].filter(x=>x.dataset.lang!=='中文').length`);
-  await c.eval(`document.querySelector('[data-reset]').click()`);
-  const back = await c.eval(`[...document.querySelectorAll('.live-item')].filter(x=>!x.classList.contains('hidden')).length`);
-  return {
-    ok: items > 20 && cn > 0 && bad === 0 && back === items,
-    detail: `共 ${items} 条，中文筛选后 ${cn} 条（残留 ${bad}），重置恢复 ${back} 条`,
-  };
-});
-
-test('实时动态页：按来源筛选', '/news/live/', async (c) => {
-  const srcsBefore = await c.eval(`[...document.querySelectorAll('.live-item')].map(x=>x.dataset.source).filter((v,i,a)=>a.indexOf(v)===0?false:a.indexOf(v)===i)`);
-  // 取第一个非 all 的来源按钮点击
-  await c.eval(`(function(){const b=document.querySelector('[data-facet="source"]:not([data-value="all"])');b.click();return 0})()`);
-  const shown = await c.eval(`[...document.querySelectorAll('.live-item')].filter(x=>!x.classList.contains('hidden')).length`);
-  const unique = await c.eval(`[...new Set([...document.querySelectorAll('.live-item:not(.hidden)')].map(x=>x.dataset.source))].length`);
-  return { ok: shown > 0 && unique === 1, detail: `共 ${srcsBefore.length} 个来源，筛选单个来源后 ${shown} 条且来源唯一=${unique === 1}` };
-});
-
-test('实时动态：时间是绝对时间 + 前端增强为相对时间', '/news/live/', async (c) => {
-  const iso = await c.eval(`[...document.querySelectorAll('.live-time[datetime]')].filter(t=>t.getAttribute('datetime')).length`);
-  const abs = await c.eval(`[...document.querySelectorAll('.live-time')].filter(t=>/^\\d{2}-\\d{2} \\d{2}:\\d{2}$|刚|分钟前|小时前|天前/.test(t.textContent)).length`);
-  const sample = await c.eval(`(document.querySelector('.live-time')||{}).textContent||''`);
-  return { ok: iso > 20 && abs > 20, detail: `${iso} 个 <time datetime>，其中 ${abs} 个已显示为「${sample}」` };
-});
-
-test('实时动态页：抓取状态如实展示（含失败源）', '/news/live/', async (c) => {
-  const rows = await c.eval(`document.querySelectorAll('.source-row').length`);
-  const okRows = await c.eval(`[...document.querySelectorAll('.sr-ic')].filter(x=>x.textContent.trim()==='✓').length`);
-  const failRows = await c.eval(`[...document.querySelectorAll('.sr-ic')].filter(x=>x.textContent.trim()==='✗').length`);
-  return { ok: rows >= 10 && okRows + failRows === rows, detail: `共 ${rows} 个源状态，成功 ${okRows} / 失败 ${failRows}` };
-});
-
-test('资讯页嵌入了实时动态区块', '/news/', async (c) => {
-  const heads = await c.eval(`[...document.querySelectorAll('.section-head h2')].map(x=>x.textContent)`);
-  const live = await c.eval(`document.querySelectorAll('.live-item').length`);
-  const hasLive = heads.some((h) => h.indexOf('实时动态') !== -1);
-  const hasCurated = heads.some((h) => h.indexOf('精选解读') !== -1);
-  return { ok: hasLive && hasCurated && live > 0 && live <= 10, detail: `区块 [${heads.join(' / ')}]，预览 ${live} 条` };
-});
-
-test('实时动态数据开放 API', '/api/feed.json', async () => {
-  const d = JSON.parse(await get(SERVE + '/api/feed.json'));
-  const okSrc = (d.sources || []).filter((s) => s.ok).length;
-  return { ok: Array.isArray(d.items) && d.items.length > 20 && okSrc > 0, detail: `${d.items.length} 条 / ${okSrc} 个源成功 / 更新于 ${String(d.updatedAt).slice(0, 16).replace('T', ' ')}` };
-});
-
-test('实时动态条目全部为外链且带 noopener', '/news/live/', async (c) => {
-  const total = await c.eval(`document.querySelectorAll('.live-item').length`);
-  const ext = await c.eval(`[...document.querySelectorAll('.live-item')].filter(a=>a.getAttribute('target')==='_blank' && (a.getAttribute('rel')||'').indexOf('noopener')!==-1 && /^https?:/.test(a.getAttribute('href'))).length`);
-  return { ok: total > 20 && ext === total, detail: `${total} 条中 ${ext} 条为带 noopener 的外链` };
-});
-
-/* ---- v6 新增：工具对比 ---- */
-
-/** 清空对比选择并重新载入页面（localStorage 在同源下跨用例留存，必须先清） */
-async function resetCmp(c, path_) {
-  await c.send('Page.navigate', { url: SERVE + path_ });
-  await sleep(500);
-  await c.eval(`localStorage.removeItem('aiwx-compare')`);
-  await c.send('Page.navigate', { url: SERVE + path_ });
-  await sleep(700);
-}
-
-test('对比：工具卡可加入 / 移除对比', '/tools/coding/', async (c) => {
-  await resetCmp(c, '/tools/coding/');
-  const has = await c.eval(`document.querySelectorAll('[data-cmp]').length`);
-  await c.eval(`document.querySelector('[data-cmp]').click()`);
-  const on = await c.eval(`document.querySelector('[data-cmp]').getAttribute('aria-pressed')`);
-  const n = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  const barShown = await c.eval(`(document.querySelector('#cmpBar')||{classList:{contains:()=>false}}).classList.contains('show')`);
-  // 再点一次应移除
-  await c.eval(`document.querySelector('[data-cmp]').click()`);
-  const off = await c.eval(`document.querySelector('[data-cmp]').getAttribute('aria-pressed')`);
-  const n2 = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  return {
-    ok: has > 10 && on === 'true' && n === 1 && barShown === true && off === 'false' && n2 === 0,
-    detail: `${has} 个按钮；加入后 pressed=${on} 存了 ${n} 个、浮动条显示=${barShown}；再点后 pressed=${off} 存了 ${n2} 个`,
-  };
-});
-
-test('对比：最多 4 个，超出时给出提示而不是静默失败', '/tools/coding/', async (c) => {
-  await resetCmp(c, '/tools/coding/');
-  // 连续点 5 个不同卡片的对比按钮
-  await c.eval(`(function(){
-    const bs=[...document.querySelectorAll('[data-cmp]')].slice(0,5);
-    bs.forEach(b=>b.click());return 0})()`);
-  const n = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  return { ok: n === 4, detail: `点了 5 个，实际存入 ${n} 个（上限 4）` };
-});
-
-test('对比：选择在刷新后保留', '/tools/coding/', async (c) => {
-  await resetCmp(c, '/tools/coding/');
-  await c.eval(`document.querySelector('[data-cmp]').click()`);
-  const id = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare'))[0]`);
-  await c.send('Page.navigate', { url: SERVE + '/tools/coding/' });
-  await sleep(800);
-  const pressed = await c.eval(`[...document.querySelectorAll('[data-cmp][aria-pressed="true"]')].map(b=>b.getAttribute('data-cmp'))`);
-  return { ok: pressed.length === 1 && pressed[0] === id, detail: `刷新后仍选中 [${pressed}]` };
-});
-
-test('对比：浮动条数量正确且可清空', '/tools/coding/', async (c) => {
-  await resetCmp(c, '/tools/coding/');
-  await c.eval(`(function(){const bs=[...document.querySelectorAll('[data-cmp]')].slice(0,3);bs.forEach(b=>b.click());return 0})()`);
-  const shownN = await c.eval(`document.querySelector('#cmpBarN').textContent`);
-  await c.eval(`document.querySelector('#cmpBarClear').click()`);
-  const after = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  const hidden = await c.eval(`!document.querySelector('#cmpBar').classList.contains('show')`);
-  return { ok: shownN === '3' && after === 0 && hidden === true, detail: `浮动条显示 ${shownN} 个；清空后剩 ${after} 个，浮动条隐藏=${hidden}` };
-});
-
-test('对比页：空态引导与一键放入热门', '/compare/', async (c) => {
-  await resetCmp(c, '/compare/');
-  const emptyVisible = await c.eval(`!document.querySelector('#cmpEmpty').classList.contains('hidden')`);
-  await c.eval(`document.querySelector('#cmpFillHot').click()`);
-  const rows = await c.eval(`document.querySelectorAll('.cmp-table tbody tr').length`);
-  const cols = await c.eval(`document.querySelectorAll('.cmp-table thead th').length`);
-  const emptyHidden = await c.eval(`document.querySelector('#cmpEmpty').classList.contains('hidden')`);
-  return {
-    ok: emptyVisible === true && emptyHidden === true && cols === 4 && rows > 5,
-    detail: `空态 ${emptyVisible}；一键放入后表头 ${cols} 列、${rows} 行，空态隐藏=${emptyHidden}`,
-  };
-});
-
-test('对比页：差异行高亮、相同行淡化', '/compare/', async (c) => {
-  await resetCmp(c, '/compare/');
-  await c.eval(`(function(){localStorage.setItem('aiwx-compare',JSON.stringify(['chatgpt','claude','deepseek']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(900);
-  const diff = await c.eval(`document.querySelectorAll('.cmp-table tr.is-diff').length`);
-  const same = await c.eval(`document.querySelectorAll('.cmp-table tr.is-same').length`);
-  const marks = await c.eval(`document.querySelectorAll('.cmp-table .cmp-mark').length`);
-  const diffMoney = await c.eval(`[...document.querySelectorAll('.cmp-table tr')].some(tr=>tr.classList.contains('is-diff') && tr.querySelector('th').textContent.indexOf('国内直连')!==-1)`);
-  // 三个都是对话类，分类行应当被判定为"相同"
-  const catSame = await c.eval(`[...document.querySelectorAll('.cmp-table tr')].some(tr=>tr.classList.contains('is-same') && tr.querySelector('th').textContent.indexOf('分类')!==-1)`);
-  return {
-    ok: diff > 0 && same > 0 && marks === diff && diffMoney === true && catSame === true,
-    detail: `差异行 ${diff} 条（含标记 ${marks} 个）、相同行 ${same} 条；分类行判为相同=${catSame}，国内直连行判为差异=${diffMoney}`,
-  };
-});
-
-test('对比页：移除单个工具', '/compare/', async (c) => {
-  await resetCmp(c, '/compare/');
-  await c.eval(`(function(){localStorage.setItem('aiwx-compare',JSON.stringify(['chatgpt','claude']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(900);
-  const before = await c.eval(`document.querySelectorAll('.cmp-table thead th').length`);
-  await c.eval(`document.querySelector('[data-cmp-remove]').click()`);
-  const after = await c.eval(`document.querySelectorAll('.cmp-table thead th').length`);
-  const ls = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')).length`);
-  return { ok: before === 3 && after === 2 && ls === 1, detail: `表头列 ${before} → ${after}，存储剩 ${ls} 个` };
-});
-
-test('对比页：清空后回到空态', '/compare/', async (c) => {
-  await resetCmp(c, '/compare/');
-  await c.eval(`(function(){localStorage.setItem('aiwx-compare',JSON.stringify(['chatgpt']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(900);
-  await c.eval(`document.querySelector('#cmpClear').click()`);
-  const emptyVisible = await c.eval(`!document.querySelector('#cmpEmpty').classList.contains('hidden')`);
-  const ls = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  return { ok: emptyVisible === true && ls === 0, detail: `空态可见=${emptyVisible}，存储剩 ${ls} 个` };
-});
-
-test('对比页：无效 id 被忽略，不会渲染出空列', '/compare/', async (c) => {
-  await resetCmp(c, '/compare/');
-  await c.eval(`(function(){localStorage.setItem('aiwx-compare',JSON.stringify(['chatgpt','这个id不存在','claude']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(900);
-  const cols = await c.eval(`document.querySelectorAll('.cmp-table thead th').length`);
-  const names = await c.eval(`[...document.querySelectorAll('.cmp-head-in b')].map(x=>x.textContent)`);
-  return { ok: cols === 3 && names.length === 2, detail: `3 个 id 中 1 个无效，渲染 ${names.length} 列：${names.join(' / ')}` };
-});
-
-test('对比：与工具库筛选共存（点击对比按钮不触发卡片链接）', '/tools/', async (c) => {
-  await resetCmp(c, '/tools/');
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='cursor';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  await c.eval(`document.querySelector('[data-list] > *:not(.hidden) [data-cmp]').click()`);
-  const n = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  const stillShown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  return { ok: shown === 1 && n === 1 && stillShown === 1, detail: `筛选出 ${shown} 条，点对比后存入 ${n} 个，筛选状态保持 ${stillShown} 条` };
-});
-
-test('对比：详情页的加入按钮文案会切换', '/tools/coding/cursor/', async (c) => {
-  await resetCmp(c, '/tools/coding/cursor/');
-  const btn = `[data-cmp][data-cmp-label]`;
-  const before = await c.eval(`(document.querySelector('${btn}')||{}).textContent||''`);
-  await c.eval(`document.querySelector('${btn}').click()`);
-  const after = await c.eval(`(document.querySelector('${btn}')||{}).textContent||''`);
-  const pressed = await c.eval(`document.querySelector('${btn}').getAttribute('aria-pressed')`);
-  return {
-    ok: before.indexOf('加入对比') !== -1 && after.indexOf('已加入对比') !== -1 && pressed === 'true',
-    detail: `「${before.trim()}」→「${after.trim()}」`,
-  };
-});
-
-/* ---- v7 新增：收藏 ---- */
-
-async function resetSave(c, path_) {
-  await c.send('Page.navigate', { url: SERVE + path_ });
-  await sleep(500);
-  await c.eval(`localStorage.removeItem('aiwx-saved')`);
-  await c.send('Page.navigate', { url: SERVE + path_ });
-  await sleep(700);
-}
-
-test('收藏：各类卡片都有收藏按钮且可切换', '/tools/coding/', async (c) => {
-  await resetSave(c, '/tools/coding/');
-  const btns = await c.eval(`document.querySelectorAll('[data-save]').length`);
-  await c.eval(`document.querySelector('[data-save]').click()`);
-  const on = await c.eval(`document.querySelector('[data-save]').getAttribute('aria-pressed')`);
-  const key = await c.eval(`JSON.parse(localStorage.getItem('aiwx-saved'))[0]`);
-  const bar = await c.eval(`document.querySelector('#saveBar').classList.contains('show')`);
-  return { ok: btns > 10 && on === 'true' && key.indexOf('tool:') === 0 && bar === true, detail: `${btns} 个按钮；收藏 key=${key}，浮动条显示=${bar}` };
-});
-
-test('收藏：跨内容类型（工具/提示词/场景/模型）都能收藏', '/', async (c) => {
-  const types = {};
-  for (const p of ['/tools/', '/prompts/', '/playbooks/', '/models/']) {
-    await resetSave(c, p);
-    await c.eval(`document.querySelector('[data-save]').click()`);
-    types[p] = await c.eval(`JSON.parse(localStorage.getItem('aiwx-saved'))[0]`);
-  }
-  const kinds = Object.values(types).map((k) => k.split(':')[0]);
-  const expect = ['tool', 'prompt', 'playbook', 'model'];
-  return { ok: JSON.stringify(kinds) === JSON.stringify(expect), detail: kinds.join(', ') };
-});
-
-test('收藏页：分组渲染与计数', '/saved/', async (c) => {
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(500);
-  await c.eval(`(function(){localStorage.setItem('aiwx-saved',JSON.stringify(['tool:chatgpt','prompt:p-weekly','playbook:pb-weekly-report','model:m-claude']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(900);
-  const heads = await c.eval(`[...document.querySelectorAll('#savedBody .search-group-head .label')].map(x=>x.textContent)`);
-  const cards = await c.eval(`document.querySelectorAll('#savedBody .card').length`);
-  const count = await c.eval(`(document.querySelector('#savedCount')||{}).textContent||''`);
-  const emptyHidden = await c.eval(`document.querySelector('#savedEmpty').classList.contains('hidden')`);
-  return { ok: cards === 4 && heads.length === 4 && emptyHidden === true, detail: `分组 [${heads.join(', ')}]，${cards} 张卡，${count}` };
-});
-
-test('收藏页：已下架的条目被忽略并如实告知', '/saved/', async (c) => {
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(500);
-  await c.eval(`(function(){localStorage.setItem('aiwx-saved',JSON.stringify(['tool:chatgpt','tool:这个工具已下架','model:m-qwen']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(900);
-  const cards = await c.eval(`document.querySelectorAll('#savedBody .card').length`);
-  const count = await c.eval(`(document.querySelector('#savedCount')||{}).textContent||''`);
-  return { ok: cards === 2 && count.indexOf('1 项已下架') !== -1, detail: `3 个收藏中 1 个无效，渲染 ${cards} 张卡；「${count}」` };
-});
-
-test('收藏页：清空后回到空态', '/saved/', async (c) => {
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(500);
-  await c.eval(`(function(){localStorage.setItem('aiwx-saved',JSON.stringify(['tool:chatgpt']));return 0})()`);
-  await c.send('Page.navigate', { url: SERVE + '/saved/' });
-  await sleep(900);
-  await c.eval(`document.querySelector('#savedClear').click()`);
-  const emptyVisible = await c.eval(`!document.querySelector('#savedEmpty').classList.contains('hidden')`);
-  const ls = await c.eval(`JSON.parse(localStorage.getItem('aiwx-saved')||'[]').length`);
-  return { ok: emptyVisible === true && ls === 0, detail: `空态可见=${emptyVisible}，存储剩 ${ls} 项` };
-});
-
-test('收藏：点提示词卡的收藏不会连带展开卡片（回归）', '/prompts/', async (c) => {
-  await resetSave(c, '/prompts/');
-  const before = await c.eval(`document.querySelector('.prompt-card').classList.contains('open')`);
-  await c.eval(`document.querySelector('.prompt-card [data-save]').click()`);
-  const after = await c.eval(`document.querySelector('.prompt-card').classList.contains('open')`);
-  const saved = await c.eval(`JSON.parse(localStorage.getItem('aiwx-saved')||'[]').length`);
-  return {
-    ok: before === false && after === false && saved === 1,
-    detail: `点击前展开=${before}，点击后展开=${after}（应保持 false），收藏成功=${saved}`,
-  };
-});
-
-test('收藏：场景卡仍是整卡可点（结构从 <a> 改成 div + 热区）', '/playbooks/', async (c) => {
-  await resetSave(c, '/playbooks/');
-  const hit = await c.eval(`(document.querySelector('.playbook-card .card-hit')||{}).getAttribute?document.querySelector('.playbook-card .card-hit').getAttribute('href'):''`);
-  const inner = await c.eval(`document.querySelectorAll('.playbook-card a').length`);
-  const noNestedBtn = await c.eval(`document.querySelectorAll('.playbook-card a button, .playbook-card a [data-save]').length`);
-  const saveOnCard = await c.eval(`!!document.querySelector('.playbook-card [data-save]')`);
-  return {
-    ok: hit.indexOf('/playbooks/') === 0 && noNestedBtn === 0 && saveOnCard === true,
-    detail: `热区 href=${hit}；卡内 ${inner} 个链接；button 嵌套在 a 内 ${noNestedBtn} 处（应为 0）`,
-  };
-});
-
-test('收藏与对比互不影响', '/tools/coding/', async (c) => {
-  await resetSave(c, '/tools/coding/');
-  await c.eval(`localStorage.removeItem('aiwx-compare')`);
-  await c.send('Page.navigate', { url: SERVE + '/tools/coding/' });
-  await sleep(800);
-  await c.eval(`(function(){const c1=document.querySelector('.card [data-save]');c1.click();const c2=document.querySelector('.card [data-cmp]');c2.click();return 0})()`);
-  const s = await c.eval(`JSON.parse(localStorage.getItem('aiwx-saved')||'[]').length`);
-  const m = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]').length`);
-  const saveBar = await c.eval(`document.querySelector('#saveBar').classList.contains('show')`);
-  const cmpBar = await c.eval(`document.querySelector('#cmpBar').classList.contains('show')`);
-  const offset = await c.eval(`document.querySelector('#saveBar').style.bottom`);
-  return {
-    ok: s === 1 && m === 1 && saveBar === true && cmpBar === true && offset === '78px',
-    detail: `收藏 ${s} 项 + 对比 ${m} 个，两条浮动条同时显示=${saveBar && cmpBar}，错开偏移=${offset}`,
-  };
-});
-
-test('对比：分享链接能带上选择（?t=id1,id2）', '/compare/?t=chatgpt,claude,deepseek', async (c) => {
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(400);
-  await c.eval(`localStorage.removeItem('aiwx-compare')`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/?t=chatgpt,claude,deepseek,不存在的id' });
-  await sleep(1000);
-  const names = await c.eval(`[...document.querySelectorAll('.cmp-head-in b')].map(x=>x.textContent)`);
-  const ls = await c.eval(`JSON.parse(localStorage.getItem('aiwx-compare')||'[]')`);
-  // URL 里带一个非法 id，应当被忽略且不报错
-  return {
-    ok: names.length === 3 && ls.length === 3 && names.join(',') === 'ChatGPT,Claude,DeepSeek',
-    detail: `URL 4 个 id（含 1 个非法）→ 渲染 ${names.join(' / ')}`,
-  };
-});
-
-test('对比页：表格维度完整且分类行在最前', '/compare/?t=chatgpt,claude,deepseek,midjourney', async (c) => {
-  await c.send('Page.navigate', { url: SERVE + '/compare/' });
-  await sleep(400);
-  await c.eval(`localStorage.removeItem('aiwx-compare')`);
-  await c.send('Page.navigate', { url: SERVE + '/compare/?t=chatgpt,claude,deepseek,midjourney' });
-  await sleep(1000);
-  const labels = await c.eval(`[...document.querySelectorAll('.cmp-table tbody tr')].map(tr=>tr.querySelector('th').textContent.trim())`);
-  const cls = await c.eval(`[...document.querySelectorAll('.cmp-table tbody tr')].map(tr=>tr.className)`);
-  const catIdx = labels.findIndex((l) => l === '分类');
-  const catIsDiff = cls[catIdx] === 'is-diff';
-  const hasCaveat = labels.indexOf('什么时候别选它') !== -1;
-  // 维度是要随内容演进的，所以断言「要素齐全」而不是死磕行数
-  return {
-    ok: catIdx === 0 && catIsDiff === true && hasCaveat === true && labels.indexOf('官网') === labels.length - 1,
-    detail: `${labels.length} 行：${labels.join(' / ')}`,
-  };
-});
-
-/* ---- v8 新增：英文版 ---- */
-
-test('英文版首页：语言、导航、统计', '/en/', async (c) => {
-  const lang = await c.eval(`document.documentElement.getAttribute('lang')`);
-  const nav = await c.eval(`[...document.querySelectorAll('.nav a')].map(x=>x.textContent)`);
-  const h1 = await c.eval(`(document.querySelector('h1')||{}).textContent||''`);
-  const stats = await c.eval(`[...document.querySelectorAll('.stat span')].map(x=>x.textContent)`);
-  /* 断言「包含」而不是「等于固定列表」。
-     原来写的是 nav.join(',') === 'Tools,Models,About'，结果英文站陆续加了
-     Playbooks / Prompts / Glossary 之后这里就假失败 —— 导航变长是产品在推进，
-     不是回归。这类断言只该锁住「该有的都有」，不该锁住「就这些」。 */
-  const need = ['Playbooks', 'Prompts', 'Glossary', 'Tools', 'Models', 'About'];
-  const missing = need.filter((x) => !nav.includes(x));
-  return {
-    ok: lang === 'en' && missing.length === 0 && stats.length >= 3,
-    detail: `lang=${lang}，导航 [${nav}]${missing.length ? ' 缺 ' + missing.join('/') : ''}，统计 [${stats}]`,
-  };
-});
-
-test('英文版工具列表：卡片是英文文案', '/en/tools/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('[data-query]');i.value='Midjourney';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await sleep(300);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  const desc = await c.eval(`(document.querySelector('[data-list] > *:not(.hidden) .card-desc')||{}).textContent||''`);
-  const caveat = await c.eval(`(document.querySelector('[data-list] > *:not(.hidden) .card-caveat span')||{}).textContent||''`);
-  const cat = await c.eval(`(document.querySelector('[data-list] > *:not(.hidden) .card-cat')||{}).textContent||''`);
-  const tags = await c.eval(`[...document.querySelectorAll('[data-list] > *:not(.hidden) .tag')].map(x=>x.textContent).join(' ')`);
-  // 中文字符不应出现在英文卡片里
-  const hasCJK = /[\u4e00-\u9fa5]/.test(desc + caveat + cat);
-  return {
-    ok: shown === 1 && desc.length > 20 && caveat.length > 20 && hasCJK === false,
-    detail: `命中 ${shown} 条；分类「${cat}」标签[${tags}]，简介 ${desc.length} 字符、点评 ${caveat.length} 字符，含中文=${hasCJK}`,
-  };
-});
-
-test('英文版工具库：工具卡链到英文详情页，不是中文详情页', '/en/tools/', async (c) => {
-  // 回归：详情页链接写死成 /tools/<cat>/<id>/，231 张卡全部指向中文版。
-  const total = await c.eval(`document.querySelectorAll('[data-list] .card-title a.name').length`);
-  const bad = await c.eval(`[...document.querySelectorAll('[data-list] .card-title a.name')].filter(a=>!/^\\/en\\/tools\\//.test(a.getAttribute('href'))).map(a=>a.getAttribute('href'))`);
-  return {
-    ok: total > 0 && bad.length === 0,
-    detail: `${total} 张工具卡，链到中文版的 ${bad.length} 张${bad.length ? `，例如 ${bad[0]}` : ''}`,
-  };
-});
-
-test('英文版工具库：照着卡片上显示的标签能搜到东西', '/en/tools/', async (c) => {
-  /* 回归：data-name 以前不管语言一律拼中文名 + 中文标签 + 中文简介，
-     而卡片显示的是英文标签。结果 242 个看得见的英文标签里 189 个用页内搜索框搜不到 ——
-     「Midjourney」这种本来就是拉丁字母的名字能搜到，所以这个 bug 藏了很久。 */
-  const picked = await c.eval(`(function(){
-    const tags=[...document.querySelectorAll('[data-list] .tag')].map(x=>x.textContent.trim());
-    const t=tags.find(x=>x.length>4 && /^[\\x20-\\x7e]+$/.test(x)) || tags[0] || '';
-    const box=document.querySelector('[data-filter-root] [data-query]');
-    box.value=t; box.dispatchEvent(new Event('input',{bubbles:true}));
-    return t;
-  })()`);
-  await sleep(400);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  return { ok: !!picked && shown > 0, detail: `搜卡片上显示的标签「${picked}」→ 命中 ${shown} 张卡` };
-});
-
-test('英文版工具详情：编辑点评与同类对比表', '/en/tools/coding/cursor/', async (c) => {
-  const h1 = await c.eval(`(document.querySelector('.tool-hero h1')||{}).textContent||''`);
-  const caveatHead = await c.eval(`(document.querySelector('.cb-head span')||{}).textContent||''`);
-  const caveatLen = await c.eval(`((document.querySelector('.caveat-box p')||{}).textContent||'').length`);
-  const rows = await c.eval(`document.querySelectorAll('.data-table tbody tr').length`);
-  const h1count = await c.eval(`document.querySelectorAll('h1').length`);
-  const ld = await c.eval(`[...document.querySelectorAll('script[type="application/ld+json"]')].map(s=>JSON.parse(s.textContent)['@type'])`);
-  return {
-    ok: h1 === 'Cursor' && caveatLen > 40 && rows >= 3 && h1count === 1 && ld.includes('SoftwareApplication'),
-    detail: `h1「${h1}」（全页 ${h1count} 个），点评标题「${caveatHead}」${caveatLen} 字符，对比表 ${rows} 行`,
-  };
-});
-
-test('英文版模型库：对比维度为英文', '/en/models/', async (c) => {
-  const card = await c.eval(`(document.querySelector('[data-list] > *')||{}).className||''`);
-  const cat = await c.eval(`(document.querySelector('[data-list] .card-cat')||{}).textContent||''`);
-  const strength = await c.eval(`(document.querySelector('[data-list] .model-list-pro li span')||{}).textContent||''`);
-  const useFor = await c.eval(`[...document.querySelectorAll('[data-list] .model-use .tag')].map(x=>x.textContent)`);
-  const hasCJK = /[\u4e00-\u9fa5]/.test(cat + strength + useFor.join(''));
-  return {
-    ok: card.length > 0 && hasCJK === false && useFor.length > 0,
-    detail: `分类「${cat}」，强项「${strength.slice(0, 40)}」，适合 [${useFor}]，含中文=${hasCJK}`,
-  };
-});
-
-test('语言互指：中文页有 hreflang 且切换按钮指向英文', '/tools/', async (c) => {
-  const alts = await c.eval(`[...document.querySelectorAll('link[rel="alternate"][hreflang]')].map(l=>l.getAttribute('hreflang')+':'+l.getAttribute('href'))`);
-  const btn = await c.eval(`(document.querySelector('.lang-btn')||{}).getAttribute?document.querySelector('.lang-btn').getAttribute('href'):''`);
-  const btnLang = await c.eval(`(document.querySelector('.lang-btn')||{}).getAttribute?document.querySelector('.lang-btn').getAttribute('hreflang'):''`);
-  return {
-    ok: alts.some((a) => a.startsWith('en:')) && alts.some((a) => a.indexOf('x-default') === 0) && btn === '/en/tools/' && btnLang === 'en',
-    detail: `hreflang [${alts.join(' | ')}]，切换按钮 → ${btn}(${btnLang})`,
-  };
-});
-
-test('语言互指：英文页 hreflang 指回中文，且中文页不显示英文切换外链', '/en/tools/', async (c) => {
-  const alts = await c.eval(`[...document.querySelectorAll('link[rel="alternate"][hreflang]')].map(l=>l.getAttribute('hreflang')+':'+l.getAttribute('href'))`);
-  const btn = await c.eval(`(document.querySelector('.lang-btn')||{}).getAttribute?document.querySelector('.lang-btn').getAttribute('href'):''`);
-  /* 拿一个「按设计就没有英文版」的中文页来验。
-     原来是 /playbooks/，但英文手册后来做出来了，这一页现在**应该**有按钮 ——
-     断言就变成了假失败。学习资源和资讯是明确不翻的（关于页写明了范围），
-     用它们做样本不会随翻译进度反复失效。 */
-  await c.send('Page.navigate', { url: SERVE + '/learn/' });
-  await sleep(700);
-  const noBtn = await c.eval(`document.querySelectorAll('.lang-btn').length`);
-  const noAlt = await c.eval(`document.querySelectorAll('link[rel="alternate"][hreflang]').length`);
-  return {
-    ok: alts.some((a) => a.startsWith('zh-CN:')) && btn === '/tools/' && noBtn === 0 && noAlt === 0,
-    detail: `英文页 hreflang [${alts.join(' | ')}]，切换 → ${btn}；无英文版的中文页（/learn/）按钮 ${noBtn} 个、hreflang ${noAlt} 条`,
-  };
-});
-
-test('英文版关于页说明覆盖范围，并链回中文版', '/en/about/', async (c) => {
-  const heads = await c.eval(`[...document.querySelectorAll('h2')].map(x=>x.textContent)`);
-  const backLink = await c.eval(`[...document.querySelectorAll('a')].some(a=>a.getAttribute('href')==='/' && /中文版|Chinese/.test(a.textContent))`);
-  const hasScope = heads.some((h) => /covers/i.test(h));
-  const cjk = await c.eval(`/中文版/.test(document.querySelector('.card').textContent)`);
-  return { ok: hasScope && backLink === true, detail: `章节 [${heads.join(' / ')}]，链回中文版=${backLink}` };
-});
-
-/* ---- v9 新增：中文检索召回 ---- */
-
-/** 在搜索页输入关键词，返回结果标题 */
-async function searchFor(c, q) {
-  await c.send('Page.navigate', { url: SERVE + '/search/?q=' + encodeURIComponent(q) });
-  await sleep(800);
-  return c.eval(`[...document.querySelectorAll('#searchResults .card-title .name')].slice(0,6).map(x=>x.textContent)`);
-}
-
-test('中文检索：连续说法可被理解（「怎么本地跑模型」）', '/search/?q=本地部署', async (c) => {
-  const a = await searchFor(c, '本地部署');
-  const b = await searchFor(c, '怎么本地跑模型');
-  const count = b.length;
-  return {
-    ok: count > 0,
-    detail: `「本地部署」命中 ${a.length} 条；「怎么本地跑模型」（口语说法）命中 ${count} 条 → ${b.slice(0,3).join(' / ')}`,
-  };
-});
-
-test('中文检索：同义词可被理解（画图 → 图像生成）', '/search/?q=画图', async (c) => {
-  const r = await searchFor(c, '画图');
-  return { ok: r.length > 0, detail: `「画图」命中 ${r.length} 条 → ${r.slice(0,4).join(' / ')}` };
-});
-
-test('中文检索：需求式提问可被理解（写周报 / 会议纪要）', '/search/?q=会议纪要', async (c) => {
-  const a = await searchFor(c, '会议纪要');
-  const b = await searchFor(c, '录音转文字');
-  return {
-    ok: a.length > 0 || b.length > 0,
-    detail: `「会议纪要」${a.length} 条；「录音转文字」${b.length} 条`,
-  };
-});
-
-test('中文检索：归一化生效（全角 / 大小写）', '/search/?q=RAG', async (c) => {
-  const upper = await searchFor(c, 'RAG');
-  const lower = await searchFor(c, 'rag');
-  const full = await searchFor(c, 'ＲＡＧ');
-  return {
-    ok: upper.length > 0 && upper.length === lower.length && upper.length === full.length,
-    detail: `RAG ${upper.length} 条 / rag ${lower.length} 条 / 全角 ＲＡＧ ${full.length} 条（应一致）`,
-  };
-});
-
-test('中文检索：二元模糊召回（词序不同也能中）', '/search/?q=图像生成', async (c) => {
-  const exact = await searchFor(c, '图像生成');
-  const partial = await searchFor(c, '生成图像的');
-  return {
-    ok: exact.length > 0,
-    detail: `「图像生成」${exact.length} 条；「生成图像的」${partial.length} 条（模糊召回）`,
-  };
-});
-
-test('检索结果按相关度排序（标题命中优先于点评命中）', '/search/?q=ollama', async (c) => {
-  const r = await searchFor(c, 'ollama');
-  return { ok: r.length > 0 && r[0] === 'Ollama', detail: `首条「${r[0]}」，共 ${r.length} 条` };
-});
-
-test('中文检索：真实键盘输入（不是 URL 参数）也能出结果', '/search/', async (c) => {
-  // 之前的用例都走 /search/?q=xxx，绕过了输入框的事件绑定。
-  // 用户实际是打字进去的，这条补上真实路径。
-  await c.eval(`(function(){var i=document.querySelector('#globalSearch');i.value='';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  const n = await c.eval(`document.querySelectorAll('#searchResults .card-title .name').length`);
-  await c.eval(`(function(){var i=document.querySelector('#globalSearch');i.value='怎么本地跑模型';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await sleep(300);
-  const hits = await c.eval(`[...document.querySelectorAll('#searchResults .card-title .name')].slice(0,4).map(x=>x.textContent)`);
-  const count = await c.eval(`(document.querySelector('#searchCount')||{}).textContent||''`);
-  return {
-    ok: n === 0 && hits.length > 0,
-    detail: `空输入 ${n} 条；打字「怎么本地跑模型」→ ${hits.length} 条（${hits.join(' / ')}），计数显示「${count}」`,
-  };
-});
-
-test('静态资源带内容哈希（防止用户被旧缓存卡住）', '/', async (c) => {
-  const srcs = await c.eval(`[...document.querySelectorAll('link[rel=stylesheet][href^="/assets/"],script[src^="/assets/"]')].map(x=>x.getAttribute('href')||x.getAttribute('src'))`);
-  const allHashed = srcs.length > 0 && srcs.every((u) => /^\/assets\/[a-z-]+\.[0-9a-f]{7,}\.(css|js)$/.test(u));
-  // 直接从浏览器里读，能加载出来说明文件真的存在
-  const loaded = await c.eval(`document.styleSheets.length > 0 || typeof window.__AIWX_INDEX__ !== 'undefined' || document.querySelectorAll('script[src^="/assets/"]').length > 0`);
-  return { ok: allHashed && loaded, detail: srcs.join(' , ') };
-});
-
-test('模型库：每条都标了时效与核验月份', '/models/', async (c) => {
-  const total = await c.eval(`document.querySelectorAll('.model-card').length`);
-  const withLatest = await c.eval(`document.querySelectorAll('.model-card .model-latest').length`);
-  const dates = await c.eval(`[...new Set([...document.querySelectorAll('.ml-tag')].map(x=>x.textContent.trim().split(' ').pop()))]`);
-  const hasObject = await c.eval(`document.body.innerHTML.indexOf('[object Object]') !== -1`);
-  return {
-    ok: total === withLatest && dates.length > 0 && hasObject === false,
-    detail: `${withLatest}/${total} 张卡带时效行；核验月份 [${dates.join(', ')}]；有无 [object Object]：${hasObject}`,
-  };
-});
-
-test('模型库：每条都有官方模型列表链接', '/models/', async (c) => {
-  const cards = await c.eval(`document.querySelectorAll('.model-card').length`);
-  const links = await c.eval(`[...document.querySelectorAll('.model-card a[href^="http"]')].map(a=>a.href)`);
-  const listLinks = await c.eval(`[...document.querySelectorAll('.model-card a')].filter(a=>/模型列表|Model list/.test(a.textContent)).map(a=>a.href)`);
-  const bad = listLinks.filter((h) => !/^https?:\/\//.test(h) || h.includes('undefined'));
-  return {
-    ok: listLinks.length === cards && bad.length === 0,
-    detail: `${cards} 张卡 / ${listLinks.length} 个模型列表链接（异常 ${bad.length} 个，全部外链 ${links.length} 个）`,
-  };
-});
-
-test('模型库：新增的 3D 与文档类型可用', '/models/3d/', async (c) => {
-  const t = await c.eval(`document.querySelectorAll('[data-facet="kind"][data-value="3d"]').length`);
-  const cards = await c.eval(`document.querySelectorAll('.model-card').length`);
-  const on = await c.eval(`!!document.querySelector('[data-facet="kind"][data-value="3d"].on')`);
-  return { ok: t === 1 && cards > 0 && on, detail: `3D 类型按钮 ${t} 个、卡片 ${cards} 张、默认选中=${on}` };
-});
-
-test('模型库：按版本号也能搜到（时效信息进了检索）', '/models/', async (c) => {
-  const probe = async (q) => {
-    await c.eval(`(function(){var i=document.querySelector('[data-query]');i.value=${JSON.stringify(q)};i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-    await sleep(250);
-    return c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  };
-  const a = await probe('Muse');
-  const b = await probe('Opus');
-  const z = await probe('Muse 不存在的关键词');
-  return { ok: a > 0 && b > 0 && z === 0, detail: `「Muse」${a} 个、「Opus」${b} 个、无关键词组合 ${z} 个` };
-});
-
-test('工具分类页：筛选栏高亮的是当前分类，不是「全部」', '/tools/coding/', async (c) => {
-  const on = await c.eval(`[...document.querySelectorAll('[data-facet="cat"].on')].map(b=>b.getAttribute('data-value'))`);
-  const cards = await c.eval(`document.querySelectorAll('[data-list] > *').length`);
-  return { ok: on.length === 1 && on[0] === 'coding' && cards > 0, detail: `高亮 [${on.join(',')}]，卡片 ${cards} 张` };
-});
-
-test('场景手册：每篇都有验收区（输入/产出/失败/替代）', '/playbooks/pb-weekly-report/', async (c) => {
-  const rows = await c.eval(`[...document.querySelectorAll('.pb-spec dt')].map(x=>x.textContent)`);
-  const dd = await c.eval(`[...document.querySelectorAll('.pb-spec dd')].map(x=>x.textContent.trim().length)`);
-  return {
-    ok: rows.length === 4 && dd.every(n => n > 8),
-    detail: `四行标签 [${rows.join(' / ')}]，内容长度 [${dd.join(', ')}]`,
-  };
-});
-
-test('场景手册：新补的 13 篇都能打开且引用有效', '/playbooks/', async (c) => {
-  const ids = ['pb-local-model','pb-build-agent','pb-ai-video','pb-3d-asset','pb-lit-review','pb-music-voice','pb-brand-visual','pb-meeting-auto','pb-translate-workflow','pb-pick-coding-tool','pb-image-gen','pb-teach-with-ai','pb-zero-to-app'];
-  const bad = [];
-  for (const id of ids) {
-    await c.send('Page.navigate', { url: SERVE + '/playbooks/' + id + '/' });
-    await sleep(350);
-    const ok = await c.eval(`document.querySelectorAll('h1').length === 1 && document.querySelectorAll('.step').length > 0`);
-    if (!ok) bad.push(id);
-  }
-  return { ok: bad.length === 0, detail: bad.length ? '打不开或结构异常：' + bad.join(', ') : ids.length + ' 篇全部正常' };
-});
-
-test('术语表：词条能链到工具与手册，锚点不失效', '/glossary/', async (c) => {
-  const anchors = await c.eval(`[...document.querySelectorAll('.gloss-item[id]')].map(x=>x.id)`);
-  const toolLinks = await c.eval(`document.querySelectorAll('.g-rel-tools a[href^="/tools/"]').length`);
-  const pbLinks = await c.eval(`document.querySelectorAll('.g-rel-tools a[href^="/playbooks/"]').length`);
-  const relRefs = await c.eval(`[...new Set([...document.querySelectorAll('.g-rel a[href^="#term-"]')].map(a=>a.getAttribute('href').slice(1)))]`);
-  const set = new Set(anchors);
-  const broken = relRefs.filter((r) => !set.has(r));
-  return {
-    ok: anchors.length > 80 && toolLinks > 50 && pbLinks > 15 && broken.length === 0,
-    detail: `锚点 ${anchors.length} · 工具链 ${toolLinks} · 手册链 ${pbLinks} · 互链失效 ${broken.length}`,
-  };
-});
-
-test('英文术语表：92 条、筛选可用、页面上没有可见中文', '/en/glossary/', async (c) => {
-  const items = await c.eval(`document.querySelectorAll('.gloss-item').length`);
-  const anchors = await c.eval(`document.querySelectorAll('.gloss-item[id]').length`);
-  // 英文站只链已有英文版的工具/手册，否则点了就是中文页
-  const toolLinks = await c.eval(`document.querySelectorAll('.g-rel-tools a[href^="/en/tools/"]').length`);
-  const zhToolLinks = await c.eval(`document.querySelectorAll('.g-rel-tools a[href^="/tools/"]').length`);
-  const pbLinks = await c.eval(`document.querySelectorAll('.g-rel-tools a[href^="/en/playbooks/"]').length`);
-  // 点一个分类筛选，卡片应该变少
-  await c.eval(`(function(){const b=[...document.querySelectorAll('[data-facet="cat"]')].find(x=>x.dataset.value==='提示技术');b.click();return 0})()`);
-  await sleep(400);
-  const filtered = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  return {
-    ok: items === 92 && anchors === 92 && toolLinks > 50 && zhToolLinks === 0 && pbLinks > 15 && filtered > 0 && filtered < 92,
-    detail: `词条 ${items}（锚点 ${anchors}）· 英文工具链 ${toolLinks}、残留中文工具链 ${zhToolLinks} · 英文手册链 ${pbLinks} · 筛选「提示技术」后 ${filtered} 条`,
-  };
-});
-
-test('英文术语表：搜索框匹配的是英文释义，不是中文释义', '/en/glossary/', async (c) => {
-  // 回归：data-name 以前不管语言一律拼中文词条 + 中文释义，
-  // 英文读者拿释义里的词搜不到任何东西（而且 92 条中文释义白白带进了英文页）。
-  await c.eval(`(function(){const i=document.querySelector('[data-filter-root] [data-query]');i.value='retrieval';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await sleep(400);
-  const shown = await c.eval(`[...document.querySelectorAll('[data-list] > *')].filter(x=>!x.classList.contains('hidden')).length`);
-  // 只看结果区（页面整体的中文残留由 check.mjs 守；语言切换按钮本来就写着「中文」）
-  const cjk = await c.eval(`((document.querySelector('[data-list]')||{}).textContent||'').match(/[\\u4e00-\\u9fa5]/g)?.length||0`);
-  return {
-    ok: shown > 0 && shown < 92 && cjk === 0,
-    detail: `搜「retrieval」命中 ${shown} 条（共 92 条）；结果区可见中文 ${cjk} 字`,
-  };
-});
-
-test('英文提示词库：分类筛选用英文名，卡片标签是英文', '/en/prompts/', async (c) => {
-  const segs = await c.eval(`[...document.querySelectorAll('.seg [data-facet="cat"]')].map(x=>x.textContent)`);
-  const cjkSeg = segs.filter((x) => /[\u4e00-\u9fa5]/.test(x));
-  const tags = await c.eval(`[...new Set([...document.querySelectorAll('[data-list] .tag')].map(x=>x.textContent.trim()))]`);
-  const cjkTags = tags.filter((x) => /[\u4e00-\u9fa5]/.test(x));
-  return {
-    ok: segs.length === 11 && cjkSeg.length === 0 && tags.length > 0 && cjkTags.length === 0,
-    detail: `分类按钮 ${segs.length} 个 [${segs.slice(0, 4).join('/')}…]，含中文 ${cjkSeg.length}；标签 ${tags.length} 个，含中文 ${cjkTags.length}`,
-  };
-});
-
-test('英文手册：提示词与工具链接都指向英文版（没有断头）', '/en/playbooks/pb-fix-unknown-bug/', async (c) => {
-  const enPrompts = await c.eval(`document.querySelectorAll('a[href^="/en/prompts/"]').length`);
-  const zhPrompts = await c.eval(`document.querySelectorAll('a[href^="/prompts/"]').length`);
-  // 回归：工具卡的详情页链接曾写死成 /tools/<cat>/<id>/，
-  // 英文手册页里 8 个工具全部链到中文详情页 —— 读者点进去满屏中文。
-  const enTools = await c.eval(`document.querySelectorAll('a[href^="/en/tools/"]').length`);
-  const zhTools = await c.eval(`document.querySelectorAll('a[href^="/tools/"]').length`);
-  const chips = await c.eval(`[...document.querySelectorAll('a[href^="/en/prompts/"]')].map(a=>a.getAttribute('href'))`);
-  return {
-    ok: enPrompts >= 2 && zhPrompts === 0 && enTools >= 1 && zhTools === 0,
-    detail: `英文提示词链 ${enPrompts}（${[...new Set(chips)].join(', ')}）/ 中文 ${zhPrompts}；英文工具链 ${enTools} / 中文 ${zhTools}`,
-  };
-});
-
-test('英文搜索：中文界面文案已换英文，且能搜到内容', '/en/search/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('#globalSearch');i.value='rag';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await sleep(600);
-  const count = await c.eval(`(document.querySelector('#searchCount')||{}).textContent||''`);
-  const cats = await c.eval(`[...new Set([...document.querySelectorAll('#searchResults .card-cat')].map(x=>x.textContent.split(' / ')[0]))]`);
-  const btns = await c.eval(`[...new Set([...document.querySelectorAll('#searchResults .btn')].map(x=>x.textContent.trim().replace(/\\s+/g,' ')))].slice(0,4)`);
-  const groups = await c.eval(`[...document.querySelectorAll('#searchResults .search-group-head .label')].map(x=>x.textContent)`);
-  const hits = await c.eval(`document.querySelectorAll('#searchResults .card').length`);
-  // 结果里不能出现中文（类型名、按钮文案都必须是英文）
-  const txt = await c.eval(`(document.querySelector('#searchResults')||{}).textContent||''`);
-  const cjk = /[\u4e00-\u9fa5]/.test(txt);
-  return {
-    ok: hits > 0 && cjk === false && /results/.test(count) && groups.length >= 2,
-    detail: `搜「rag」→ ${count}，${hits} 张卡，分组 [${groups.join('/')}]，类型 [${cats.join('/')}]，按钮 [${btns.join(' ')}]，含中文=${cjk}`,
-  };
-});
-
-test('英文搜索：切到某一类型只出这一类', '/en/search/', async (c) => {
-  await c.eval(`(function(){const i=document.querySelector('#globalSearch');i.value='model';i.dispatchEvent(new Event('input',{bubbles:true}));return 0})()`);
-  await sleep(500);
-  const all = await c.eval(`document.querySelectorAll('#searchResults .card').length`);
-  await c.eval(`(function(){const b=[...document.querySelectorAll('[data-type]')].find(x=>x.dataset.type==='glossary');b.click();return 0})()`);
-  await sleep(400);
-  const only = await c.eval(`[...new Set([...document.querySelectorAll('#searchResults .card-cat')].map(x=>x.textContent.split(' / ')[0]))]`);
-  return {
-    ok: all > 0 && only.every((x) => x === 'Term'),
-    detail: `全部 ${all} 张；筛选「Glossary」后只剩类型 [${only.join('/')}]`,
-  };
-});
-
-test('工具分类页：列出了「这些工具怎么用」', '/tools/coding/', async (c) => {  const head = await c.eval(`(document.body.textContent.match(/这些.{0,8}工具怎么用/)||[''])[0]`);
-  const pbs = await c.eval(`new Set([...document.querySelectorAll('a[href^="/playbooks/pb-"]')].map(a=>a.getAttribute('href'))).size`);
-  return { ok: !!head && pbs >= 1, detail: `区块「${head}」，链到 ${pbs} 篇手册` };
-});
-
-test('工具详情页：英文版也有「这个分类怎么挑」', '/en/tools/coding/cursor/', async (c) => {
-  const head = await c.eval(`/How to choose in this category/.test(document.body.textContent)`);
-  const bold = await c.eval(`document.querySelectorAll('.card b').length`);
-  // 用 fromCharCode 拼 ** 而不是写正则 —— 正则在这里要穿三层字符串会被转义搞坏
-  const raw = await c.eval(`document.body.textContent.split(String.fromCharCode(42, 42)).length > 1`);
-  return { ok: head && bold > 0 && !raw, detail: `区块=${head} 加粗=${bold} 残留星号=${raw}` };
-});
-
-test('打印样式表可访问（从首页拿带哈希的真实文件名）', '/', async (c) => {
-  const href = await c.eval(`(document.querySelector('link[media="print"]')||{}).getAttribute?document.querySelector('link[media="print"]').getAttribute('href'):''`);
-  if (!href) return { ok: false, detail: '首页没有引用打印样式表' };
-  const css = await get(SERVE + href);
-  return { ok: css.indexOf('@page') !== -1, detail: `${href} · ${css.length} 字符` };
-});
-
-/* ---- 执行 ---- */
+const text = (c, sel) => c.eval(`(document.querySelector(${JSON.stringify(sel)})||{}).textContent||''`);
+const shown = (c, sel) => c.eval(`{const e=document.querySelector(${JSON.stringify(sel)}); if(!e) return null; const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}`);
+
+/** Let the HUD catch up: it repaints at most ten times a second. */
+const settle = () => sleep(220);
 
 /**
- * 前置校验：本地服务必须真的在跑，而且返回的是我们的页面。
- *
- * 踩过一次：预览服务挂了，CDP 加载到的是 Chrome 的「无法访问此网站」错误页，
- * 检查脚本照样跑完，还输出了「图片缺 alt 2 / 目标过小 1」这种莫名其妙的结论 ——
- * 因为在测的是 Chrome 的错误页，不是我们的站。
- * 这和「部署失败但线上看着正常」是同一类问题：**检查在验证错误的对象**。
- * 所以先确认可达 + 内容标记正确，否则直接退出，不要给出任何结论。
+ * Wait until check() returns something truthy. Animations and dialogs end on their own
+ * clock; a fixed sleep is either too short on a slow machine or needlessly long on a fast one.
  */
+async function until(check, timeout = 4000, step = 60) {
+  const start = Date.now();
+  for (;;) {
+    const value = await check();
+    if (value) return value;
+    if (Date.now() - start > timeout) return null;
+    await sleep(step);
+  }
+}
+
+/**
+ * Put a save in local storage as if it had been written before this page ever loaded.
+ * Setting it from the live page does not work: the page saves its own state as it unloads
+ * and overwrites whatever the test wrote.
+ */
+async function seedSave(c, save) {
+  const { identifier } = await c.send('Page.addScriptToEvaluateOnNewDocument', {
+    source: `try { localStorage.setItem('ealoong.lumber-tycoon.save', ${JSON.stringify(typeof save === 'string' ? save : JSON.stringify(save))}); } catch (e) {}`,
+  });
+  await c.send('Page.navigate', { url: SERVE + '/games/lumber-tycoon/' });
+  await sleep(800);
+  await c.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
+}
+
+/** Swing at the canvas n times, waiting gapMs between swings so trees get time to regrow. */
+async function swing(c, n, gapMs = 70) {
+  for (let i = 0; i < n; i++) {
+    await c.eval(`(function(){const cv=document.getElementById('stage');const r=cv.getBoundingClientRect();cv.dispatchEvent(new PointerEvent('pointerdown',{clientX:r.left+r.width/2,clientY:r.top+r.height/2,button:0,pointerId:1,bubbles:true,cancelable:true}));return 1})()`);
+    await sleep(gapMs);
+  }
+}
+
+/* ================= game ================= */
+
+test('game: page loads with a canvas, a tree and the full upgrade list', '/games/lumber-tycoon/', async (c) => {
+  const r = await c.eval(`(()=>{const cv=document.getElementById('stage');return {w:cv.width,h:cv.height,rows:document.querySelectorAll('#upgradeList .up-row').length,zones:document.querySelectorAll('#zoneList .zone-row').length,tree:document.getElementById('treeName').textContent}})()`);
+  const ok = r.w > 0 && r.h > 0 && r.rows === GAME_CONFIG.upgrades.length && r.zones === GAME_CONFIG.zones.length && GAME_CONFIG.trees.some((t) => t.name === r.tree);
+  return { ok, detail: `canvas ${r.w}×${r.h} · ${r.rows} upgrades · ${r.zones} districts · tree "${r.tree}"` };
+});
+
+test('game: clicking the canvas earns Sparkwood and the tree falls', '/games/lumber-tycoon/', async (c) => {
+  const before = Number(await text(c, '#hudTimber'));
+  // The first tree is drawn at random (70% pine, 30% birch): enough swings to fell either one.
+  const firstPool = GAME_CONFIG.zones[0].pool;
+  const toughest = Math.max(...Object.keys(firstPool).map((id) => GAME_CONFIG.trees.find((t) => t.id === id).hp));
+  await swing(c, toughest + 3);
+  await settle();
+  const after = Number(await text(c, '#hudTimber'));
+  const hintHidden = await c.eval(`document.getElementById('gameHint').hidden`);
+  return { ok: after > before && hintHidden, detail: `Sparkwood ${before} → ${after}, hint hidden ${hintHidden}` };
+});
+
+test('game: keyboard swings work (Space on the focused canvas)', '/games/lumber-tycoon/', async (c) => {
+  await c.eval(`document.getElementById('stage').focus()`);
+  const before = Number(await text(c, '#hudTimber'));
+  await c.send('Input.dispatchKeyEvent', { type: 'keyDown', key: ' ', code: 'Space', windowsVirtualKeyCode: 32 });
+  await c.send('Input.dispatchKeyEvent', { type: 'keyUp', key: ' ', code: 'Space', windowsVirtualKeyCode: 32 });
+  await sleep(150);
+  const after = Number(await text(c, '#hudTimber'));
+  return { ok: after > before, detail: `Sparkwood ${before} → ${after}` };
+});
+
+test('game: buying an upgrade takes Sparkwood and raises its level', '/games/lumber-tycoon/', async (c) => {
+  const axe = GAME_CONFIG.upgrades.find((u) => u.id === 'axe');
+  await swing(c, 120, 60);                               // well past the first axe
+  await settle();
+  const before = Number(await text(c, '#hudTimber'));
+  const wasEnabled = await c.eval(`!document.querySelector('.up-row[data-buy="axe"]').getAttribute('aria-disabled')`);
+  await c.eval(`document.querySelector('.up-row[data-buy="axe"]').click()`);
+  await sleep(250);
+  await settle();
+  const lv = await text(c, '.up-row[data-buy="axe"] .up-lv');
+  const after = Number(await text(c, '#hudTimber'));
+  return { ok: wasEnabled && lv.includes('1/') && after < before, detail: `costs ${axe.baseCost} · Sparkwood ${before} → ${after} · ${lv.trim()}` };
+});
+
+test('game: an unaffordable upgrade does nothing', '/games/lumber-tycoon/', async (c) => {
+  const chopper = await c.eval(`(()=>{const b=document.querySelector('.up-row[data-buy="choppers"]');return {disabled:b.getAttribute('aria-disabled')==='true',lv:b.querySelector('.up-lv').textContent.trim()}})()`);
+  await c.eval(`document.querySelector('.up-row[data-buy="choppers"]').click()`);
+  await sleep(120);
+  const lvAfter = await text(c, '.up-row[data-buy="choppers"] .up-lv');
+  return { ok: chopper.disabled && lvAfter.trim() === chopper.lv, detail: `disabled ${chopper.disabled} · level stays ${chopper.lv}` };
+});
+
+test('game: progress survives a reload', '/games/lumber-tycoon/', async (c) => {
+  await swing(c, 140, 60);
+  await c.eval(`document.querySelector('.up-row[data-buy="axe"]').click()`);
+  await settle();
+  const before = await text(c, '#hudTimber');
+  const saved = await c.eval(`!!localStorage.getItem('ealoong.lumber-tycoon.save')`);
+  await c.send('Page.navigate', { url: SERVE + '/games/lumber-tycoon/' });
+  await sleep(900);
+  const after = await text(c, '#hudTimber');
+  const lv = await text(c, '.up-row[data-buy="axe"] .up-lv');
+  return { ok: saved && before === after && lv.includes('1/'), detail: `save present ${saved} · Sparkwood ${before} → ${after} · ${lv.trim()}` };
+});
+
+test('game: choppers keep earning while away, and the earnings can be collected', '/games/lumber-tycoon/', async (c) => {
+  // A save with five choppers, last seen two hours ago.
+  await seedSave(c, { v: 1, timber: 0, total: 0, lifetime: 0, gears: 0, mainsprings: 0, prestiges: 0, up: { choppers: 5 }, zones: ['thicket'], zone: 'thicket', felled: 9, clicks: 99, playTime: 10, lastSeen: Date.now() - 2 * 3600 * 1000 });
+  const open = await c.eval(`document.getElementById('offlineDialog').open`);
+  const amount = await text(c, '#offlineAmount');
+  await c.eval(`document.getElementById('offlineCollect').click()`);
+  await sleep(200);
+  await settle();
+  const closed = await c.eval(`!document.getElementById('offlineDialog').open`);
+  // The HUD shows abbreviated numbers: 5 choppers × 5 damage / 2.5 s × 2 h at 50% is about 40.6K.
+  const timber = (await text(c, '#hudTimber')).trim();
+  return { ok: open && closed && /^40\.\d+K$/.test(timber) && amount.trim() === `+${timber} Sparkwood`, detail: `dialog ${open ? 'shown' : 'missing'} · "${amount.trim()}" · HUD after collect ${timber}` };
+});
+
+test('game: with no choppers there is nothing to collect on return', '/games/lumber-tycoon/', async (c) => {
+  await seedSave(c, { v: 1, timber: 50, total: 0, lifetime: 0, gears: 0, mainsprings: 0, prestiges: 0, up: {}, zones: ['thicket'], zone: 'thicket', lastSeen: Date.now() - 8 * 3600 * 1000 });
+  const open = await c.eval(`document.getElementById('offlineDialog').open`);
+  const timber = Number(await text(c, '#hudTimber'));
+  return { ok: !open && timber === 50, detail: `dialog ${open ? 'should not open' : 'stays closed'} · Sparkwood ${timber}` };
+});
+
+test('game: a broken save is refused without breaking the game', '/games/lumber-tycoon/', async (c) => {
+  await seedSave(c, '{not json');
+  await swing(c, 12);
+  await settle();
+  const timber = Number(await text(c, '#hudTimber'));
+  const lv = await text(c, '.up-row[data-buy="axe"] .up-lv');
+  return { ok: timber > 0 && lv.includes('0/'), detail: `fresh run started, Sparkwood ${timber}, axe ${lv.trim()}` };
+});
+
+test('game: settings export gives a code, and a bad import is rejected with a message', '/games/lumber-tycoon/', async (c) => {
+  await swing(c, 30);
+  await c.eval(`document.getElementById('settingsBtn').click()`);
+  await sleep(150);
+  await c.eval(`document.getElementById('exportBtn').click()`);
+  await sleep(150);
+  const code = await c.eval(`document.getElementById('importCode').value`);
+  const parsed = JSON.parse(code);
+  await c.eval(`(function(){const b=document.getElementById('importCode');b.value='not a save';document.getElementById('importBtn').click();return 1})()`);
+  await sleep(200);
+  const msg = await text(c, '#importMsg');
+  const dialogStill = await c.eval(`document.getElementById('confirmDialog').open`);
+  return { ok: parsed.v === 1 && typeof parsed.timber === 'number' && /not a valid save code/.test(msg) && !dialogStill, detail: `code ${code.length} chars, v${parsed.v} · message "${msg.trim()}"` };
+});
+
+test('game: reset asks for confirmation and Cancel leaves progress alone', '/games/lumber-tycoon/', async (c) => {
+  await swing(c, 40);
+  await settle();                       // the HUD repaints ten times a second; read after it has caught up
+  const before = await text(c, '#hudTimber');
+  await c.eval(`document.getElementById('settingsBtn').click()`);
+  await sleep(150);
+  await c.eval(`document.getElementById('resetBtn').click()`);
+  const asked = await until(() => c.eval(`document.getElementById('confirmDialog').open`));
+  await c.eval(`document.getElementById('confirmNo').click()`);
+  await settle();
+  const after = await text(c, '#hudTimber');
+  return { ok: !!asked && before === after, detail: `confirmation ${asked ? 'shown' : 'missing'} · Sparkwood before "${before}" after "${after}"` };
+});
+
+test('game: the tabs switch between Upgrades, Districts and Rewind', '/games/lumber-tycoon/', async (c) => {
+  await c.eval(`document.getElementById('tab-zones').click()`);
+  await sleep(100);
+  const zones = await c.eval(`({selected:document.getElementById('tab-zones').getAttribute('aria-selected'),up:!document.getElementById('panel-up').hidden,zones:!document.getElementById('panel-zones').hidden})`);
+  await c.eval(`document.getElementById('tab-rewind').click()`);
+  await sleep(100);
+  const rewind = await c.eval(`!document.getElementById('panel-rewind').hidden && /Heart of the Grove/.test(document.getElementById('rewindPanel').textContent)`);
+  return { ok: zones.selected === 'true' && !zones.up && zones.zones && rewind, detail: `districts tab ${JSON.stringify(zones)} · rewind panel locked until the last district: ${rewind}` };
+});
+
+test('game: on a phone the drawer opens from the toggle and is actually on screen', '/games/lumber-tycoon/', async (c) => {
+  await c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await c.send('Page.navigate', { url: SERVE + '/games/lumber-tycoon/' });
+  await sleep(900);
+  // Where the drawer really is, not just which classes it carries: it once slid open off-screen.
+  const rect = `(()=>{const d=document.getElementById('drawer');const r=d.getBoundingClientRect();const g=document.getElementById('game').getBoundingClientRect();return {cls:d.className,exp:document.getElementById('drawerToggle').getAttribute('aria-expanded'),l:Math.round(r.left),t:Math.round(r.top),w:Math.round(r.width),h:Math.round(r.height),bottom:Math.round(r.bottom),gameBottom:Math.round(g.bottom)}})()`;
+  const before = await c.eval(rect);
+  const firstRowVisible = () => c.eval(`(()=>{const r=document.querySelector('#panel-up .up-row').getBoundingClientRect();return r.top>=0&&r.bottom<=844})()`);
+  await c.eval(`document.getElementById('drawerToggle').click()`);
+  // The sheet slides up over 260 ms: wait until it has arrived and its first row is on screen.
+  const open = await until(async () => {
+    const r = await c.eval(rect);
+    return r.l === 0 && r.w === 390 && r.h > 150 && Math.abs(r.bottom - r.gameBottom) < 2 && (await firstRowVisible()) ? r : null;
+  });
+  await swing(c, 2);
+  // Closed: the sheet has slid back down, out of the game area.
+  const closed = await until(async () => { const r = await c.eval(rect); return r.exp === 'false' && r.t >= r.gameBottom - 1 ? r : null; });
+  return { ok: before.exp === 'false' && !!open && open.cls.includes('open') && open.exp === 'true' && !!closed, detail: open ? `open: left ${open.l}, ${open.w}×${open.h}, bottom ${open.bottom}/${open.gameBottom}, first row on screen · closes on swing ${!!closed}` : 'drawer never arrived on screen' };
+});
+
+test('game: no console errors during a play session', '/games/lumber-tycoon/', async (c) => {
+  c.events.length = 0;
+  await swing(c, 150, 60);
+  await c.eval(`document.querySelector('.up-row.can') && document.querySelector('.up-row.can').click()`);
+  await c.eval(`document.getElementById('tab-zones').click()`);
+  await c.eval(`document.getElementById('settingsBtn').click()`);
+  await sleep(400);
+  const errors = pageErrors(c);
+  return { ok: errors.length === 0, detail: errors.length ? String(firstErrorText(errors)).slice(0, 120) : 'clean' };
+});
+
+/* ================= tools ================= */
+
+test('tool: sensitivity converter matches the known Valorant → CS2 ratio and updates live', `/tools/sens-converter/`, async (c) => {
+  const set = (id, value, event = 'input') => c.eval(`(function(){const e=document.getElementById(${JSON.stringify(id)});e.value=${JSON.stringify(value)};e.dispatchEvent(new Event(${JSON.stringify(event)},{bubbles:true}));return 1})()`);
+  await set('fromGame', 'valorant', 'change');
+  await set('toGame', 'cs2', 'change');
+  await set('sens', '0.4');
+  await set('dpi', '800');
+  await sleep(80);
+  const val = (await text(c, '#resSens')).trim();
+  const cm = (await text(c, '#resCm')).trim();
+  const rows = await c.eval(`document.querySelectorAll('#resTable tr').length`);
+  // 0.4 in Valorant is the widely quoted 1.27 in CS2 and about 41 cm per turn at 800 DPI.
+  return { ok: val === '1.2727' && cm.includes('40.82') && rows >= 11, detail: `Valorant 0.4 @800 → CS2 ${val} · ${cm}` };
+});
+
+test('tool: sensitivity converter refuses zero and empty input', `/tools/sens-converter/`, async (c) => {
+  await c.eval(`(function(){const i=document.getElementById('sens');i.value='0';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(80);
+  const err = await text(c, '#toolError');
+  const hidden = await c.eval(`document.getElementById('toolResult').hidden`);
+  await c.eval(`(function(){const i=document.getElementById('sens');i.value='';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(80);
+  const err2 = await text(c, '#toolError');
+  return { ok: hidden && err.length > 5 && err2.length > 5, detail: `"${err.trim()}" / "${err2.trim()}"` };
+});
+
+test('tool: FOV calculator reproduces Counter-Strike 90 at 4:3 → 106.26 at 16:9', `/tools/fov-calculator/`, async (c) => {
+  await c.eval(`(function(){for(const [id,v] of [['fov','90'],['fromAspect','4:3'],['toAspect','16:9']]){const e=document.getElementById(id);e.value=v;e.dispatchEvent(new Event('input',{bubbles:true}));}return 1})()`);
+  await sleep(80);
+  const v = await text(c, '#resV');
+  const hTo = await text(c, '#resHTo');
+  // The multiplier moved into the explanation sentence when the note became a full sentence.
+  const note = await text(c, '#fovNote');
+  return { ok: hTo.includes('106.26') && v.includes('73.74') && /1\.3333/.test(note), detail: `vertical ${v} · 16:9 ${hTo} · note "${note.trim().slice(-60)}"` };
+});
+
+test('tool: Steam ID converter accepts every format and rejects a vanity name', `/tools/steam-id-converter/`, async (c) => {
+  const type = async (value) => {
+    await c.eval(`(function(){const i=document.getElementById('steamInput');i.value=${JSON.stringify(value)};i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+    await sleep(60);
+    return text(c, '#resId2');
+  };
+  const a = await type('76561197960287930');
+  const b = await type('[U:1:22202]');
+  const d = await type('https://steamcommunity.com/id/wolverine/');
+  const hidden = await c.eval(`document.getElementById('toolResult').hidden`);
+  const err = await text(c, '#toolError');
+  return { ok: a.trim() === 'STEAM_0:0:11101' && b.trim() === a.trim() && hidden && /custom profile name/.test(err), detail: `64-bit → ${a.trim()} · SteamID3 → ${b.trim()} · vanity → "${err.trim().slice(0, 40)}…"` };
+});
+
+test('tool: Discord timestamps list all seven formats and decode a code', `/tools/discord-timestamp/`, async (c) => {
+  const rows = await c.eval(`document.querySelectorAll('#tsList .copy-row').length`);
+  const sample = await c.eval(`document.querySelector('#tsList .copy-row code').textContent`);
+  await c.eval(`(function(){const i=document.getElementById('tsDecode');i.value='See you <t:1700000000:R>';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(80);
+  const decoded = await text(c, '#tsDecoded');
+  return { ok: rows === 7 && sample.length > 0 && decoded.includes('in your timezone'), detail: `${rows} formats · preview "${sample}" · "${decoded.trim().slice(0, 60)}…"` };
+});
+
+test('tool: prompt template builder fills blanks and reports the empty ones', `/tools/prompt-template-builder/`, async (c) => {
+  // The prompt texts are fetched after load: wait for them to arrive instead of guessing a delay.
+  for (let i = 0; i < 30 && !(await c.eval(`document.getElementById('ptCustom').value.length`)); i++) await sleep(100);
+  const options = await c.eval(`document.getElementById('ptPick').options.length`);
+  const inputs = await c.eval(`document.querySelectorAll('#ptVars input').length`);
+  const before = await c.eval(`document.getElementById('ptOut').textContent`);
+  await c.eval(`(function(){const i=document.querySelector('#ptVars input');i.value='otters';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(80);
+  const after = await c.eval(`document.getElementById('ptOut').textContent`);
+  const err = await text(c, '#toolError');
+  return { ok: options === 86 && inputs > 0 && after.includes('otters') && before !== after && /blank/.test(err), detail: `${options} templates · ${inputs} blanks · one filled, message "${err.trim()}"` };
+});
+
+/* ================= portal package ================= */
+
+test('portal: the standalone package plays with no request beyond the file itself', '/portal/lumber-tycoon/', async (c) => {
+  await c.eval(`document.getElementById('stage').focus()`);
+  await swing(c, 24, 70);
+  await settle();
+  const timber = Number(await text(c, '#hudTimber'));
+  const external = await c.eval(`performance.getEntriesByType('resource').filter((e) => e.name.includes('/assets/') || e.name.includes('/fonts/')).map((e) => e.name)`);
+  const linksOut = await c.eval(`[...document.querySelectorAll('a[href]')].map((a) => a.href)`);
+  const icons = await c.eval(`document.querySelectorAll('symbol[id^="i-"]').length`);
+  return { ok: timber > 0 && external.length === 0 && linksOut.length === 0 && icons > 0, detail: `Sparkwood ${timber} · external assets ${external.length} · outgoing links ${linksOut.length} · ${icons} icons inlined` };
+});
+
+/* ================= 中文站 ================= */
+
+test('i18n: the Chinese game page is Chinese and still playable', '/zh/games/lumber-tycoon/', async (c) => {
+  const lang = await c.eval(`document.documentElement.lang`);
+  const tab = (await text(c, '#tab-up')).trim();
+  const upName = (await text(c, '.up-row[data-buy="axe"] .up-name')).trim();
+  const tier = (await text(c, '#treeTier')).trim();
+  const before = Number(await text(c, '#hudTimber'));
+  await swing(c, 16);
+  await settle();
+  const after = Number(await text(c, '#hudTimber'));
+  return {
+    ok: lang === 'zh-CN' && tab.includes('升级') && upName === '更锋利的斧头' && ['常见'].includes(tier) && after > before,
+    detail: `lang ${lang} · 页签「${tab}」· 升级「${upName}」· 稀有度「${tier}」· 星火木 ${before} → ${after}`,
+  };
+});
+
+test('i18n: the Chinese tool page speaks Chinese, errors included', '/zh/tools/sens-converter/', async (c) => {
+  const label = (await text(c, 'label[for="fromGame"]')).trim();
+  await c.eval(`(function(){const i=document.getElementById('sens');i.value='0';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(90);
+  const err = (await text(c, '#toolError')).trim();
+  await c.eval(`(function(){const i=document.getElementById('sens');i.value='1.5';i.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+  await sleep(90);
+  const val = (await text(c, '#resSens')).trim();
+  return {
+    ok: label === '从哪个游戏' && err.includes('请输入大于 0') && val === '0.4714',
+    detail: `标签「${label}」· 报错「${err}」· 结果 ${val}`,
+  };
+});
+
+test('i18n: the language switch points at the same page in the other language', '/tools/sens-converter/', async (c) => {
+  const link = await c.eval(`(()=>{const a=document.querySelector('.nav-lang');return {href:a.getAttribute('href'),hreflang:a.getAttribute('hreflang'),text:a.textContent.trim()}})()`);
+  const alts = await c.eval(`[...document.querySelectorAll('link[rel="alternate"]')].map((l) => l.getAttribute('hreflang') + ' ' + l.getAttribute('href'))`);
+  const ok = link.href === '/zh/tools/sens-converter/' && link.hreflang === 'zh-CN' && link.text === '中文'
+    && alts.some((a) => a.startsWith('zh-CN ') && a.includes('/zh/tools/sens-converter/'))
+    && alts.some((a) => a.startsWith('en ') && a.endsWith('/tools/sens-converter/'))
+    && alts.some((a) => a.startsWith('x-default '));
+  return { ok, detail: `按钮「${link.text}」→ ${link.href} · hreflang ${alts.length} 条` };
+});
+
+test('i18n: switching back from Chinese reaches the English page', '/zh/tools/discord-timestamp/', async (c) => {
+  const link = await c.eval(`(()=>{const a=document.querySelector('.nav-lang');return {href:a.getAttribute('href'),hreflang:a.getAttribute('hreflang'),text:a.textContent.trim()}})()`);
+  const copyLabel = (await c.eval(`document.querySelector('#tsList .copy-btn span').textContent`)).trim();
+  const rel = (await c.eval(`[...document.querySelectorAll('#tsList .copy-row code')].pop().textContent`)).trim();
+  const heading = (await text(c, 'h1')).trim();
+  return {
+    // "现在" when the minute has not ticked over yet, otherwise "59 秒前" style wording.
+    ok: link.href === '/tools/discord-timestamp/' && link.hreflang === 'en' && link.text === 'English' && copyLabel === '复制' && /现在|前|后/.test(rel) && heading === 'Discord 时间戳生成器',
+    detail: `按钮「${link.text}」→ ${link.href} · 复制「${copyLabel}」· 相对时间「${rel}」· H1「${heading}」`,
+  };
+});
+
+/* ================= site ================= */
+
+test('site: the phone menu opens, closes, and reports its state', '/', async (c) => {
+  await c.send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await c.send('Page.navigate', { url: SERVE + '/' });
+  await sleep(700);
+  await c.eval(`document.getElementById('menuBtn').click()`);
+  await sleep(150);
+  const open = await c.eval(`({open:document.getElementById('nav').classList.contains('open'),exp:document.getElementById('menuBtn').getAttribute('aria-expanded'),label:document.getElementById('menuBtn').getAttribute('aria-label')})`);
+  await c.eval(`document.body.click()`);
+  await sleep(150);
+  const closed = await c.eval(`!document.getElementById('nav').classList.contains('open')`);
+  return { ok: open.open && open.exp === 'true' && open.label === 'Close menu' && closed, detail: `open ${JSON.stringify(open)} · closes on outside click ${closed}` };
+});
+
+test('site: every page starts without console errors', '/', async (c) => {
+  const pages = ['/', '/games/', '/tools/', '/about/', '/contact/', '/privacy/', ...TOOL_IDS.map((id) => `/tools/${id}/`),
+    '/zh/', '/zh/games/', '/zh/games/lumber-tycoon/', '/zh/tools/', ...TOOL_IDS.map((id) => `/zh/tools/${id}/`), '/zh/about/', '/zh/contact/', '/zh/privacy/'];
+  const bad = [];
+  for (const p of pages) {
+    c.events.length = 0;
+    await c.send('Page.navigate', { url: SERVE + p });
+    await sleep(650);
+    const errors = pageErrors(c);
+    if (errors.length) bad.push(`${p} ×${errors.length}: ${String(firstErrorText(errors)).slice(0, 80)}`);
+  }
+  return { ok: bad.length === 0, detail: bad.length ? bad.join(', ') : `${pages.length} pages clean` };
+});
+
+/* ================= runner ================= */
+
 async function assertServeUp() {
   const hint = '    先启动本地服务：node scripts/serve.mjs';
   try {
     const res = await fetch(SERVE, { signal: AbortSignal.timeout(8000) });
     const html = await res.text();
-    if (res.status !== 200) {
-      console.error('\n  ✗ ' + SERVE + ' 返回 HTTP ' + res.status + '\n' + hint + '\n');
-      process.exit(1);
-    }
-    if (!/万象/.test(html)) {
-      console.error('\n  ✗ ' + SERVE + ' 返回的不是本站页面（内容标记不匹配）\n' + hint + '\n');
+    if (res.status !== 200 || !/Ealoong Arcade/.test(html)) {
+      console.error('\n  ✗ ' + SERVE + ' 返回的不是本站页面\n' + hint + '\n');
       process.exit(1);
     }
   } catch (e) {
@@ -1189,12 +464,11 @@ async function assertServeUp() {
 
 async function main() {
   await assertServeUp();
-
-  if (!CHROME) { console.error('  未找到 Chrome'); process.exit(1); }
+  if (!CHROME) { console.error('  未找到 Chrome/Edge'); process.exit(1); }
   try { await get(`http://127.0.0.1:${PORT}/json/version`); }
   catch {
     spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, '--disable-gpu', '--no-first-run',
-      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'aiwx-selftest'), 'about:blank'],
+      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'ealoong-selftest'), 'about:blank'],
       { detached: true, stdio: 'ignore' }).unref();
   }
   for (let i = 0; i < 40; i++) { try { await get(`http://127.0.0.1:${PORT}/json/version`); break; } catch { await sleep(250); } }
@@ -1204,34 +478,42 @@ async function main() {
   const c = await cdp(page.webSocketDebuggerUrl);
   await c.send('Page.enable');
   await c.send('Runtime.enable');
+  await c.send('Log.enable');
   c.eval = async (expr) => {
     const r = await c.send('Runtime.evaluate', { expression: expr, returnByValue: true, awaitPromise: true });
-    if (r.exceptionDetails) {
-      const ex = r.exceptionDetails.exception || {};
-      throw new Error(ex.description || r.exceptionDetails.text || 'eval error');
-    }
+    if (r.exceptionDetails) throw new Error((r.exceptionDetails.exception || {}).description || r.exceptionDetails.text || 'eval error');
     return r.result.value;
   };
 
-  let pass = 0, fail = 0;
+  const selected = tests.filter((t) => !ONLY || t.name.startsWith(ONLY));
+  let pass = 0;
+  let fail = 0;
   console.log('');
   console.log('  交互自测  ' + SERVE);
-  console.log('  ' + '─'.repeat(60));
-  for (const t of tests) {
+  console.log('  ' + '─'.repeat(64));
+  for (const t of selected) {
     await c.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
     await c.send('Page.navigate', { url: SERVE + t.path });
-    await sleep(700);
+    await sleep(150);
+    // Every test starts with an empty slate: no saved progress and no remembered settings.
+    // Clear from a same-origin page that carries no game script: a game page saves its own
+    // state while it unloads, which would undo the clearing.
+    await c.send('Page.navigate', { url: SERVE + '/robots.txt' });
+    await sleep(120);
+    await c.eval(`localStorage.clear(); 1`);
+    await c.send('Page.navigate', { url: SERVE + t.path });
+    await sleep(750);
     try {
       const r = await t.fn(c);
       if (r.ok) { pass++; console.log(`  ✓ ${t.name}  —  ${r.detail}`); }
       else { fail++; console.log(`  ✗ ${t.name}  —  ${r.detail}`); }
     } catch (e) {
       fail++;
-      console.log(`  ✗ ${t.name}  —  异常：${e.message.slice(0, 90)}`);
+      console.log(`  ✗ ${t.name}  —  异常：${String(e.message).slice(0, 160)}`);
     }
   }
   c.close();
-  console.log('  ' + '─'.repeat(60));
+  console.log('  ' + '─'.repeat(64));
   console.log(`  通过 ${pass} / ${pass + fail}`);
   console.log('');
   process.exit(fail ? 1 : 0);

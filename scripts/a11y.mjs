@@ -36,13 +36,11 @@ const CHROME = [
 ].find((p) => fs.existsSync(p));
 
 const PAGES = [
-  '/', '/playbooks/', '/playbooks/pb-weekly-report/', '/tools/', '/tools/coding/cursor/',
-  '/prompts/', '/models/', '/news/', '/news/live/', '/learn/', '/glossary/',
-  '/compare/', '/saved/', '/search/', '/about/', '/changelog/', '/404.html',
-  '/en/', '/en/tools/', '/en/tools/chat/chatgpt/', '/en/models/', '/en/about/',
-  // 英文站新增的三大块，跟中文版一一对应地纳入审计
-  '/en/prompts/', '/en/playbooks/', '/en/playbooks/pb-fix-unknown-bug/', '/en/glossary/',
-  '/en/search/',
+  '/', '/games/', '/games/lumber-tycoon/', '/tools/', '/about/', '/contact/', '/privacy/', '/404.html',
+  // keep in step with data/tools.json so a new tool is audited from day one
+  '/tools/sens-converter/', '/tools/fov-calculator/', '/tools/steam-id-converter/', '/tools/discord-timestamp/', '/tools/prompt-template-builder/',
+  // Chinese tree: one of each page type, which is enough to catch layout problems
+  '/zh/', '/zh/games/', '/zh/games/lumber-tycoon/', '/zh/tools/', '/zh/tools/sens-converter/', '/zh/tools/prompt-template-builder/', '/zh/about/', '/zh/privacy/',
 ];
 
 const get = (u) => new Promise((res, rej) => http.get(u, (r) => { let d = ''; r.on('data', (c) => (d += c)); r.on('end', () => res(d)); }).on('error', rej));
@@ -175,7 +173,7 @@ const AUDIT = `(() => {
   for (const el of document.querySelectorAll('button, a[href], [role="button"], input[type="checkbox"], input[type="radio"]')) {
     const cs = getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden' || cs.pointerEvents === 'none') continue;
-    if (el.closest('.card-hit')) continue;          // 覆盖整卡的透明热区不算
+    if (el.closest('dialog:not([open])')) continue;  // 控件在未打开的对话框里，量不到真实尺寸
     if (isInlineInSentence(el)) continue;           // 句内文字链接豁免
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) continue;
@@ -228,7 +226,7 @@ async function assertServeUp() {
       console.error('\n  ✗ ' + SERVE + ' 返回 HTTP ' + res.status + '\n' + hint + '\n');
       process.exit(1);
     }
-    if (!/万象/.test(html)) {
+    if (!/Ealoong Arcade/.test(html)) {
       console.error('\n  ✗ ' + SERVE + ' 返回的不是本站页面（内容标记不匹配）\n' + hint + '\n');
       process.exit(1);
     }
@@ -245,7 +243,7 @@ async function main() {
   try { await get(`http://127.0.0.1:${PORT}/json/version`); }
   catch {
     spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, '--disable-gpu', '--no-first-run',
-      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'aiwx-a11y'), 'about:blank'],
+      '--user-data-dir=' + path.join(process.env.TEMP || '/tmp', 'ealoong-a11y'), 'about:blank'],
       { detached: true, stdio: 'ignore' }).unref();
   }
   for (let i = 0; i < 40; i++) { try { await get(`http://127.0.0.1:${PORT}/json/version`); break; } catch { await sleep(250); } }
@@ -262,9 +260,8 @@ async function main() {
   };
 
   const only = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : null;
-  const themes = process.argv.includes('--theme=dark') ? ['dark']
-    : process.argv.includes('--theme=light') ? ['light']
-      : ['light', 'dark'];
+  // The site is dark only; --theme=light stays available for a future light theme.
+  const themes = process.argv.includes('--theme=light') ? ['light'] : ['dark'];
   const pages = only ? [only] : PAGES;
 
   const totals = { contrast: 0, namelessBtn: 0, unlabeledInput: 0, noAlt: 0, headingJump: 0, dupId: 0, smallTarget: 0, noLang: 0 };

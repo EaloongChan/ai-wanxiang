@@ -1,0 +1,70 @@
+{
+  "$comment": "All numbers for Clockwork Grove live here. logic.js reads them and never hard-codes a value. Run `npm run sim` after changing anything: it replays a typical player and prints when each milestone lands. Chinese names sit in each entry's zh object; tiers are translated through the tiers map.",
+
+  "tickMs": 100,
+  "baseClick": 1,
+  "critMult": 3,
+  "fellBonus": 0.5,
+  "treeGapSeconds": 0.2,
+
+  "tiers": { "Common": "常见", "Uncommon": "罕见", "Rare": "稀有", "Epic": "史诗", "Legendary": "传说" },
+
+  "combo": {
+    "baseWindow": 2,
+    "step": 10,
+    "bonusPerStep": 0.1,
+    "maxSteps": 10
+  },
+
+  "auto": {
+    "baseInterval": 2.5,
+    "minInterval": 0.5,
+    "basePower": 5
+  },
+
+  "offline": {
+    "baseEfficiency": 0.5,
+    "baseCapSeconds": 28800
+  },
+
+  "trees": [
+    { "id": "copper-pine", "name": "Copper Pine",         "tier": "Common",   "hp": 10,  "yield": 10,     "gears": 0,  "scale": 0.9,  "leaf": "#4fb286", "leafDark": "#2f7d5a", "trunk": "#6b4026", "glow": "#a8e6c5", "zh": { "name": "铜松" } },
+    { "id": "brass-birch", "name": "Brass Birch",        "tier": "Common",   "hp": 14,  "yield": 20,     "gears": 0,  "scale": 0.95, "leaf": "#c9a227", "leafDark": "#8c6f14", "trunk": "#8a6a3b", "glow": "#f2d06b", "zh": { "name": "黄铜桦" } },
+    { "id": "iron-oak",    "name": "Iron Oak",           "tier": "Uncommon", "hp": 30,  "yield": 120,    "gears": 1,  "scale": 1.05, "leaf": "#8d99a6", "leafDark": "#56606b", "trunk": "#3d4249", "glow": "#c0c8d1", "zh": { "name": "铁橡" } },
+    { "id": "ember-elm",   "name": "Ember Elm",          "tier": "Rare",     "hp": 60,  "yield": 360,    "gears": 2,  "scale": 1.15, "leaf": "#e2572b", "leafDark": "#9c3216", "trunk": "#5a2a1e", "glow": "#ffb347", "zh": { "name": "余烬榆" } },
+    { "id": "frost-fir",   "name": "Frost Fir",          "tier": "Rare",     "hp": 140, "yield": 1680,   "gears": 3,  "scale": 1.25, "leaf": "#7fd3e6", "leafDark": "#3a93ab", "trunk": "#3b556b", "glow": "#d6f6ff", "zh": { "name": "霜杉" } },
+    { "id": "storm-cedar", "name": "Storm Cedar",        "tier": "Epic",     "hp": 320, "yield": 7680,   "gears": 6,  "scale": 1.35, "leaf": "#9b7bff", "leafDark": "#5b3fb5", "trunk": "#3a2f63", "glow": "#d9ccff", "zh": { "name": "雷杉" } },
+    { "id": "heart-oak",   "name": "Heartwood Colossus", "tier": "Legendary", "hp": 900, "yield": 54000,  "gears": 12, "scale": 1.6,  "leaf": "#ff4f8b", "leafDark": "#b31f52", "trunk": "#4a1a2e", "glow": "#ffd0e0", "zh": { "name": "心木巨像" } }
+  ],
+
+  "zones": [
+    { "id": "thicket", "name": "Copper Thicket",     "unlockCost": 0,          "blurb": "Where every apprentice starts. Soft copper pines and the odd brass birch.", "pool": { "copper-pine": 70, "brass-birch": 30 }, "zh": { "name": "铜灌木丛", "blurb": "每个学徒的起点。软软的铜松，偶尔来一棵黄铜桦。" } },
+    { "id": "quarry",  "name": "Ivory Quarry",       "unlockCost": 2500,       "blurb": "Old mine workings. Iron oak shows up here and drops its first gears.",        "pool": { "brass-birch": 55, "copper-pine": 15, "iron-oak": 30 }, "zh": { "name": "象牙矿场", "blurb": "废弃的矿道。铁橡在这里出现，也是齿轮第一次掉落的地方。" } },
+    { "id": "foundry", "name": "Ember Foundry",      "unlockCost": 15000,      "blurb": "The grove's boiler room. Ember elms burn bright and pay in gears.",            "pool": { "iron-oak": 55, "ember-elm": 30, "brass-birch": 15 }, "zh": { "name": "余烬铸坊", "blurb": "林子的锅炉房。余烬榆烧得最旺，结账用齿轮。" } },
+    { "id": "frost",   "name": "Frost Hollow",      "unlockCost": 400000,     "blurb": "Frozen clockwork. Frost firs grow slow and are worth the wait.",                 "pool": { "ember-elm": 35, "frost-fir": 50, "iron-oak": 15 }, "zh": { "name": "霜谷", "blurb": "冻结的发条。霜杉长得慢，但值得等。" } },
+    { "id": "storm",   "name": "Storm Spires",       "unlockCost": 12000000,   "blurb": "Lightning winds the trees here. Storm cedars hum before they fall.",              "pool": { "frost-fir": 40, "storm-cedar": 45, "ember-elm": 15 }, "zh": { "name": "雷峰", "blurb": "雷在这里给树上弦。雷杉倒下前会嗡嗡作响。" } },
+    { "id": "heart",   "name": "Heart of the Grove", "unlockCost": 150000000, "blurb": "The Heartwood Colossus. Rewind the Great Clock from here.",                       "pool": { "storm-cedar": 50, "heart-oak": 30, "frost-fir": 20 }, "zh": { "name": "林之心", "blurb": "心木巨像。让大钟倒转，就从这里开始。" } }
+  ],
+
+  "upgrades": [
+    { "id": "axe",       "name": "Sharper Axe",       "currency": "timber", "baseCost": 100,   "growth": 1.1,  "max": 40, "effect": { "click": 1 },          "desc": "+1 damage per swing.", "zh": { "name": "更锋利的斧头", "desc": "每次挥砍 +1 伤害。" } },
+    { "id": "choppers",  "name": "Clockwork Chopper", "currency": "timber", "baseCost": 200,   "growth": 1.25, "max": 30, "effect": { "chopper": 1 },       "desc": "Adds one wind-up chopper that swings by itself.", "zh": { "name": "机械砍伐机", "desc": "增加一台自动挥砍的发条砍伐机。" } },
+    { "id": "sawblade",  "name": "Saw Blades",        "currency": "timber", "baseCost": 200,   "growth": 1.25, "max": 30, "effect": { "autoPower": 5 },    "desc": "+5 damage for every chopper.", "zh": { "name": "锯刃", "desc": "每台砍伐机 +5 伤害。" } },
+    { "id": "winding",   "name": "Faster Winding",   "currency": "timber", "baseCost": 1500,  "growth": 1.5,  "max": 10, "effect": { "interval": 0.2 },    "desc": "Choppers swing 0.2 s sooner.", "zh": { "name": "更快上弦", "desc": "砍伐机每次挥砍快 0.2 秒。" } },
+    { "id": "value",     "name": "Seasoned Timber",   "currency": "timber", "baseCost": 2000,  "growth": 1.4,  "max": 25, "effect": { "value": 0.1 },       "desc": "+10% Sparkwood from every tree.", "zh": { "name": "陈化木材", "desc": "所有树产出的星火木 +10%。" } },
+    { "id": "heavyhead", "name": "Heavy Head",       "currency": "timber", "baseCost": 1200,  "growth": 1.4,  "max": 10, "effect": { "crit": 0.04 },       "desc": "+4% chance to land a critical swing for triple damage.", "zh": { "name": "重斧头", "desc": "+4% 概率打出三倍伤害的暴击。" } },
+    { "id": "rhythm",    "name": "Rhythm Training",   "currency": "timber", "baseCost": 800,   "growth": 1.8,  "max": 4,  "effect": { "comboWindow": 0.5 }, "desc": "Combo meter takes 0.5 s longer to run out.", "zh": { "name": "节奏训练", "desc": "连击计时多 0.5 秒才断。" } },
+    { "id": "reserve",   "name": "Wind-up Reserve",   "currency": "timber", "baseCost": 5000,  "growth": 2,    "max": 5,  "effect": { "offline": 0.1 },     "desc": "+10% efficiency while you are away.", "zh": { "name": "发条储备", "desc": "离线时的效率 +10%。" } },
+    { "id": "longspring", "name": "Long Spring",      "currency": "timber", "baseCost": 8000,  "growth": 2.5,  "max": 4,  "effect": { "offlineCap": 14400 }, "desc": "Offline earnings last 4 more hours.", "zh": { "name": "长发条", "desc": "离线收益多持续 4 小时。" } },
+    { "id": "overdrive", "name": "Overdrive",         "currency": "gears",  "baseCost": 12,    "growth": 1.5,  "max": 10, "effect": { "overdrive": 0.25 },  "desc": "+25% Sparkwood from every tree.", "zh": { "name": "超频", "desc": "所有树产出的星火木 +25%。" } },
+    { "id": "twin",      "name": "Twin Choppers",     "currency": "gears",  "baseCost": 8,     "growth": 1.5,  "max": 10, "effect": { "chopper": 1 },      "desc": "Adds one more wind-up chopper.", "zh": { "name": "双联砍伐机", "desc": "再增加一台发条砍伐机。" } },
+    { "id": "quickwind", "name": "Quickwind",         "currency": "gears",  "baseCost": 6,     "growth": 1.5,  "max": 5,  "effect": { "interval": 0.1 },    "desc": "Choppers swing 0.1 s sooner.", "zh": { "name": "疾风", "desc": "砍伐机每次挥砍再快 0.1 秒。" } }
+  ],
+
+  "prestige": {
+    "requiresZone": "heart",
+    "divisor": 5000000,
+    "exponent": 0.75,
+    "bonusPerPoint": 0.03
+  }
+}

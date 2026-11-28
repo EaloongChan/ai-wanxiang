@@ -1,0 +1,78 @@
+[
+  {
+    "id": "lumber-tycoon",
+    "name": "Clockwork Grove",
+    "subtitle": "Idle Lumber Tycoon",
+    "metaTitle": "Clockwork Grove: Idle Lumber Tycoon",
+    "tagline": "Chop wind-up trees, build a crew of clockwork choppers and rewind the Great Clock.",
+    "short": "An idle lumber tycoon set in a forest of brass and gears.",
+    "path": "/games/lumber-tycoon/",
+    "cover": "/games/lumber-tycoon/cover.svg",
+    "updated": "2026-11-28",
+    "metaDescription": "Play Clockwork Grove, a free idle lumber tycoon in your browser. Chop clockwork trees, hire choppers, unlock six districts and rewind for bonuses.",
+    "intro": [
+      "Clockwork Grove is an <b>idle lumber tycoon</b> set in an overgrown forest of brass and copper trees, wound by gears nobody remembers installing. You arrive with a hand axe. You leave with a crew of clockwork choppers and a Great Clock wound back in your favour.",
+      "Swing at the tree in front of you to earn Sparkwood. Spend it on a sharper axe and on wind-up choppers who keep swinging while you do something else. Unlock six districts, each with tougher trees that pay far more, then <b>rewind the Great Clock</b> to start over with a permanent bonus."
+    ],
+    "howto": {
+      "title": "How to play",
+      "steps": [
+        "<b>Chop.</b> Click or tap the tree, or press <kbd>Space</kbd> or <kbd>Enter</kbd>. You earn Sparkwood for every point of damage.",
+        "<b>Keep a combo.</b> Every swing within {{comboWindow}} seconds of the last one builds a combo. Each {{comboStep}} swings raises your damage by {{comboBonus}}, up to {{comboMax}}.",
+        "<b>Buy upgrades.</b> Open the <b>Upgrades</b> panel. Sharper axes raise the damage of every swing, yours and your choppers'.",
+        "<b>Hire choppers.</b> Clockwork choppers swing on their own, even while you are away.",
+        "<b>Unlock districts.</b> Each one has rarer trees. Uncommon trees and above drop <b>gears</b>, which buy the powerful upgrades at the bottom of the list.",
+        "<b>Rewind.</b> Once you reach the Heart of the Grove, rewind the Great Clock. You lose your Sparkwood, upgrades and districts and keep the <b>mainsprings</b> you earned. Each mainspring gives +{{prestigeBonus}} Sparkwood forever."
+      ]
+    },
+    "tips": [
+      "Overkill counts. A swing that deals 40 damage to a 10-health tree is paid for all 40, so axe upgrades never stop being worth it.",
+      "The first chopper costs very little and starts earning on its own. Buy one early even if you are still clicking.",
+      "Choppers keep working while the tab is closed, at {{offlineEff}} efficiency for up to {{offlineCap}}. The Wind-up Reserve and Long Spring upgrades raise both limits.",
+      "Your progress is saved in this browser. Open Settings to export a save code before clearing site data or switching devices."
+    ],
+    "faq": [
+      { "q": "Is Clockwork Grove free?", "a": "Yes. It runs in your browser with no download, no account and no purchase. There is nothing to buy." },
+      { "q": "Does the game keep running when I close the tab?", "a": "Your clockwork choppers keep earning while you are away, at a reduced rate and for a limited time. You collect the result when you come back." },
+      { "q": "Where is my progress saved?", "a": "In your browser's local storage on this device. Nothing is sent to a server. Use Settings, then Export save code, to move a save somewhere else." },
+      { "q": "What does rewinding do?", "a": "It restarts the run in exchange for mainsprings, a permanent currency. Each one adds {{prestigeBonus}} to all Sparkwood you earn, so every run is faster than the last." },
+      { "q": "Does it work on a phone?", "a": "Yes. The game is built for touch as well as mouse and keyboard, in portrait or landscape." }
+    ],
+    "zh": {
+      "name": "发条森林",
+      "subtitle": "放置伐木大亨",
+      "metaTitle": "发条森林：放置伐木大亨",
+      "tagline": "砍下发条树，组建机械砍伐队，让大钟倒转。",
+      "short": "在一片黄铜与齿轮的森林里做的放置伐木游戏。",
+      "metaDescription": "在浏览器里免费玩《发条森林》：砍发条树、雇砍伐机、解锁六个区域，再让大钟倒转换取永久加成。不用下载，不用注册。",
+      "intro": [
+        "《发条森林》是一款<b>放置伐木</b>游戏，舞台是一片被黄铜与铜树占满的林子，给树上的发条是谁装的，已经没人记得。你来的时候只有一把手斧；走的时候，身后是一队发条砍伐机，和一口被你倒转过的大钟。",
+        "对着眼前的树挥砍就能得到星火木。拿它换更锋利的斧头，再雇几台会自己挥砍的发条砍伐机。解锁六个区域，每个区域的树更硬，给得也更多；最后<b>让大钟倒转</b>，带着一份永久加成从头再来。"
+      ],
+      "howto": {
+        "title": "怎么玩",
+        "steps": [
+          "<b>砍树。</b>点击或轻触树，也可以按 <kbd>空格</kbd> 或 <kbd>回车</kbd>。每造成一点伤害都有星火木。",
+          "<b>保持连击。</b>两次挥砍间隔不超过 {{comboWindow}} 秒就能攒连击。每 {{comboStep}} 次提升 {{comboBonus}} 伤害，最高到 {{comboMax}}。",
+          "<b>买升级。</b>打开<b>升级</b>面板。斧头越锋利，你的每一击和砍伐机的每一击都更重。",
+          "<b>雇砍伐机。</b>发条砍伐机自己会挥砍，你不在的时候也在干活。",
+          "<b>解锁区域。</b>越往后树越稀有。罕见及以上的树会掉<b>齿轮</b>，用来买列表末尾那几项强力升级。",
+          "<b>传承。</b>到达林之心之后，可以让大钟倒转。星火木、升级和区域清空，但到手的主发条会留下，每枚永久提高 +{{prestigeBonus}} 星火木。"
+        ]
+      },
+      "tips": [
+        "溢出伤害照样算钱。一斧 40 伤害砸在只剩 10 点耐久的树上，40 全给。所以斧头升级永远不亏。",
+        "第一台砍伐机很便宜，而且会自己开始赚钱。哪怕你还在手动点，也尽早买一台。",
+        "关掉标签页后砍伐机还在工作，效率 {{offlineEff}}，最多 {{offlineCap}}。「发条储备」和「长发条」能提高这两个上限。",
+        "进度存在这个浏览器里。清除站点数据或换设备之前，先打开设置导出一份存档码。"
+      ],
+      "faq": [
+        { "q": "《发条森林》收费吗？", "a": "不收费。它在浏览器里直接运行，不用下载、不用账号，也没有任何内购。" },
+        { "q": "关掉标签页之后游戏还在跑吗？", "a": "砍伐机会继续替你赚钱，但效率下降、时长有限。回来时收一下即可。" },
+        { "q": "进度保存在哪里？", "a": "存在这台设备的浏览器本地存储里，不会上传到服务器。想把存档搬到别处，用设置里的「导出存档码」。" },
+        { "q": "传承有什么用？", "a": "传承会重开一局，换来主发条这种永久货币。每枚提高 {{prestigeBonus}} 的星火木产出，所以每一局都比上一局快。" },
+        { "q": "手机上能玩吗？", "a": "能。触屏、鼠标键盘都支持，横屏竖屏都行。" }
+      ]
+    }
+  }
+]

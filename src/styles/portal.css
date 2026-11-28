@@ -1,0 +1,12 @@
+/* Only used inside the standalone portal package (dist/portal/). Keeps the game filling
+   the viewport with no page chrome around it. */
+html,body{height:100%}
+body.standalone{margin:0;background:#0b1020;overflow:hidden;overscroll-behavior:none}
+body.standalone .game{height:100vh;height:100dvh;width:100vw;max-width:none}
+body.standalone .tree-info{padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+@media (max-width:860px){
+  body.standalone .game{height:100vh;height:100dvh}
+}
+@media (max-height:480px) and (max-width:860px){
+  body.standalone .drawer-toggle{bottom:calc(8px + env(safe-area-inset-bottom))}
+}
