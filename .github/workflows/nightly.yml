@@ -1,0 +1,42 @@
+# The browser checks need a real Chromium and a local server, so they run once a day
+# rather than on every push. Screenshots are kept when the run fails: a layout break is
+# much easier to judge from the picture than from the assertion message.
+name: nightly-browser
+
+on:
+  schedule:
+    - cron: '30 17 * * *'      # 01:30 Asia/Shanghai
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build
+        run: npm run build
+      - name: Start the preview server
+        run: |
+          node scripts/serve.mjs 4173 > /tmp/serve.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:4173/ > /dev/null && echo "server up"
+      - name: Interaction tests, page audit, accessibility
+        run: npm run verify:browser
+      - name: Keep screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-screenshots
+          path: |
+            .audit/
+            /tmp/serve.log
+          if-no-files-found: ignore

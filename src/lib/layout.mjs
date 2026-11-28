@@ -2,6 +2,7 @@ import { esc, metaExcerpt } from './utils.mjs';
 import { icon, iconSprite, reserveIcons } from './icons.mjs';
 import { T } from './strings.mjs';
 import { LANG_ATTR, LANG_LABEL, LANGS, loc } from './i18n.mjs';
+import { beaconTag } from './beacon.mjs';
 
 /**
  * Page shell.
@@ -117,6 +118,7 @@ ${alternates}
 <meta property="og:type" content="${esc(ogType)}">
 <meta property="og:site_name" content="${esc(brand)}">
 <meta property="og:locale" content="${lang === 'zh' ? 'zh_CN' : 'en_US'}">
+<meta property="og:locale:alternate" content="${lang === 'zh' ? 'en_US' : 'zh_CN'}">
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${esc(canonical)}">
@@ -147,6 +149,7 @@ ${header}
 ${body}
 </main>
 ${footer}
+${beaconTag(site, lang, path)}
 <script src="/assets/${esc(a.js)}" defer></script>
 ${scripts}
 </body>

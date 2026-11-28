@@ -12,6 +12,19 @@ const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const PORT = Number(process.argv[2]) || 4173;
 
+/**
+ * The same security headers Vercel sends (minus HSTS, which browsers ignore over http).
+ * Kept here so the local CSP test exercises the real policy instead of a relaxed one.
+ */
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'X-Frame-Options': 'DENY',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'; object-src 'none'",
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+};
+
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -58,7 +71,7 @@ const server = http.createServer((req, res) => {
 
   if (!fs.existsSync(filePath)) {
     const nf = path.join(DIST, '404.html');
-    res.writeHead(404, { 'Content-Type': MIME['.html'] });
+    res.writeHead(404, { 'Content-Type': MIME['.html'], ...SECURITY_HEADERS });
     res.end(fs.existsSync(nf) ? fs.readFileSync(nf) : 'Not Found');
     return;
   }
@@ -67,6 +80,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, {
     'Content-Type': MIME[ext] || 'application/octet-stream',
     'Cache-Control': 'no-cache',
+    ...SECURITY_HEADERS,
   });
   fs.createReadStream(filePath).pipe(res);
 });

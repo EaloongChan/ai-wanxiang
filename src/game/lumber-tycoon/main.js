@@ -10,8 +10,8 @@
  */
 import { createStage } from './view.js';
 import {
-  advance, applyAction, collectOffline, comboMult, configIndex, createState, derived, deserialize, formatNumber,
-  formatSeconds, incomePerSecond, offlineGain, prestigeGain, serialize, upgradeState,
+  advance, applyAction, claimDaily, collectOffline, comboMult, configIndex, createState, dailyStatus, derived, deserialize,
+  formatNumber, formatSeconds, incomePerSecond, nextGoal, offlineGain, prestigeGain, serialize, upgradeState,
 } from './logic.js';
 
 const el = (id) => document.getElementById(id);
@@ -29,6 +29,13 @@ const T_ = (key, vars) => {
 const pickN = (obj, key) => (LANG === 'zh' && obj.zh && obj.zh[key] !== undefined ? obj.zh[key] : obj[key]);
 /** Tier names are English keys in the data; the config carries the Chinese for them. */
 const tierOf = (tier) => (LANG === 'zh' && CONFIG.tiers && CONFIG.tiers[tier] ? CONFIG.tiers[tier] : tier);
+
+/* Analytics: the beacon module is only present when the site config enables it. These
+   helpers stay harmless (a no-op) when it is absent, which keeps the game code free of
+   conditionals around measurement. */
+const beacon = (name, props) => { if (typeof window.__track === 'function') window.__track(name, props); };
+const trackedOnce = Object.create(null);
+const trackOnce = (name, props) => { if (trackedOnce[name]) return; trackedOnce[name] = true; beacon(name, props); };
 
 function createPlatform() {
   return {
@@ -187,7 +194,65 @@ function startGame(root) {
   el('offlineCollect').addEventListener('click', () => {
     if (away) { collectOffline(state, away); away = null; }
     el('offlineDialog').close();
+    showDaily();               // one sheet at a time: the daily box waits for the away report
   });
+
+  /* ----- achievements, daily box, guidance ----- */
+
+  function showAchievement(id) {
+    const def = (CONFIG.achievements || []).find((a) => a.id === id);
+    if (!def) return;
+    setText(el('achToastName'), pickN(def, 'name'));
+    const toast = el('achToast');
+    toast.hidden = false;
+    clearTimeout(showAchievement.timer);
+    showAchievement.timer = setTimeout(() => { toast.hidden = true; }, 3200);
+    sound.buy();
+    beacon('achievement', { id });
+  }
+
+  const handleAchievements = (events) => {
+    for (const e of events) if (e.k === 'achieved') showAchievement(e.id);
+  };
+
+  function renderAchievements() {
+    const all = CONFIG.achievements || [];
+    const have = new Set(state.achievements);
+    setText(el('achCount'), T_('gr.achCount', { n: have.size, total: all.length }));
+    el('achList').innerHTML = all.map((a) => `<li class="${have.has(a.id) ? 'done' : ''}"><b>${pickN(a, 'name')}</b><span>${have.has(a.id) ? pickN(a, 'desc') : '—'}</span></li>`).join('');
+  }
+
+  function showDaily() {
+    const status = dailyStatus(state, Date.now(), CONFIG);
+    if (!status.available) return;
+    setText(el('dailyAmount'), T_('gr.amountRow', { n: formatNumber(status.amount) }));
+    setText(el('dailyBody'), T_('gr.dailyBody', { n: formatNumber(status.amount) }));
+    el('dailyDialog').showModal();
+  }
+
+  el('dailyClaim').addEventListener('click', () => {
+    const result = claimDaily(state, Date.now(), CONFIG);
+    if (result.ok) {
+      beacon('daily', { amount: Math.round(result.amount) });
+      save();
+    }
+    el('dailyDialog').close();
+  });
+
+  /* Two-step guidance: chop once, then buy a chopper. It disappears for good after the
+     first purchase, so returning players are never told what they already know. */
+  function paintHint() {
+    const hint = el('gameHint');
+    if (state.felled === 0) {
+      hint.hidden = false;
+      setText(el('hintText'), T_('gr.hint'));
+    } else if (Object.keys(state.up).length === 0) {
+      hint.hidden = false;
+      setText(el('hintText'), T_('gr.hintUpgrade'));
+    } else {
+      hint.hidden = true;
+    }
+  }
 
   /* ----- drawing ----- */
   const fallingDir = () => (Math.random() < 0.5 ? -1 : 1);
@@ -223,10 +288,14 @@ function startGame(root) {
     }
     if (felled) onFell(felled);
     else if (respawned && state.tree) stage.setTree(idx.tree.get(state.tree.type), 1);
+    handleAchievements(events);
   }
 
   function swing(x, y) {
     sound.unlock();
+    // The first swing is the only honest signal that someone started playing rather than
+    // reading the page; track it before the game can reject the input.
+    trackOnce('game_start', { zone: state.zone, felled: state.felled });
     const before = state.tree ? idx.tree.get(state.tree.type) : null;
     const events = applyAction(state, 'chop', CONFIG);
     if (!events.length) return;                       // the stump: nothing to hit
@@ -242,6 +311,7 @@ function startGame(root) {
     stage.floatText(x, y - 12, `+${formatNumber(sum)}`, crit ? '#ffd27a' : '#eef1f7', crit ? 22 : 17, crit ? 1.25 : 1);
     if (felled) onFell(felled);
     sound.chop(crit, false);
+    handleAchievements(events);
   }
 
   /* ----- HUD ----- */
@@ -276,6 +346,23 @@ function startGame(root) {
     } else {
       setText(el('treeTier'), '');
     }
+
+    // The HUD always answers "what now?": the next district, or the rewind once every
+    // district is open. This is the difference between a session that ends and one that
+    // continues for another ten minutes.
+    const goal = nextGoal(state, CONFIG);
+    const goalEl = el('gameGoal');
+    goalEl.hidden = false;
+    if (goal.kind === 'zone') {
+      setText(goalEl, T_('gr.goalZone', {
+        zone: pickN(idx.zone.get(goal.id), 'name'),
+        progress: formatNumber(goal.progress),
+        target: formatNumber(goal.target),
+      }));
+    } else {
+      setText(goalEl, goal.gain >= 1 ? T_('gr.goalRewind', { n: formatNumber(goal.gain) }) : T_('gr.goalMax'));
+    }
+    paintHint();
 
     let affordable = 0;
     for (const u of CONFIG.upgrades) if (upgradeState(state, u.id, CONFIG).affordable) affordable++;
@@ -404,7 +491,11 @@ function startGame(root) {
     const buy = e.target.closest('[data-buy]');
     if (buy) {
       const events = applyAction(state, { t: 'buy', id: buy.dataset.buy }, CONFIG);
-      if (events.length) sound.buy(); else sound.denied();
+      if (events.length) {
+        sound.buy();
+        trackOnce('first_upgrade', { upgrade: buy.dataset.buy });
+        handleAchievements(events);
+      } else sound.denied();
       return;
     }
     const zone = e.target.closest('[data-zone]');
@@ -413,8 +504,12 @@ function startGame(root) {
       const owned = state.zones.includes(id);
       const events = applyAction(state, { t: owned ? 'select' : 'zone', id }, CONFIG);
       if (events.length) {
-        if (owned) { sound.buy(); closeDrawer(); } else sound.zone();
+        if (owned) { sound.buy(); closeDrawer(); } else {
+          sound.zone();
+          trackOnce('first_zone', { zone: id, at: Math.round(state.playTime) });
+        }
         stage.setTree(idx.tree.get(state.tree.type), 1);
+        handleAchievements(events);
       } else sound.denied();
       return;
     }
@@ -428,6 +523,9 @@ function startGame(root) {
         const c = stage.canopy();
         stage.burst(c.x, c.y, '#ffc855', 60, 2);
         sound.rewind();
+        trackOnce('first_rewind', { at: Math.round(state.playTime), total: Math.round(state.lifetime) });
+        beacon('rewind', { run: state.prestiges, minutes: Math.round(state.playTime / 60) });
+        handleAchievements(events);
         save();
       }
     }
@@ -481,6 +579,7 @@ function startGame(root) {
     el('importMsg').hidden = true;
     el('importCode').value = '';
     paintSound();
+    renderAchievements();
     el('settingsDialog').showModal();
   });
   paintSound();
@@ -524,8 +623,11 @@ function startGame(root) {
   paintHud();
   paintPanels();
   panelsSeen = panelsSignature();
-  el('gameHint').hidden = state.felled > 0;
+  paintHint();
   if (away) showAway();
+  // A daily box on the very first visit is a modal in front of a game nobody has played yet.
+  // It is a reason to come back, so it only appears to someone who has been here before.
+  else if (state.felled > 0 || state.playTime > 60) showDaily();
   requestAnimationFrame(frame);
 }
 

@@ -1,0 +1,22 @@
+[
+  { "id": "felled-10", "group": "chop", "metric": "felled", "target": 10, "name": "First Dozen", "desc": "Fell 10 trees.", "zh": { "name": "第一打", "desc": "砍倒 10 棵树。" } },
+  { "id": "felled-100", "group": "chop", "metric": "felled", "target": 100, "name": "Hundred Logs", "desc": "Fell 100 trees.", "zh": { "name": "百根木头", "desc": "累计砍倒 100 棵树。" } },
+  { "id": "felled-1000", "group": "chop", "metric": "felled", "target": 1000, "name": "Thousand Fells", "desc": "Fell 1,000 trees.", "zh": { "name": "千次倒下", "desc": "累计砍倒 1000 棵树。" } },
+  { "id": "felled-10000", "group": "chop", "metric": "felled", "target": 10000, "name": "Ten Thousand Trees", "desc": "Fell 10,000 trees.", "zh": { "name": "万木", "desc": "累计砍倒 1 万棵树。" } },
+  { "id": "clicks-100", "group": "chop", "metric": "clicks", "target": 100, "name": "Warm Fingers", "desc": "Take 100 swings by hand.", "zh": { "name": "手指热身", "desc": "手动挥砍 100 次。" } },
+  { "id": "clicks-1000", "group": "chop", "metric": "clicks", "target": 1000, "name": "Callused", "desc": "Take 1,000 swings by hand.", "zh": { "name": "磨出茧子", "desc": "手动挥砍 1000 次。" } },
+  { "id": "zones-2", "group": "zones", "metric": "zones", "target": 2, "name": "Second District", "desc": "Unlock a second district.", "zh": { "name": "第二个区域", "desc": "解锁第 2 个区域。" } },
+  { "id": "zones-4", "group": "zones", "metric": "zones", "target": 4, "name": "Past Halfway", "desc": "Unlock four districts.", "zh": { "name": "过半", "desc": "解锁 4 个区域。" } },
+  { "id": "zones-6", "group": "zones", "metric": "zones", "target": 6, "name": "Heart of the Grove", "desc": "Unlock every district.", "zh": { "name": "林之心", "desc": "解锁全部 6 个区域。" } },
+  { "id": "levels-10", "group": "upgrades", "metric": "upgradeLevels", "target": 10, "name": "Sawdust Regular", "desc": "Buy 10 upgrade levels in total.", "zh": { "name": "锯末常客", "desc": "累计购买 10 级升级。" } },
+  { "id": "levels-50", "group": "upgrades", "metric": "upgradeLevels", "target": 50, "name": "Well Equipped", "desc": "Buy 50 upgrade levels in total.", "zh": { "name": "装备齐全", "desc": "累计购买 50 级升级。" } },
+  { "id": "levels-150", "group": "upgrades", "metric": "upgradeLevels", "target": 150, "name": "Overengineered", "desc": "Buy 150 upgrade levels in total.", "zh": { "name": "过度改装", "desc": "累计购买 150 级升级。" } },
+  { "id": "rewind-1", "group": "rewind", "metric": "prestiges", "target": 1, "name": "Wound Back", "desc": "Rewind the Great Clock once.", "zh": { "name": "第一次倒转", "desc": "让大钟倒转 1 次。" } },
+  { "id": "rewind-3", "group": "rewind", "metric": "prestiges", "target": 3, "name": "Third Spring", "desc": "Rewind three times.", "zh": { "name": "第三枚发条", "desc": "传承 3 次。" } },
+  { "id": "rewind-10", "group": "rewind", "metric": "prestiges", "target": 10, "name": "Clockwright", "desc": "Rewind ten times.", "zh": { "name": "制钟人", "desc": "传承 10 次。" } },
+  { "id": "total-1k", "group": "chop", "metric": "total", "target": 1000, "name": "First Thousand", "desc": "Earn 1,000 Sparkwood in one run.", "zh": { "name": "第一个一千", "desc": "单局累计 1000 星火木。" } },
+  { "id": "total-100k", "group": "chop", "metric": "total", "target": 100000, "name": "Six Figures", "desc": "Earn 100,000 Sparkwood in one run.", "zh": { "name": "六位数", "desc": "单局累计 10 万星火木。" } },
+  { "id": "total-10m", "group": "chop", "metric": "total", "target": 10000000, "name": "Ten Million", "desc": "Earn 10,000,000 Sparkwood in one run.", "zh": { "name": "千万级", "desc": "单局累计 1000 万星火木。" } },
+  { "id": "time-10m", "group": "chop", "metric": "playTime", "target": 600, "name": "Ten Minutes In", "desc": "Play for 10 minutes in total.", "zh": { "name": "十分钟过去", "desc": "累计游玩 10 分钟。" } },
+  { "id": "time-1h", "group": "chop", "metric": "playTime", "target": 3600, "name": "An Hour of It", "desc": "Play for one hour in total.", "zh": { "name": "一小时", "desc": "累计游玩 1 小时。" } }
+]

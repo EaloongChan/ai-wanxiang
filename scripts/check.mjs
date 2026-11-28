@@ -125,6 +125,35 @@ for (const g of games) {
   if (!(c.prestige?.bonusPerPoint > 0 && c.prestige?.bonusPerPoint < 0.25)) bad(`${label}: prestige.bonusPerPoint 应在 0 到 0.25 之间`);
   if (!(c.offline?.baseEfficiency > 0 && c.offline?.baseEfficiency <= 1 && c.offline?.baseCapSeconds > 0)) bad(`${label}: offline 的 baseEfficiency 在 (0,1]，baseCapSeconds > 0`);
   if (!(c.auto?.minInterval > 0 && c.auto?.minInterval <= c.auto?.baseInterval)) bad(`${label}: auto.minInterval 必须 > 0 且不大于 baseInterval`);
+  if (!(c.daily?.amountSeconds > 0 && c.daily?.minAmount >= 0)) bad(`${label}: daily.amountSeconds > 0，daily.minAmount ≥ 0`);
+  for (const [i, z] of c.zones.entries()) {
+    if (i > 0 && !(z.reward && z.reward.gears > 0)) bad(`${label}: 区域 "${z.id}" 没有诚齿轮奖励（reward.gears）`);
+  }
+
+  /* achievements: ids unique, metrics known, targets strictly increasing per metric */
+  const achFile = path.join(DATA, 'games', g.id, 'achievements.json');
+  if (!fs.existsSync(achFile)) {
+    bad(`games/${g.id}: 缺 achievements.json`);
+  } else {
+    const ach = JSON.parse(fs.readFileSync(achFile, 'utf8'));
+    if (ach.length !== 20) bad(`games/${g.id}/achievements.json: 应为 20 条，现在是 ${ach.length}`);
+    unique(ach.map((a) => a.id), `games/${g.id}/achievements.json`);
+    const METRICS = ['felled', 'clicks', 'total', 'lifetime', 'zones', 'prestiges', 'playTime', 'upgradeLevels'];
+    const byMetric = new Map();
+    for (const a of ach) {
+      const al = `games/${g.id}/achievements.json ${a.id}`;
+      NEED(a, ['id', 'group', 'metric', 'target', 'name', 'desc'], al);
+      if (!METRICS.includes(a.metric)) bad(`${al}: metric "${a.metric}" 不是逻辑层认识的指标`);
+      if (!(a.target > 0)) bad(`${al}: target 必须大于 0`);
+      if (!a.zh || !a.zh.name || !a.zh.desc) bad(`${al}: 缺中文名或中文说明`);
+      byMetric.set(a.metric, [...(byMetric.get(a.metric) || []), a.target]);
+    }
+    for (const [metric, targets] of byMetric) {
+      const sorted = [...targets].sort((a, b) => a - b);
+      if (sorted.join() !== targets.join()) bad(`games/${g.id}/achievements.json: "${metric}" 的 target 必须递增（${targets.join(', ')}）`);
+    }
+    if (!errors.some((e) => e.includes('achievements.json'))) good(`games/${g.id}/achievements.json: ${ach.length} 条成就，指标与目标递增均合法`);
+  }
   if (!errors.some((e) => e.startsWith(label))) good(`${label}: ${c.trees.length} 种树 · ${c.zones.length} 个区 · ${c.upgrades.length} 项升级`);
 }
 
@@ -179,7 +208,8 @@ for (const [slug, p] of Object.entries(docs)) {
 }
 const enabledFlags = new Set(Object.keys(site.flags || {}).filter((k) => site.flags[k]));
 const privacy = docs.privacy?.sections || [];
-if (enabledFlags.has('analytics') && !privacy.some((s) => s.flag === 'analytics')) bad('site.config.json: 开启了 analytics，但隐私页没有对应的说明段落');
+const privacyDocHasAnalytics = privacy.some((s) => s.flag === 'analytics');
+if (enabledFlags.has('analytics') && !privacyDocHasAnalytics) bad('site.config.json: 开启了 analytics，但隐私页没有对应的说明段落');
 
 /* ---------------- 中英文完整性 ----------------
    中文缺一块不会报错，只会让读者看到半页空白或英文，所以在这里逐条对齐：
@@ -235,6 +265,41 @@ if (enabledFlags.has('analytics') && !privacy.some((s) => s.flag === 'analytics'
     for (const u of c.upgrades || []) if (!u.zh || !u.zh.desc) bad(`games/${g.id}/config.json: upgrade "${u.id}" 缺中文说明`);
     for (const tier of new Set((c.trees || []).map((t) => t.tier))) {
       if (!c.tiers || !c.tiers[tier]) bad(`games/${g.id}/config.json: 稀有度 "${tier}" 缺中文（tiers）`);
+    }
+  }
+
+  /* 两个开关必须一起动：隐私页的承诺与实际行为不能分叉。 */
+  {
+    const analytics = !!(site.flags && site.flags.analytics);
+    const beaconOn = !!(site.beacon && site.beacon.enabled);
+    if (beaconOn && !analytics) bad('site.config.json: beacon.enabled 为真但 flags.analytics 为假 —— 会收数据，隐私页却不显示说明');
+    if (analytics && !beaconOn) bad('site.config.json: flags.analytics 为真但 beacon.enabled 为假 —— 隐私页会描述一份并不存在的统计');
+    if (beaconOn && !fs.existsSync(path.join(ROOT, 'workers', 'beacon', 'src', 'index.js'))) bad('beacon.enabled 为真，但 workers/beacon 不存在');
+    if (analytics && !privacyDocHasAnalytics) bad('flags.analytics 为真，但隐私页没有 analytics 段落');
+    if (!errors.some((e) => e.startsWith('site.config.json')) && !errors.some((e) => e.includes('隐私页'))) {
+      good(`统计开关：flags.analytics=${analytics} · beacon=${beaconOn}（两者一致）`);
+    }
+  }
+
+  /* 门户提交状态：状态值不能写错，提交日期要么为空要么是日期。
+     这张表是「上次到底投过没有」的唯一记录，写错了比没有更糟。 */
+  {
+    const statusFile = path.join(DATA, 'portal-status.json');
+    if (!fs.existsSync(statusFile)) bad('data/portal-status.json 不存在');
+    else {
+      const ps = JSON.parse(fs.readFileSync(statusFile, 'utf8'));
+      const ALLOWED = ['not-submitted', 'submitted', 'in-review', 'live', 'rejected', 'hold'];
+      if (!Array.isArray(ps.portals) || !ps.portals.length) bad('data/portal-status.json: portals 不能为空');
+      else {
+        unique(ps.portals.map((p) => p.id), 'data/portal-status.json');
+        for (const p of ps.portals) {
+          NEED(p, ['id', 'url', 'status'], `portal-status ${p.id}`);
+          if (!ALLOWED.includes(p.status)) bad(`portal-status ${p.id}: 状态 "${p.status}" 不在允许值里（${ALLOWED.join(' / ')}）`);
+          if (p.submittedAt !== null && !ISO_DATE.test(String(p.submittedAt))) bad(`portal-status ${p.id}: submittedAt 应为 YYYY-MM-DD 或 null`);
+          if (p.status !== 'not-submitted' && p.status !== 'hold' && !p.submittedAt) bad(`portal-status ${p.id}: 已提交却没有 submittedAt`);
+        }
+        if (!errors.some((e) => e.includes('portal-status'))) good(`portal-status: ${ps.portals.length} 家门户，状态值合法`);
+      }
     }
   }
 

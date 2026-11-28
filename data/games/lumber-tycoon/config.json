@@ -27,6 +27,11 @@
     "baseCapSeconds": 28800
   },
 
+  "daily": {
+    "amountSeconds": 1800,
+    "minAmount": 60
+  },
+
   "trees": [
     { "id": "copper-pine", "name": "Copper Pine",         "tier": "Common",   "hp": 10,  "yield": 10,     "gears": 0,  "scale": 0.9,  "leaf": "#4fb286", "leafDark": "#2f7d5a", "trunk": "#6b4026", "glow": "#a8e6c5", "zh": { "name": "铜松" } },
     { "id": "brass-birch", "name": "Brass Birch",        "tier": "Common",   "hp": 14,  "yield": 20,     "gears": 0,  "scale": 0.95, "leaf": "#c9a227", "leafDark": "#8c6f14", "trunk": "#8a6a3b", "glow": "#f2d06b", "zh": { "name": "黄铜桦" } },
@@ -39,11 +44,11 @@
 
   "zones": [
     { "id": "thicket", "name": "Copper Thicket",     "unlockCost": 0,          "blurb": "Where every apprentice starts. Soft copper pines and the odd brass birch.", "pool": { "copper-pine": 70, "brass-birch": 30 }, "zh": { "name": "铜灌木丛", "blurb": "每个学徒的起点。软软的铜松，偶尔来一棵黄铜桦。" } },
-    { "id": "quarry",  "name": "Ivory Quarry",       "unlockCost": 2500,       "blurb": "Old mine workings. Iron oak shows up here and drops its first gears.",        "pool": { "brass-birch": 55, "copper-pine": 15, "iron-oak": 30 }, "zh": { "name": "象牙矿场", "blurb": "废弃的矿道。铁橡在这里出现，也是齿轮第一次掉落的地方。" } },
-    { "id": "foundry", "name": "Ember Foundry",      "unlockCost": 15000,      "blurb": "The grove's boiler room. Ember elms burn bright and pay in gears.",            "pool": { "iron-oak": 55, "ember-elm": 30, "brass-birch": 15 }, "zh": { "name": "余烬铸坊", "blurb": "林子的锅炉房。余烬榆烧得最旺，结账用齿轮。" } },
-    { "id": "frost",   "name": "Frost Hollow",      "unlockCost": 400000,     "blurb": "Frozen clockwork. Frost firs grow slow and are worth the wait.",                 "pool": { "ember-elm": 35, "frost-fir": 50, "iron-oak": 15 }, "zh": { "name": "霜谷", "blurb": "冻结的发条。霜杉长得慢，但值得等。" } },
-    { "id": "storm",   "name": "Storm Spires",       "unlockCost": 12000000,   "blurb": "Lightning winds the trees here. Storm cedars hum before they fall.",              "pool": { "frost-fir": 40, "storm-cedar": 45, "ember-elm": 15 }, "zh": { "name": "雷峰", "blurb": "雷在这里给树上弦。雷杉倒下前会嗡嗡作响。" } },
-    { "id": "heart",   "name": "Heart of the Grove", "unlockCost": 150000000, "blurb": "The Heartwood Colossus. Rewind the Great Clock from here.",                       "pool": { "storm-cedar": 50, "heart-oak": 30, "frost-fir": 20 }, "zh": { "name": "林之心", "blurb": "心木巨像。让大钟倒转，就从这里开始。" } }
+    { "id": "quarry",  "name": "Ivory Quarry",       "unlockCost": 2500,       "blurb": "Old mine workings. Iron oak shows up here and drops its first gears.",        "pool": { "brass-birch": 55, "copper-pine": 15, "iron-oak": 30 }, "reward": { "gears": 2 }, "zh": { "name": "象牙矿场", "blurb": "废弃的矿道。铁橡在这里出现，也是齿轮第一次掉落的地方。" } },
+    { "id": "foundry", "name": "Ember Foundry",      "unlockCost": 15000,      "blurb": "The grove's boiler room. Ember elms burn bright and pay in gears.",            "pool": { "iron-oak": 55, "ember-elm": 30, "brass-birch": 15 }, "reward": { "gears": 3 }, "zh": { "name": "余烬铸坊", "blurb": "林子的锅炉房。余烬榆烧得最旺，结账用齿轮。" } },
+    { "id": "frost",   "name": "Frost Hollow",      "unlockCost": 400000,     "blurb": "Frozen clockwork. Frost firs grow slow and are worth the wait.",                 "pool": { "ember-elm": 35, "frost-fir": 50, "iron-oak": 15 }, "reward": { "gears": 5 }, "zh": { "name": "霜谷", "blurb": "冻结的发条。霜杉长得慢，但值得等。" } },
+    { "id": "storm",   "name": "Storm Spires",       "unlockCost": 12000000,   "blurb": "Lightning winds the trees here. Storm cedars hum before they fall.",              "pool": { "frost-fir": 40, "storm-cedar": 45, "ember-elm": 15 }, "reward": { "gears": 8 }, "zh": { "name": "雷峰", "blurb": "雷在这里给树上弦。雷杉倒下前会嗡嗡作响。" } },
+    { "id": "heart",   "name": "Heart of the Grove", "unlockCost": 150000000, "blurb": "The Heartwood Colossus. Rewind the Great Clock from here.",                       "pool": { "storm-cedar": 50, "heart-oak": 30, "frost-fir": 20 }, "reward": { "gears": 12 }, "zh": { "name": "林之心", "blurb": "心木巨像。让大钟倒转，就从这里开始。" } }
   ],
 
   "upgrades": [

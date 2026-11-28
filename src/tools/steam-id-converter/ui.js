@@ -1,5 +1,5 @@
 import { convert } from './core.js';
-import { bindCopy, fillText, showError, setText } from '../shared-ui.js';
+import { bindCopy, fillText, showError, setText, trackTool } from '../shared-ui.js';
 
 const input = document.getElementById('steamInput');
 const result = document.getElementById('toolResult');
@@ -9,9 +9,11 @@ function render() {
   showError(document.getElementById('toolError'), r.code ? STR[r.code] || r.code : '');
   if (!r.ok) {
     result.hidden = true;
+    if (r.code) trackTool('tool_error', { code: r.code });
     return;
   }
   result.hidden = false;
+  trackTool('tool_use');
   setText(document.getElementById('resAccount'), r.accountId);
   setText(document.getElementById('resId64'), r.id64);
   setText(document.getElementById('resId3'), r.id3);

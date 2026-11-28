@@ -1,0 +1,38 @@
+{
+  "$comment": "Submission state per portal. Update at submission time: status, submittedAt (ISO date), reviewNotes. Kept in the repo so the next session does not have to guess what was already sent.",
+  "game": "lumber-tycoon",
+  "portals": [
+    {
+      "id": "crazygames",
+      "url": "https://developer.crazygames.com/",
+      "exclusive": false,
+      "status": "not-submitted",
+      "submittedAt": null,
+      "reviewNotes": "Basic launch first (no monetisation), then a full launch after SDK work and QA."
+    },
+    {
+      "id": "itch-io",
+      "url": "https://itch.io/game/new",
+      "exclusive": false,
+      "status": "not-submitted",
+      "submittedAt": null,
+      "reviewNotes": "No review process. Useful as a public, shareable link."
+    },
+    {
+      "id": "gamedistribution",
+      "url": "https://gamedistribution.com/",
+      "exclusive": false,
+      "status": "not-submitted",
+      "submittedAt": null,
+      "reviewNotes": "Requires their SDK before ads run."
+    },
+    {
+      "id": "poki",
+      "url": "https://developers.poki.com/",
+      "exclusive": true,
+      "status": "hold",
+      "submittedAt": null,
+      "reviewNotes": "Curated and reportedly web-exclusive; whether the game may stay on our own site is unconfirmed. Do not submit until confirmed."
+    }
+  ]
+}

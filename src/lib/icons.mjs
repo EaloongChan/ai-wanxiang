@@ -60,7 +60,9 @@ export function iconSprite() {
   const body = names.map(
     (n) => `<symbol id="i-${n}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${P[n]}</symbol>`,
   ).join('');
-  return `<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">${body}</svg>`;
+  // A class, not a style attribute: the site runs under `style-src 'self'` and an inline
+  // style here would be refused (it was, once) and log a CSP violation on every page.
+  return `<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">${body}</svg>`;
 }
 
 export function hasIcon(name) {

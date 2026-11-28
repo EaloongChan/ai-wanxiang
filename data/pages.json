@@ -92,7 +92,7 @@
     ],
     "zh": {
       "title": "联系",
-      "metaDescription": "报告问题、建议新游戏或新工具，或者给 Ealoong Arcade 提反馈。",
+      "metaDescription": "报告问题、建议新游戏或新工具，或者给 Ealoong Arcade 提反馈。用 GitHub issue 最可靠，对话也能留在同一个地方。",
       "lead": "最可靠的找人的方式是开一个 GitHub issue：对话能留在同一个地方，也不依赖邮箱。",
       "sections": [
         {
@@ -157,7 +157,8 @@
         "flag": "analytics",
         "h": "Visitor counts",
         "p": [
-          "This site uses Cloudflare Web Analytics. It counts page views with aggregate, cookie-free measurement: no cookies, no fingerprinting and no cross-site tracking. Individual visitors cannot be identified from it."
+          "This site uses Cloudflare Web Analytics to count page views. It measures in aggregate, without cookies: no cookies, no fingerprinting and no cross-site tracking. Individual visitors cannot be identified from it.",
+          "We also count a small set of anonymous events — a game started, an upgrade bought, a tool used, a script error happened — through a Cloudflare Worker we run ourselves. Each event carries the page, the language and up to six short labels such as the tool name or an error code. Nothing you type, no save data and nothing that identifies you is included."
         ]
       },
       {
@@ -223,7 +224,8 @@
           "flag": "analytics",
           "h": "访问统计",
           "p": [
-            "本站使用 Cloudflare Web Analytics 统计访问量。它用聚合、无 Cookie 的方式计数：没有 Cookie，不做指纹识别，也不跨站跟踪，无法从数据里识别到个人。"
+            "本站使用 Cloudflare Web Analytics 统计访问量。它用聚合、无 Cookie 的方式计数：没有 Cookie，不做指纹识别，也不跨站跟踪，无法从数据里识别到个人。",
+            "我们还会统计少量匿名事件：开始玩、买了第一个升级、用了某个工具、发生了脚本错误。这些事件由我们自己部署的 Cloudflare Worker 接收，只带页面、语言和最多六个短标签（例如工具名或错误码）。你输入的内容、存档和任何能识别个人的信息都不在其中。"
           ]
         },
         {

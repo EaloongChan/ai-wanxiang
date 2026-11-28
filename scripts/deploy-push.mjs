@@ -342,7 +342,7 @@ async function main() {
     line('  接下来：');
     line('    1. node scripts/verify-live.mjs   确认线上页面、旧地址跳转、新工具页都没问题');
     line('    2. 到 Cloudflare 后台确认 robots.txt 里没有再追加屏蔽爬虫的托管段');
-    line('    3. 游戏门户提交用的是 dist/portal/<游戏>.zip（构建时自动生成）');
+    line('    3. 游戏门户提交用的是 build/portal/<游戏>.zip（构建时自动生成，不部署到线上）');
     line('');
   } else if (final === 'pending') {
     line('  ! 4 分钟内没等到结果，去 Vercel 面板确认一下');

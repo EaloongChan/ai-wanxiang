@@ -23,8 +23,8 @@ const BUDGET = [
   { glob: /^main\.[0-9a-f]{7}\.css$/, name: 'main.css (every page)', budget: 15, hard: true },
   { glob: /^app\.[0-9a-f]{7}\.js$/, name: 'app.js (every page)', budget: 2, hard: true },
   { glob: /^game\.[0-9a-f]{7}\.css$/, name: 'game.css (game pages)', budget: 7 },
-  { glob: /^game-.*\.js$/, name: 'game script', budget: 20 },   // balance config + all game text; Chinese is ~10% larger per character
-  { glob: /^tool-.*\.js$/, name: 'tool script', budget: 8 },
+  { glob: /^game-.*\.js$/, name: 'game script', budget: 24 },   // balance config, game text, 20 achievements; Chinese is ~10% larger per character
+  { glob: /^tool-.*\.js$/, name: 'tool script', budget: 9 },
   { glob: /^prompts-(en|zh)\..*\.json$/, name: 'prompt texts (fetched after load)', budget: 34 },
   { file: 'index.html', name: 'home page HTML', budget: 10, hard: true },
   { file: 'games/lumber-tycoon/index.html', name: 'game page HTML', budget: 16 },

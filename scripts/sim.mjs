@@ -1,22 +1,25 @@
 /**
  * Headless pacing replay for Clockwork Grove (zero dependencies).
  *
- *   node scripts/sim.mjs                 one player profile, default seed
- *   node scripts/sim.mjs --runs 20       average over 20 seeds
- *   node scripts/sim.mjs --trace         print the first run step by step
- *   node scripts/sim.mjs --minutes=60    stop after N minutes of play
+ *   node scripts/sim.mjs                          one normal player, default seed
+ *   node scripts/sim.mjs --runs=200               percentiles over 200 seeds
+ *   node scripts/sim.mjs --players=fast,normal,slow   all three player models
+ *   node scripts/sim.mjs --trace                  print the first run step by step
+ *   node scripts/sim.mjs --minutes=60             stop after N minutes of play
  *
- * Replays a "typical" player through the pure logic layer and prints when each
- * milestone lands. It is a design aid, not a test: tune numbers in
- * data/games/lumber-tycoon/config.json until the timeline feels right. The wide
- * bounds that must hold afterwards live in logic.test.js, which imports replay().
+ * Replays a player through the pure logic layer and prints when each milestone lands.
+ * It is a design aid, not a test: tune numbers in data/games/lumber-tycoon/config.json
+ * until the timeline feels right. The broad bounds that must hold afterwards live in
+ * logic.test.js, which imports replay().
  *
- * Player model:
- *   minute 0-15   active      4 swings per second
- *   minute 15+    semi-idle   1 swing per second (choppers do the rest)
- * Buying: unlock the next district as soon as it is affordable, otherwise the
- * cheapest affordable upgrade, never spending more than half of the wallet or 5% of
- * the next district's price on it. Gear upgrades are bought whenever affordable.
+ * Player models differ only in how hard they click and when they stop:
+ *   fast    6 swings per second, keeps clicking
+ *   normal  4 swings per second for 15 minutes, then 1
+ *   slow    2 swings per second for 15 minutes, then none (choppers only)
+ *
+ * Buying: unlock the next district as soon as it is affordable, otherwise the cheapest
+ * affordable upgrade, never spending more than half of the wallet or 5% of the next
+ * district's price on it. Gear upgrades are bought whenever affordable.
  * Rewind once the next gain would be at least as large as the last one.
  */
 import fs from 'node:fs';
@@ -25,9 +28,22 @@ import { fileURLToPath } from 'node:url';
 import { applyAction, advance, createState, derived, prestigeGain, upgradeState } from '../src/game/lumber-tycoon/logic.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const CONFIG_PATH = path.join(ROOT, 'data', 'games', 'lumber-tycoon', 'config.json');
+const GAME_DIR = path.join(ROOT, 'data', 'games', 'lumber-tycoon');
+const CONFIG_PATH = path.join(GAME_DIR, 'config.json');
 
-export const loadConfig = (file = CONFIG_PATH) => JSON.parse(fs.readFileSync(file, 'utf8'));
+/** Config plus the achievement list, which the build merges into the same object. */
+export const loadConfig = (file = CONFIG_PATH) => {
+  const config = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const ach = path.join(GAME_DIR, 'achievements.json');
+  if (fs.existsSync(ach)) config.achievements = JSON.parse(fs.readFileSync(ach, 'utf8'));
+  return config;
+};
+
+export const PROFILES = {
+  fast: { activeRate: 6, idleRate: 3, idleAfter: 900 },
+  normal: { activeRate: 4, idleRate: 1, idleAfter: 900 },
+  slow: { activeRate: 2, idleRate: 0, idleAfter: 900 },
+};
 
 export function mulberry32(seed) {
   let a = seed >>> 0;
@@ -45,7 +61,7 @@ export function mulberry32(seed) {
  * Each mark: { label, t, dt, income } — when it happened, how long since the previous
  * one, and the income per second measured over the preceding ~10 s.
  */
-export function replay(seed, { minutes = 120, config = loadConfig(), trace = false, onMark = null } = {}) {
+export function replay(seed, { minutes = 120, config = loadConfig(), trace = false, onMark = null, profile = PROFILES.normal } = {}) {
   const rng = mulberry32(seed);
   const s = createState(config, rng);
   const dt = config.tickMs / 1000;
@@ -66,7 +82,7 @@ export function replay(seed, { minutes = 120, config = loadConfig(), trace = fal
   };
 
   while (t < minutes * 60) {
-    const rate = t - runStart < 900 ? 4 : 1;
+    const rate = t - runStart < profile.idleAfter ? profile.activeRate : profile.idleRate;
     acc += rate * dt;
     while (acc >= 1) {
       acc -= 1;
@@ -113,34 +129,43 @@ export function replay(seed, { minutes = 120, config = loadConfig(), trace = fal
 const mm = (t) => `${Math.floor(t / 60)}m${String(Math.floor(t % 60)).padStart(2, '0')}s`;
 const n = (v) => (v >= 1e6 ? (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? (v / 1e3).toFixed(1) + 'K' : v.toFixed(0));
 
+/** Nearest-rank percentile of a sorted numeric array. */
+export const percentile = (sorted, q) => {
+  if (!sorted.length) return NaN;
+  const i = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * q)));
+  return sorted[i];
+};
+
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const arg = (name) => (process.argv.find((a) => a.startsWith(`--${name}=`)) || '').split('=')[1];
-  const runs = Number(arg('runs')) || 1;
+  const runs = Number(arg('runs')) || 20;
   const minutes = Number(arg('minutes')) || 120;
+  const players = (arg('players') || 'normal').split(',').map((p) => p.trim()).filter((p) => PROFILES[p]);
   const config = loadConfig();
 
   console.log('');
   console.log('  Clockwork Grove · pacing replay');
-  console.log('  ' + '─'.repeat(60));
+  console.log('  ' + '─'.repeat(66));
 
   if (process.argv.includes('--trace')) {
-    replay(1000, { minutes, config, trace: true });
+    replay(1000, { minutes, config, trace: true, profile: PROFILES.normal });
     console.log('');
     process.exit(0);
   }
 
-  const sessions = [];
-  for (let i = 0; i < runs; i++) sessions.push(replay(1000 + i * 7919, { minutes, config }));
-
-  for (const m of sessions[0].marks) {
-    const vals = sessions.map((r) => r.marks.find((x) => x.label === m.label)).filter(Boolean);
-    const avgT = vals.reduce((a, x) => a + x.t, 0) / vals.length;
-    const avgDt = vals.reduce((a, x) => a + x.dt, 0) / vals.length;
-    console.log(`  ${m.label.padEnd(28)} at ${mm(avgT).padStart(7)}   took ${mm(avgDt).padStart(6)}   income ${n(m.income).padStart(8)}/s${vals.length < runs ? `   (${vals.length}/${runs} runs)` : ''}`);
+  for (const player of players) {
+    const sessions = [];
+    for (let i = 0; i < runs; i++) sessions.push(replay(1000 + i * 7919, { minutes, config, profile: PROFILES[player] }));
+    const labels = [...new Set(sessions[0].marks.map((m) => m.label))];
+    console.log('');
+    console.log(`  ${player} · ${runs} runs · ${minutes} min cap`);
+    console.log(`  ${'milestone'.padEnd(24)}${'P10'.padStart(9)}${'P50'.padStart(9)}${'P90'.padStart(9)}`);
+    for (const label of labels) {
+      const times = sessions.map((r) => (r.marks.find((x) => x.label === label) || {}).t).filter((v) => v !== undefined).sort((a, b) => a - b);
+      console.log(`  ${label.padEnd(24)}${mm(percentile(times, 0.1)).padStart(9)}${mm(percentile(times, 0.5)).padStart(9)}${mm(percentile(times, 0.9)).padStart(9)}${times.length < runs ? `   (${times.length}/${runs})` : ''}`);
+    }
+    const last = sessions[sessions.length - 1].state;
+    console.log(`  end: mainsprings ${Math.round(last.mainsprings)} (×${(1 + config.prestige.bonusPerPoint * last.mainsprings).toFixed(2)}) · prestiges ${last.prestiges} · lifetime ${last.lifetime.toExponential(2)}`);
   }
-
-  const last = sessions[sessions.length - 1].state;
-  console.log('');
-  console.log(`  end of replay         mainsprings ${Math.round(last.mainsprings)} (×${(1 + config.prestige.bonusPerPoint * last.mainsprings).toFixed(2)} yield) · prestiges ${last.prestiges} · lifetime ${last.lifetime.toExponential(2)}`);
   console.log('');
 }

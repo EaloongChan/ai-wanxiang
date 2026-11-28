@@ -46,6 +46,9 @@ public/               字体、图标、封面、分享图（og/）
 | `npm run verify` | 上线前的全量校验：数据 → 单元测试 → 构建 → 内链 → 孤儿页 → 体积 |
 | `npm run verify:browser` | 浏览器检查：交互测试 → 页面审计 → 无障碍（需先启动预览） |
 | `npm run sim` | 重放节奏，看第一个升级、各区解锁、传承分别在第几分钟 |
+| `npm run seo` / `npm run i18n` | 页面级 SEO 断言 / 中英互指与残留英文检查 |
+| `npm run portal:kit` | 生成门户提交材料：描述、标签、两种尺寸截图（输出到 `build/portal-kit/`） |
+| `npm run verify:live` | 部署后验证线上：页面、跳转、安全头、SEO 字段 |
 | `npm run push` | 推送上线。推送前会自动跑一遍全量校验，不过就不推 |
 
 也可以直接双击根目录的三个 `.bat`：`打开网站.bat`（构建并预览）、`重新构建.bat`（构建并校验）、`推送到线上.bat`。
@@ -64,7 +67,15 @@ public/               字体、图标、封面、分享图（og/）
 - **改文案**：只改 `data/` 下的 JSON，构建时会填进页面。游戏说明里的 `{{comboStep}}` 这类占位符会从游戏配置里取值，避免文案和数值对不上；中英文各写一份。
 - **调游戏数值**：改 `data/games/lumber-tycoon/config.json`，然后跑 `npm run sim` 看节奏，再跑 `npm run unit`。节奏测试的上下限在 `logic.test.js` 里，是有意改节奏时连同它一起改。
 - **加一个工具**：在 `tools.json` 加一条，在 `src/tools/<id>/` 写 `core.js`、`ui.js`、`core.test.js`，在 `components.mjs` 的 `SHELLS` 里加表单，并把新页面加进 `audit.mjs` 与 `a11y.mjs` 的清单。
-- **加一个游戏**：在 `games.json` 加一条，在 `src/game/<id>/` 按 logic / view / main 三层写，门户包会随构建自动生成。
+- **加一个游戏**：在 `games.json` 加一条，在 `src/game/<id>/` 按 logic / view / main 三层写，门户包会随构建自动生成到 `build/portal/`（不部署，供提交门户）。
+
+## 文档
+
+- `docs/self-audit.md` —— 本轮自检发现的问题清单（按流量 / 留存 / 稳定性分类）
+- `docs/decisions.md` —— 扩张阈值与已做的决定，到期按数据说话
+- `docs/analytics-setup.md` —— 打开统计的两个后台步骤与 Worker 部署
+- `docs/search-setup.md` —— Google / Bing / 百度的提交清单
+- `docs/portal-notes.md` —— 门户提交材料与提交前必须复核的条款
 
 ## 约束
 

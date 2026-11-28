@@ -38,6 +38,10 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+/* A [hidden] element must stay hidden even when its class sets display: the browser default
+   is overridden by any explicit display, which silently un-hides dialogs, hints and toasts. */
+[hidden]{display:none!important}
+.sprite{position:absolute;overflow:hidden}
 img,svg,canvas{display:block;max-width:100%}
 a{color:var(--teal-strong);text-decoration-thickness:1px;text-underline-offset:3px}
 a:hover{color:#b3f5ec}
@@ -103,6 +107,10 @@ html[lang="zh-CN"] .game-card-name,html[lang="zh-CN"] .tool-card-name{letter-spa
 .lead{font-size:clamp(17px,1.6vw,20px);line-height:1.55;color:var(--text-2);max-width:640px}
 .hero .lead{margin-bottom:24px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+/* One 404 file serves both languages; this line gives Chinese readers a way out. */
+.nf-zh{color:var(--text-2);font-size:15px;margin:0 0 22px}
+.nf-zh a{color:var(--amber-strong);text-decoration:none;border-bottom:1px solid rgba(255,176,32,.4)}
+.nf-zh a:hover{border-bottom-color:var(--amber)}
 .hero-points{display:flex;flex-wrap:wrap;gap:8px 22px;list-style:none;padding:0;margin:22px 0 0;color:var(--text-2);font-size:14px}
 .hero-points li{display:inline-flex;align-items:center;gap:8px;margin:0}
 .hero-points .ic{color:var(--teal)}

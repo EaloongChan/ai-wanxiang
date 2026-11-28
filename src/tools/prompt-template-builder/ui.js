@@ -1,5 +1,5 @@
 import { blankLabel, extractVars, fillVars } from './core.js';
-import { copyOn, fillText, showError, str } from '../shared-ui.js';
+import { copyOn, fillText, showError, str, trackTool } from '../shared-ui.js';
 
 const S = str;
 
@@ -9,8 +9,16 @@ const vars = document.getElementById('ptVars');
 const out = document.getElementById('ptOut');
 const err = document.getElementById('toolError');
 
+const MAX_TEMPLATE = 20000;
+const MAX_BLANKS = 40;
+const escAttr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 function renderVars() {
-  const names = extractVars(custom.value);
+  // Blank names come from whatever the visitor pasted, so they are text, never markup,
+  // and the number of inputs is capped: a pathological template must not build a page
+  // with thousands of fields.
+  const all = extractVars(custom.value.slice(0, MAX_TEMPLATE));
+  const names = all.slice(0, MAX_BLANKS);
   if (!names.length) {
     vars.innerHTML = `<p class="hint">${S('tu.pt.noBlanks')}</p>`;
     return;
@@ -18,18 +26,28 @@ function renderVars() {
   // Keep what the player typed when only the text around the blanks changed.
   const before = {};
   for (const input of vars.querySelectorAll('input')) before[input.dataset.var] = input.value;
-  vars.innerHTML = names.map((name) => `<label class="field" for="v-${name}">${blankLabel(name)}<input class="field" type="text" id="v-${name}" data-var="${name}" autocomplete="off"></label>`).join('');
+  vars.innerHTML = names.map((name, i) => `<label class="field" for="v-${i}">${escAttr(blankLabel(name))}<input class="field" type="text" id="v-${i}" data-var="${escAttr(name)}" autocomplete="off"></label>`).join('');
   for (const input of vars.querySelectorAll('input')) input.value = before[input.dataset.var] || '';
 }
 
 function render() {
   const values = {};
   for (const input of vars.querySelectorAll('input')) values[input.dataset.var] = input.value;
+  if (custom.value.length > MAX_TEMPLATE) {
+    out.textContent = '';
+    showError(err, S('tu.pt.tooLong'));
+    trackTool('tool_error', { code: 'too_long' });
+    return;
+  }
   const filled = fillVars(custom.value, values);
   out.textContent = filled.text;
-  showError(err, filled.missing.length
-    ? fillText(S(filled.missing.length === 1 ? 'tu.pt.missingOne' : 'tu.pt.missingMany'), { n: filled.missing.length })
-    : '');
+  if (filled.text && filled.missing.length === 0) trackTool('tool_use');
+  const tooMany = extractVars(custom.value).length > MAX_BLANKS;
+  showError(err, tooMany
+    ? S('tu.pt.tooManyBlanks')
+    : (filled.missing.length
+      ? fillText(S(filled.missing.length === 1 ? 'tu.pt.missingOne' : 'tu.pt.missingMany'), { n: filled.missing.length })
+      : ''));
 }
 
 if (pick && custom && vars && out) {

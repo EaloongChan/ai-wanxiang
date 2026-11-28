@@ -1,5 +1,5 @@
 import { convertAll } from './core.js';
-import { bindCopy, format, onInput, readNumber, setText, showError } from '../shared-ui.js';
+import { bindCopy, format, onInput, readNumber, setText, showError, trackTool } from '../shared-ui.js';
 
 function render() {
   const games = TOOL.games;
@@ -11,10 +11,12 @@ function render() {
   if (!result.ok) {
     showError(document.getElementById('toolError'), STR[result.code] || result.code);
     box.hidden = true;
+    trackTool('tool_error', { code: result.code });
     return;
   }
   showError(document.getElementById('toolError'), '');
   box.hidden = false;
+  trackTool('tool_use');
   setText(document.getElementById('resToName'), to.name);
   setText(document.getElementById('resSens'), format(result.toSens, 4));
   setText(document.getElementById('resCm'), `${format(result.cm, 2)} cm`);

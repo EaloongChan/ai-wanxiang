@@ -14,7 +14,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -24,6 +24,8 @@ const ONLY = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv
 
 const GAME_CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'games', 'lumber-tycoon', 'config.json'), 'utf8'));
 const TOOL_IDS = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tools.json'), 'utf8')).map((t) => t.id);
+// The portal package is not deployed any more, so its test opens the built file directly.
+const PORTAL_URL = pathToFileURL(path.join(ROOT, 'build', 'portal', 'lumber-tycoon', 'index.html')).href;
 
 const CHROME = [
   'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
@@ -128,8 +130,10 @@ test('game: clicking the canvas earns Sparkwood and the tree falls', '/games/lum
   await swing(c, toughest + 3);
   await settle();
   const after = Number(await text(c, '#hudTimber'));
-  const hintHidden = await c.eval(`document.getElementById('gameHint').hidden`);
-  return { ok: after > before && hintHidden, detail: `Sparkwood ${before} → ${after}, hint hidden ${hintHidden}` };
+  // Guidance is two steps now: after the first tree the hint switches to "buy a chopper"
+  // instead of disappearing.
+  const hint = (await text(c, '#hintText')).trim();
+  return { ok: after > before && /chopper/i.test(hint), detail: `Sparkwood ${before} → ${after}, hint "${hint}"` };
 });
 
 test('game: keyboard swings work (Space on the focused canvas)', '/games/lumber-tycoon/', async (c) => {
@@ -219,7 +223,7 @@ test('game: settings export gives a code, and a bad import is rejected with a me
   await sleep(200);
   const msg = await text(c, '#importMsg');
   const dialogStill = await c.eval(`document.getElementById('confirmDialog').open`);
-  return { ok: parsed.v === 1 && typeof parsed.timber === 'number' && /not a valid save code/.test(msg) && !dialogStill, detail: `code ${code.length} chars, v${parsed.v} · message "${msg.trim()}"` };
+  return { ok: parsed.v === 2 && typeof parsed.timber === 'number' && /not a valid save code/.test(msg) && !dialogStill, detail: `code ${code.length} chars, v${parsed.v} · message "${msg.trim()}"` };
 });
 
 test('game: reset asks for confirmation and Cancel leaves progress alone', '/games/lumber-tycoon/', async (c) => {
@@ -352,7 +356,7 @@ test('tool: prompt template builder fills blanks and reports the empty ones', `/
 
 /* ================= portal package ================= */
 
-test('portal: the standalone package plays with no request beyond the file itself', '/portal/lumber-tycoon/', async (c) => {
+test('portal: the standalone package plays with no request beyond the file itself', PORTAL_URL, async (c) => {
   await c.eval(`document.getElementById('stage').focus()`);
   await swing(c, 24, 70);
   await settle();
@@ -361,6 +365,112 @@ test('portal: the standalone package plays with no request beyond the file itsel
   const linksOut = await c.eval(`[...document.querySelectorAll('a[href]')].map((a) => a.href)`);
   const icons = await c.eval(`document.querySelectorAll('symbol[id^="i-"]').length`);
   return { ok: timber > 0 && external.length === 0 && linksOut.length === 0 && icons > 0, detail: `Sparkwood ${timber} · external assets ${external.length} · outgoing links ${linksOut.length} · ${icons} icons inlined` };
+});
+
+/* ================= retention ================= */
+
+test('retention: a brand new visitor is not greeted by a modal', '/games/lumber-tycoon/', async (c) => {
+  const daily = await c.eval(`document.getElementById('dailyDialog').open`);
+  const away = await c.eval(`document.getElementById('offlineDialog').open`);
+  const hint = (await text(c, '#hintText')).trim();
+  return { ok: !daily && !away && /chop/i.test(hint), detail: `daily ${daily} · offline ${away} · first hint "${hint}"` };
+});
+
+test('retention: the daily box opens once a day and pays its amount', '/games/lumber-tycoon/', async (c) => {
+  // The box is a reason to return, so it only appears to someone who has played before.
+  await seedSave(c, { v: 2, timber: 0, total: 0, lifetime: 0, gears: 0, mainsprings: 0, prestiges: 0, up: {}, zones: ['thicket'], zone: 'thicket', felled: 12, clicks: 40, playTime: 90, lastSeen: Date.now() - 60_000, achievements: [], zoneRewards: [], lastDailyDay: -1, dailyCount: 0 });
+  const open = await c.eval(`document.getElementById('dailyDialog').open`);
+  const amount = (await text(c, '#dailyAmount')).trim();
+  await c.eval(`document.getElementById('dailyClaim').click()`);
+  await settle();
+  const closed = await c.eval(`!document.getElementById('dailyDialog').open`);
+  const timber = Number(await text(c, '#hudTimber'));
+  await c.eval(`document.getElementById('dailyClaim').click()`);
+  const staysClosed = await c.eval(`!document.getElementById('dailyDialog').open`);
+  return {
+    ok: open && /^\+\d/.test(amount) && closed && timber > 0 && staysClosed,
+    detail: `首次打开 ${open} · 金额「${amount}」· 领取后关闭 ${closed} · 星火木 ${timber} · 当天不能再领 ${staysClosed}`,
+  };
+});
+
+test('retention: the HUD names the next district and its cost', '/games/lumber-tycoon/', async (c) => {
+  const goal = await c.eval(`(()=>{const g=document.getElementById('gameGoal');return {hidden:g.hidden,text:g.textContent.trim()}})()`);
+  return { ok: !goal.hidden && /Next:/.test(goal.text) && /\d/.test(goal.text), detail: `目标行「${goal.text}」` };
+});
+
+test('retention: swinging enough times unlocks an achievement and the list shows it', '/games/lumber-tycoon/', async (c) => {
+  await c.eval(`(()=>{const d=document.getElementById('dailyDialog'); if(d.open) d.close(); return 1})()`);
+  // Swings during the 0.2 s regrow gap are dropped, so the count that matters is the
+  // clicks counter, not the dispatch count. The toast hides itself after 3.2 s, so it has
+  // to be caught in the middle of the run rather than after it.
+  const readToast = () => c.eval(`(()=>{const el=document.getElementById('achToast');return el.hidden?null:{text:el.textContent.trim()}})()`);
+  await swing(c, 130, 55);
+  await sleep(120);
+  let toast = await readToast();
+  if (!toast) {
+    await swing(c, 80, 55);
+    await sleep(120);
+    toast = await readToast();
+  }
+  await c.eval(`document.getElementById('settingsBtn').click()`);
+  await sleep(250);
+  const info = await c.eval(`(()=>({count:document.getElementById('achCount').textContent.trim(),items:document.querySelectorAll('#achList li').length,done:document.querySelectorAll('#achList li.done').length,first:(document.querySelector('#achList li')||{textContent:''}).textContent.trim()}))()`);
+  return {
+    ok: !!toast && /Achievement/.test(toast.text) && toast.text.length > 'Achievement'.length && info.items === 20 && info.done >= 1 && /^[1-9]/.test(info.count),
+    detail: `提示条「${toast ? toast.text : '未出现'}」· ${info.count} · 列表 ${info.items} 条其中 ${info.done} 条已完成 · 首条「${info.first}」`,
+  };
+});
+
+test('retention: guidance moves from "chop" to "buy a chopper", then disappears', '/games/lumber-tycoon/', async (c) => {
+  await c.eval(`(()=>{const d=document.getElementById('dailyDialog'); if(d.open) d.close(); return 1})()`);
+  const first = (await text(c, '#hintText')).trim();
+  await swing(c, 24, 60);                       // fell the first tree
+  await settle();
+  const second = (await text(c, '#hintText')).trim();
+  const visible = await c.eval(`!document.getElementById('gameHint').hidden`);
+  // Then buy the cheapest upgrade and expect the hint to go away for good.
+  await swing(c, 70, 45);
+  await settle();
+  await c.eval(`document.querySelector('.up-row[data-buy="axe"]').click()`);
+  await settle();
+  const hidden = await c.eval(`document.getElementById('gameHint').hidden`);
+  return {
+    ok: /chop/i.test(first) && /chopper/i.test(second) && visible && hidden,
+    detail: `第一步「${first}」→ 第二步「${second}」→ 买过之后隐藏 ${hidden}`,
+  };
+});
+
+/* ================= analytics ================= */
+
+test('analytics: no beacon by default, and the module batches correctly when present', '/', async (c) => {
+  const present = await c.eval(`!!document.getElementById('beacon')`);
+  const code = fs.readFileSync(path.join(ROOT, 'src', 'scripts', 'beacon.js'), 'utf8');
+  await c.eval(`(() => {
+    const tag = document.createElement('div');
+    tag.id = 'beacon';
+    tag.dataset.endpoint = '/api/e';
+    tag.dataset.page = '/selftest/';
+    tag.dataset.lang = 'en';
+    document.body.appendChild(tag);
+    window.__sent = [];
+    Object.defineProperty(navigator, 'sendBeacon', {
+      configurable: true,
+      value: function (url, blob) { window.__sent.push([url, blob]); return true; },
+    });
+    return 1;
+  })()`);
+  await c.eval(code);
+  await c.eval(`window.__track('tool_use', { tool: 'selftest', long: 'x'.repeat(400) }); window.__trackFlush(); 1`);
+  const sent = await c.eval(`(async () => {
+    if (!window.__sent.length) return { n: 0 };
+    const body = JSON.parse(await window.__sent[0][1].text());
+    return { n: window.__sent.length, url: window.__sent[0][0], body };
+  })()`);
+  const ev = sent.body && sent.body.e && sent.body.e[0];
+  return {
+    ok: !present && sent.n === 1 && sent.url === '/api/e' && ev.n === 'tool_use' && ev.p.tool === 'selftest' && String(ev.p.long).length === 80 && sent.body.lang === 'en',
+    detail: `默认无 beacon ${!present} · 批次 ${sent.n} 条 → ${sent.url} · 事件 ${ev ? ev.n : '—'} · 超长属性截断到 ${ev && ev.p.long ? ev.p.long.length : 0} 字`,
+  };
 });
 
 /* ================= 中文站 ================= */
@@ -413,6 +523,36 @@ test('i18n: switching back from Chinese reaches the English page', '/zh/tools/di
     // "现在" when the minute has not ticked over yet, otherwise "59 秒前" style wording.
     ok: link.href === '/tools/discord-timestamp/' && link.hreflang === 'en' && link.text === 'English' && copyLabel === '复制' && /现在|前|后/.test(rel) && heading === 'Discord 时间戳生成器',
     detail: `按钮「${link.text}」→ ${link.href} · 复制「${copyLabel}」· 相对时间「${rel}」· H1「${heading}」`,
+  };
+});
+
+/* ================= security ================= */
+
+test('security: the pages that run scripts raise no CSP violation', '/games/lumber-tycoon/', async (c) => {
+  const { identifier } = await c.send('Page.addScriptToEvaluateOnNewDocument', {
+    source: `window.__csp = []; document.addEventListener('securityPolicyViolation', function (e) { window.__csp.push(e.violatedDirective + ' ' + e.blockedURI); }, true);`,
+  });
+  const pages = ['/games/lumber-tycoon/', '/tools/sens-converter/', '/tools/prompt-template-builder/'];
+  const seen = [];
+  for (const p of pages) {
+    await c.send('Page.navigate', { url: SERVE + p });
+    await sleep(900);
+    if (p.startsWith('/games')) {
+      await swing(c, 6, 70);
+      await c.eval(`document.getElementById('drawerToggle').click()`);
+    } else if (p.includes('prompt')) {
+      await c.eval(`(function(){const t=document.getElementById('ptCustom');t.value='Write about {{topic}}.';t.dispatchEvent(new Event('input',{bubbles:true}));return 1})()`);
+    }
+    await sleep(300);
+    const violations = await c.eval(`window.__csp`);
+    seen.push({ p, violations });
+  }
+  await c.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });
+  const header = await fetch(SERVE + '/').then((r) => r.headers.get('content-security-policy') || '');
+  const bad = seen.flatMap((s) => s.violations.map((v) => `${s.p} ${v}`));
+  return {
+    ok: /script-src 'self'/.test(header) && bad.length === 0,
+    detail: bad.length ? bad.slice(0, 2).join(' | ') : `header present · 0 violations across ${pages.length} scripted pages`,
   };
 });
 
@@ -492,17 +632,21 @@ async function main() {
   console.log('  交互自测  ' + SERVE);
   console.log('  ' + '─'.repeat(64));
   for (const t of selected) {
+    const directly = /^file:/.test(t.path);
+    const target = directly ? t.path : SERVE + t.path;
     await c.send('Emulation.setDeviceMetricsOverride', { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
-    await c.send('Page.navigate', { url: SERVE + t.path });
+    await c.send('Page.navigate', { url: target });
     await sleep(150);
-    // Every test starts with an empty slate: no saved progress and no remembered settings.
-    // Clear from a same-origin page that carries no game script: a game page saves its own
-    // state while it unloads, which would undo the clearing.
-    await c.send('Page.navigate', { url: SERVE + '/robots.txt' });
-    await sleep(120);
-    await c.eval(`localStorage.clear(); 1`);
-    await c.send('Page.navigate', { url: SERVE + t.path });
-    await sleep(750);
+    if (!directly) {
+      // Every test starts with an empty slate: no saved progress and no remembered settings.
+      // Clear from a same-origin page that carries no game script: a game page saves its own
+      // state while it unloads, which would undo the clearing.
+      await c.send('Page.navigate', { url: SERVE + '/robots.txt' });
+      await sleep(120);
+      await c.eval(`localStorage.clear(); 1`);
+      await c.send('Page.navigate', { url: target });
+      await sleep(750);
+    }
     try {
       const r = await t.fn(c);
       if (r.ok) { pass++; console.log(`  ✓ ${t.name}  —  ${r.detail}`); }

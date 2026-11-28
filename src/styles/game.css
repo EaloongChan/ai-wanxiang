@@ -2,6 +2,12 @@
    Self-contained on purpose: the same file is inlined into the standalone portal package,
    so it defines its own tokens and never leans on the site stylesheet. */
 
+/* Same reason as main.css: any explicit display beats the browser's [hidden] rule, and the
+   combo meter and achievement toast both set display. Without this they sit on screen while
+   their `hidden` attribute says otherwise. */
+[hidden]{display:none!important}
+.sprite{position:absolute;overflow:hidden}
+
 .game{
   --g-bg:#0b1020;--g-panel:#0f1526;--g-panel-2:#151c30;--g-line:#202944;--g-line-soft:#182138;
   --g-text:#eef1f7;--g-text-2:#b4bdd0;--g-text-3:#8791a8;
@@ -45,6 +51,19 @@
 .hp i{display:block;height:100%;width:100%;background:var(--hp,#4fb286);transition:width .12s linear}
 .game-hint{grid-area:1 / 1;align-self:start;justify-self:center;position:relative;z-index:3;display:inline-flex;align-items:center;gap:8px;margin:14% 0 0;pointer-events:none;background:rgba(8,11,20,.78);border:1px solid rgba(255,176,32,.5);border-radius:999px;padding:10px 16px;color:var(--g-amber-strong);font:600 15px/1 var(--g-sans);white-space:nowrap;animation:hint-float 1.6s ease-in-out infinite}
 .game-hint .ic{color:var(--g-amber)}
+.game-goal{grid-area:1 / 1;align-self:end;justify-self:start;position:relative;z-index:3;margin:0 0 16px 14px;pointer-events:none;background:rgba(8,11,20,.74);border:1px solid rgba(63,214,197,.35);border-radius:999px;padding:8px 14px;color:var(--g-teal-strong);font:600 13px/1.2 var(--g-mono);font-variant-numeric:tabular-nums;white-space:nowrap;max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis}
+.ach-toast{grid-area:1 / 1;align-self:start;justify-self:center;position:relative;z-index:5;margin-top:70px;display:flex;align-items:center;gap:8px;background:rgba(15,21,38,.94);border:1px solid rgba(255,176,32,.6);border-radius:999px;padding:9px 16px;color:var(--g-amber-strong);font:600 14px/1 var(--g-sans);box-shadow:0 10px 30px rgba(0,0,0,.45);animation:ach-pop .3s ease-out}
+.ach-toast b{font:600 11px/1 var(--g-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--g-text-3)}
+@keyframes ach-pop{from{transform:translateY(-8px);opacity:0}to{transform:none;opacity:1}}
+.ach-box{border:1px solid var(--g-line);border-radius:10px;background:var(--g-panel-2);padding:0 12px}
+.ach-box summary{display:flex;justify-content:space-between;gap:10px;cursor:pointer;padding:11px 0;font:600 14px/1.2 var(--g-sans);color:var(--g-text);list-style:none}
+.ach-box summary::-webkit-details-marker{display:none}
+.ach-count{color:var(--g-text-3);font:600 12px/1 var(--g-mono)}
+.ach-list{list-style:none;margin:0;padding:0 0 10px;display:grid;gap:6px;max-height:190px;overflow:auto}
+.ach-list li{display:flex;flex-direction:column;gap:1px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.02);font-size:12.5px;line-height:1.35}
+.ach-list li b{font-weight:600;color:var(--g-text)}
+.ach-list li span{color:var(--g-text-3)}
+.ach-list li.done b::before{content:'✓ ';color:var(--g-ok)}
 @keyframes hint-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @media (max-width:860px){.game-hint{margin-top:26%}}
 

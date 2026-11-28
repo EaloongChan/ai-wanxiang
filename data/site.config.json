@@ -6,7 +6,7 @@
     "logoText": "EA",
     "zh": {
       "tagline": "免费网页游戏与实用的玩家工具",
-      "description": "免费网页游戏与轻量的玩家工具。不用下载、不用注册、不上传任何内容，全部在浏览器里运行。"
+      "description": "免费网页游戏与轻量的玩家工具。不用下载、不用注册、不上传任何内容，全部在浏览器里运行；游戏进度只保存在你自己的设备上。"
     }
   },
   "domain": "www.ealoongchan.top",
@@ -24,6 +24,15 @@
     ],
     "repoUrl": "https://github.com/EaloongChan/ai-wanxiang",
     "copyright": "© 2026 Ealoong Arcade"
+  },
+  "flags": {
+    "$comment": "analytics stays false until the Worker is deployed and Web Analytics is on; the privacy page hides its analytics section while this is false.",
+    "analytics": false
+  },
+  "beacon": {
+    "$comment": "Endpoint for anonymous event batches. Enable only after deploying workers/beacon and adding the /api/e route.",
+    "enabled": false,
+    "endpoint": "/api/e"
   },
   "verify": {
     "note": "Search engine verification. Tokens are emitted as meta tags at build time; leave empty to skip. Keep the Google token: it is what keeps Search Console verified for this domain.",

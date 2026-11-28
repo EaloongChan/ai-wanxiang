@@ -2,7 +2,7 @@
   {
     "id": "sens-converter",
     "name": "Mouse Sensitivity Converter",
-    "metaTitle": "Mouse Sensitivity Converter: cm/360 Between Games",
+    "metaTitle": "Mouse Sensitivity Converter: cm/360",
     "summary": "Match your aim between CS2, Valorant, Apex and other shooters.",
     "icon": "mouse",
     "path": "/tools/sens-converter/",
@@ -127,7 +127,7 @@
   {
     "id": "fov-calculator",
     "name": "FOV Calculator",
-    "metaTitle": "FOV Calculator: Horizontal, Vertical and Aspect Ratio",
+    "metaTitle": "FOV Calculator: Horizontal and Vertical",
     "summary": "Convert horizontal and vertical FOV between 16:9, 21:9 and 4:3.",
     "icon": "screen",
     "path": "/tools/fov-calculator/",

@@ -13,6 +13,20 @@ export function fillText(template, vars = {}) {
   return String(template).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
 }
 
+/**
+ * Report a tool event, once per page. The beacon is absent unless analytics is enabled, in
+ * which case this is a silent no-op. The tool id comes from the bundle prelude (TOOL.id).
+ */
+const reported = new Set();
+export function trackTool(kind, extra = {}) {
+  if (typeof window.__track !== 'function') return;
+  const tool = (typeof TOOL !== 'undefined' && TOOL && TOOL.id) || 'unknown';
+  const key = `${tool}:${kind}:${extra.code || ''}`;
+  if (reported.has(key)) return;
+  reported.add(key);
+  window.__track(kind, Object.assign({ tool }, extra));
+}
+
 /** Copy to the clipboard. Resolves to whether it worked. Never throws. */
 export function copyText(text) {
   return new Promise((resolve) => {

@@ -161,6 +161,11 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   for (const lang of ['en', 'zh']) {
     const prefix = lang === 'zh' ? 'zh-' : '';
     const k = KICKER[lang];
+    const brand = lang === 'zh' && site.brand.zh ? site.brand.zh.tagline : site.brand.tagline;
+    // Index pages need their own images: the templates point og:image at these three.
+    jobs.push({ out: path.join(OUTDIR, `${prefix}home.png`), html: page({ kicker: k.brand, title: site.brand.name, sub: brand, foot: k.games }) });
+    jobs.push({ out: path.join(OUTDIR, `${prefix}games.png`), html: page({ kicker: lang === 'zh' ? '游戏 · 浏览器里免费玩' : 'Games · Free in your browser', title: lang === 'zh' ? '免费网页游戏' : 'Free browser games', sub: lang === 'zh' ? '点开就能玩，进度存在你自己的设备上。' : 'One click to play. Progress stays on your device.', foot: k.games }) });
+    jobs.push({ out: path.join(OUTDIR, `${prefix}tools.png`), html: page({ kicker: lang === 'zh' ? '玩家工具 · 免费，不用注册' : 'Gamer tools · Free, no sign-up', title: lang === 'zh' ? '玩家工具' : 'Gamer tools', sub: lang === 'zh' ? '每个工具只做一件小事，全部在浏览器里完成。' : 'One small job each, done in your browser.', foot: k.tools }) });
     for (const g of read('games.json')) {
       jobs.push({ out: path.join(OUTDIR, `${prefix}${slugOf(g.path)}.png`), html: page({ kicker: k.game, title: (lang === 'zh' && g.zh && g.zh.name) || g.name, sub: (lang === 'zh' && g.zh && g.zh.tagline) || g.tagline, foot: k.games }) });
     }

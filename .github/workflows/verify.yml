@@ -1,0 +1,28 @@
+# Everything that can be checked without a browser, on every push and pull request.
+# The chain is the same one used locally, so a green run here means the same thing it does
+# on the developer's machine: data, unit tests, build, links, orphans, i18n parity, SEO, size.
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify
+        run: npm run verify
+      - name: Explain on failure
+        if: failure()
+        run: |
+          echo "::warning::npm run verify failed — the failing step printed above is authoritative."
+          echo "Locally: npm run check / npm run unit / npm run i18n / npm run seo / npm run links / npm run orphans / npm run perf"

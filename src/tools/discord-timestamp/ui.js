@@ -1,5 +1,5 @@
 import { buildCodes, localToEpoch, parseCode, presets, preview, toInputs } from './core.js';
-import { bindCopy, fillText, onInput, showError, str, setText } from '../shared-ui.js';
+import { bindCopy, fillText, onInput, showError, str, setText, trackTool } from '../shared-ui.js';
 
 const escAttr = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const S = str;
@@ -21,9 +21,11 @@ function render() {
   if (epoch === null) {
     showError(document.getElementById('toolError'), S('err.pickDate'));
     list.innerHTML = '';
+    trackTool('tool_error', { code: 'err.pickDate' });
     return;
   }
   showError(document.getElementById('toolError'), '');
+  trackTool('tool_use');
   list.innerHTML = buildCodes(epoch, Date.now() / 1000, navigator.language || 'en-US', relText).map((c) => {
     const label = S(`tu.ts.style.${c.code}`);
     return `<div class="copy-row"><span class="copy-label">${label}</span><code>${escAttr(c.preview)}</code><button class="copy-btn" type="button" data-copy-text="${escAttr(c.syntax)}" aria-label="${escAttr(`${S('copy.button')}: ${label}`)}"><svg class="ic" width="16" height="16" aria-hidden="true" focusable="false"><use href="#i-copy"/></svg><span>${S('copy.button')}</span></button></div>`;

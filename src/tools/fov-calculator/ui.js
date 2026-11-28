@@ -1,5 +1,5 @@
 import { resolveFov } from './core.js';
-import { format, onInput, readNumber, setText, showError } from '../shared-ui.js';
+import { format, onInput, readNumber, setText, showError, trackTool } from '../shared-ui.js';
 
 const fill = (text, vars) => String(text).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m));
 
@@ -13,10 +13,12 @@ function render() {
   if (!r.ok) {
     showError(document.getElementById('toolError'), STR[r.code] || r.code);
     box.hidden = true;
+    trackTool('tool_error', { code: r.code });
     return;
   }
   showError(document.getElementById('toolError'), '');
   box.hidden = false;
+  trackTool('tool_use');
   const degText = (x) => `${format(x, 2)}°`;
   setText(document.getElementById('resV'), degText(r.v));
   setText(document.getElementById('resHFrom'), degText(r.hFrom));

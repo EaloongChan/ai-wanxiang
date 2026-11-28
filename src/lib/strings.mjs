@@ -66,6 +66,10 @@ export const S = {
   'games.eyebrow': { en: 'Games', zh: '游戏' },
   'games.h1': { en: 'Free browser games', zh: '免费网页游戏' },
   'games.lead': { en: 'Each game starts in one click, plays with touch or mouse and keyboard, and saves progress in your browser.', zh: '每款游戏点开就能玩，触屏和键鼠都支持，进度保存在你的浏览器里。' },
+  'games.metaDescription': {
+    en: 'Free browser games that start in one click. Touch and keyboard both work, progress is saved in your browser, and your crew keeps working while the tab is closed.',
+    zh: '免费网页游戏，点开即玩。触屏和键鼠都支持，进度自动保存在你的浏览器里，关掉标签页后队伍还会继续干活。',
+  },
   'games.notesH2': { en: 'Good to know', zh: '几点说明' },
   'games.note1': { en: 'Progress is saved on your device only. Clearing site data for this domain removes it, so use the export option in each game\'s settings before you do.', zh: '进度只存在你的设备上。清除本站的站点数据会一并删掉，动手前请先用游戏设置里的导出功能留一份存档码。' },
   'games.note2': { en: 'The games keep earning for a while after you close the tab. Come back later and collect what your crew made.', zh: '关掉标签页之后，游戏里的队伍还会继续干一阵子。过段时间回来收一下就好。' },
@@ -76,6 +80,10 @@ export const S = {
   'tools.eyebrow': { en: 'Tools', zh: '工具' },
   'tools.h1': { en: 'Gamer tools', zh: '玩家工具' },
   'tools.lead': { en: 'Small utilities that answer one question each. They run in your browser, so nothing you enter leaves your device.', zh: '每个工具只回答一个问题。它们在浏览器里运行，你输入的内容不会离开你的设备。' },
+  'tools.metaDescription': {
+    en: 'Free gamer tools: mouse sensitivity converter, FOV calculator, Steam ID converter, Discord timestamps and a prompt template builder. All computed in your browser.',
+    zh: '免费的玩家工具：鼠标灵敏度换算、视野角换算、Steam ID 转换、Discord 时间戳与提示词模板。全部在你的浏览器里算完，输入不上传。',
+  },
   'tools.notesH2': { en: 'How these work', zh: '这些工具是怎么运行的' },
   'tools.note1': { en: 'Each tool is a short program that runs on the page. There is no server to send your numbers to and no account to sign in to. You can use them offline once the page has loaded.', zh: '每个工具就是嵌在页面里的一小段程序。没有服务器接收你的数字，也不用登录。页面加载完之后，断网也能用。' },
   'tools.note2': { en: 'If a result looks wrong, {link}. Corrections are made quickly.', zh: '如果结果看着不对，{link}。改起来很快。' },
@@ -107,8 +115,8 @@ export const S = {
     zh: '星火木用来买主要升级。齿轮由罕见及以上的树掉落，用来买最后三项。每买一次都比上一次贵。',
   },
   'game.offlineP1': {
-    en: 'Progress is saved in this browser automatically. Choppers keep working while the tab is closed, at {eff} efficiency for up to {cap}; the Wind-up Reserve and Long Spring upgrades raise both limits.',
-    zh: '进度会自动保存在这个浏览器里。关掉标签页后，砍伐机仍会以 {eff} 的效率工作，最长 {cap}；「发条储备」和「长发条」两项升级可以提高这两个上限。',
+    en: 'Progress is saved in this browser automatically. Choppers keep working while the tab is closed, at {eff} efficiency for up to {cap} hours; the Wind-up Reserve and Long Spring upgrades raise both limits.',
+    zh: '进度会自动保存在这个浏览器里。关掉标签页后，砍伐机仍会以 {eff} 的效率工作，最长 {cap} 小时；「发条储备」和「长发条」两项升级可以提高这两个上限。',
   },
   'game.offlineP2': {
     en: 'Once the last district is unlocked, the Rewind tab lets you restart for mainsprings. Each one adds {bonus} to all Sparkwood, permanently.',
@@ -124,6 +132,10 @@ export const S = {
   'nf.play': { en: 'Play {game}', zh: '开始玩《{game}》' },
   'nf.tools': { en: 'Browse the tools', zh: '看看工具' },
   'nf.home': { en: 'Home', zh: '回首页' },
+  // The 404 page is English-only, so this label stays Chinese in both variants: it exists
+  // for the reader who cannot read the rest of the page.
+  'nf.zhHome': { en: '中文首页', zh: '中文版首页' },
+  'nf.zhLine': { en: '找不到这个页面？', zh: 'Looks like this page is missing.' },
 
   /* ---------------- 游戏运行时 ---------------- */
   'gr.hint': { en: 'Tap the tree to chop', zh: '点击树开始砍' },
@@ -160,6 +172,17 @@ export const S = {
   'gr.awayDetail': { en: '{n} chopper(s) kept working for {time} at {eff} efficiency.', zh: '{n} 台砍伐机以 {eff} 的效率工作了 {time}。' },
   'gr.collect': { en: 'Collect', zh: '收取' },
   'gr.amountRow': { en: '+{n} Sparkwood', zh: '+{n} 星火木' },
+  'gr.combo': { en: 'combo', zh: '连击' },
+  'gr.goalZone': { en: 'Next: {zone} · {progress}/{target}', zh: '下一个目标：{zone} · {progress}/{target}' },
+  'gr.goalRewind': { en: 'Rewind ready: {n} mainsprings', zh: '可以传承了：{n} 枚主发条' },
+  'gr.goalMax': { en: 'Every district unlocked', zh: '全部区域已解锁' },
+  'gr.achievement': { en: 'Achievement', zh: '成就' },
+  'gr.achTitle': { en: 'Achievements', zh: '成就' },
+  'gr.achCount': { en: '{n}/{total} unlocked', zh: '已解锁 {n}/{total}' },
+  'gr.dailyTitle': { en: "Today's box", zh: '今天的发条箱' },
+  'gr.dailyBody': { en: '+{n} Sparkwood. Come back tomorrow for another.', zh: '+{n} 星火木。明天再来还有一份。' },
+  'gr.claim': { en: 'Open it', zh: '打开' },
+  'gr.hintUpgrade': { en: 'Buy your first chopper — the Upgrades panel is below', zh: '先买一台砍伐机——升级面板在下面' },
   'gr.upgrades': { en: 'Upgrades', zh: '升级' },
   'gr.districts': { en: 'Districts', zh: '区域' },
   'gr.rewind': { en: 'Rewind', zh: '传承' },
@@ -268,6 +291,8 @@ export const S = {
   'tu.pt.out': { en: 'Your prompt', zh: '生成的提示词' },
   'tu.pt.copy': { en: 'Copy prompt', zh: '复制提示词' },
   'tu.pt.loading': { en: 'Loading…', zh: '加载中…' },
+  'tu.pt.tooLong': { en: 'That template is over 20,000 characters. Trim it and try again.', zh: '模板超过 2 万个字符了，删短一些再试。' },
+  'tu.pt.tooManyBlanks': { en: 'That template has more than 40 blanks. Only the first 40 are shown.', zh: '这个模板的空位超过 40 个，只显示前 40 个。' },
   'tu.pt.missingOne': { en: '1 blank is still empty above.', zh: '上面还有 1 个空没填。' },
   'tu.pt.missingMany': { en: '{n} blanks are still empty above.', zh: '上面还有 {n} 个空没填。' },
 

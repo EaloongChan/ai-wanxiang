@@ -30,7 +30,8 @@ function fromConfig(config) {
     comboMax: `${(1 + config.combo.maxSteps * config.combo.bonusPerStep).toFixed(1)}×`,
     prestigeBonus: pct0(config.prestige.bonusPerPoint),
     offlineEff: pct0(config.offline.baseEfficiency),
-    offlineCap: `${config.offline.baseCapSeconds / 3600} hours`,
+    // Hours only: the unit belongs to the prose, which is written per language.
+    offlineCapHours: config.offline.baseCapSeconds / 3600,
   };
 }
 
@@ -62,6 +63,7 @@ export function homePage(ctx, lang) {
     { '@context': 'https://schema.org', '@type': 'WebSite', name: brand, url: site.baseUrl + loc('/', lang), description: pick(site.brand, 'description', lang), inLanguage: lang === 'zh' ? 'zh-CN' : 'en' },
     {
       '@context': 'https://schema.org', '@type': 'ItemList', name: brand + ' games',
+      inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
       itemListElement: games.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: pick(g, 'name', lang), url: site.baseUrl + loc(g.path, lang) })),
     },
   ];
@@ -71,7 +73,7 @@ export function homePage(ctx, lang) {
     privacy: `<a href="${esc(loc('/privacy/', lang))}">${t(lang, 'home.privacyLink')}</a>`,
   };
   return layout({
-    site, lang, path: '/', title: '', description: pick(site.brand, 'description', lang), jsonld, body: `
+    site, lang, path: '/', title: '', description: pick(site.brand, 'description', lang), ogImage: ogName(lang, 'home'), jsonld, body: `
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-copy">
@@ -118,7 +120,7 @@ export function homePage(ctx, lang) {
 export function gamesIndexPage(ctx, lang) {
   const { site, games } = ctx;
   return layout({
-    site, lang, path: '/games/', title: t(lang, 'games.h1'), description: T(lang, 'games.lead'),
+    site, lang, path: '/games/', title: t(lang, 'games.h1'), description: T(lang, 'games.metaDescription'),
     ogImage: ogName(lang, 'games'),
     body: `
 <header class="container page-head">
@@ -133,7 +135,17 @@ export function gamesIndexPage(ctx, lang) {
   <p>${t(lang, 'games.note2')}</p>
   <p>${T(lang, 'games.note3', { link: `<a href="${esc(loc('/tools/', lang))}">${t(lang, 'games.note3Link')}</a>` })}</p>
 </section>`,
-    jsonld: crumbsJson([['Home', '/'], ['Games', '/games/']], lang),
+    jsonld: [
+      {
+        '@context': 'https://schema.org', '@type': 'CollectionPage', name: T(lang, 'games.h1'),
+        url: site.baseUrl + loc('/games/', lang), inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        mainEntity: {
+          '@type': 'ItemList', inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+          itemListElement: games.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: pick(g, 'name', lang), url: site.baseUrl + loc(g.path, lang) })),
+        },
+      },
+      crumbsJson([['Home', '/'], ['Games', '/games/']], lang),
+    ],
   });
 }
 
@@ -152,13 +164,16 @@ export function gamePage(ctx, game, lang) {
   const districtRows = c.zones.map((z, i) => [esc(pick(z, 'name', lang)), i === 0 ? t(lang, 'game.free') : fmtInt(z.unlockCost), esc(c.trees.filter((x) => z.pool[x.id]).map((x) => pick(x, 'name', lang)).join(', '))]);
   const upRows = c.upgrades.map((u) => [esc(pick(u, 'name', lang)), esc(fillAll(pick(u, 'desc', lang))), fmtInt(u.baseCost) + ' ' + (u.currency === 'gears' ? t(lang, 'gr.gears') : t(lang, 'gr.sparkwood')), String(u.max)]);
 
+  // The Chinese how-to lives at game.zh.howto, not at game.howto.zh: read the whole field
+  // through pick(), otherwise the Chinese page prints the English instructions.
+  const howto = pick(game, 'howto', lang);
   const sections = [
-    { id: 'how-to', h: pick(game.howto, 'title', lang), list: game.howto.steps.map(fillAll) },
+    { id: 'how-to', h: howto.title, list: howto.steps.map(fillAll) },
     { id: 'world', h: T(lang, 'game.tocWorld'), p: pick(game, 'intro', lang).map(fillAll), table: { head: [t(lang, 'game.tableTree'), t(lang, 'game.tableTier'), t(lang, 'game.tableHealth'), t(lang, 'game.tableSparkwood'), t(lang, 'game.tableGears')], rows: treeRows } },
     { id: 'districts', h: T(lang, 'game.tocDistricts'), list: c.zones.map((z, i) => `<b>${esc(pick(z, 'name', lang))}</b>${i === 0 ? ` (${t(lang, 'game.free')})` : ` (${fmtInt(z.unlockCost)} ${t(lang, 'gr.sparkwood')})`}: ${fillAll(pick(z, 'blurb', lang))}`), table: { head: [t(lang, 'game.tableDistrict'), t(lang, 'game.tableUnlock'), t(lang, 'game.tableTrees')], rows: districtRows } },
     { id: 'upgrades', h: T(lang, 'game.tocUpgrades'), p: [t(lang, 'game.upgradesNote')], table: { head: [t(lang, 'game.tableUpgrade'), t(lang, 'game.tableEffect'), t(lang, 'game.tableFirstCost'), t(lang, 'game.tableMaxLevel')], rows: upRows } },
     { id: 'offline', h: T(lang, 'game.tocOffline'), p: [
-      T(lang, 'game.offlineP1', { eff: pct0(c.offline.baseEfficiency), cap: `${c.offline.baseCapSeconds / 3600} ${lang === 'zh' ? '小时' : 'hours'}` }),
+      T(lang, 'game.offlineP1', { eff: pct0(c.offline.baseEfficiency), cap: c.offline.baseCapSeconds / 3600 }),
       T(lang, 'game.offlineP2', { bonus: pct0(c.prestige.bonusPerPoint) }),
     ] },
     { id: 'tips', h: T(lang, 'game.tocTips'), list: pick(game, 'tips', lang).map(fillAll) },
@@ -167,7 +182,7 @@ export function gamePage(ctx, game, lang) {
   const jsonld = [
     {
       '@context': 'https://schema.org', '@type': 'VideoGame', name: pick(game, 'name', lang), description: metaExcerpt(pick(game, 'metaDescription', lang) || pick(game, 'tagline', lang), 300),
-      url: site.baseUrl + loc(game.path, lang), image: site.baseUrl + (game.cover || '').replace(/\.svg$/, '.png'),
+      url: site.baseUrl + loc(game.path, lang), image: site.baseUrl + game.cover,
       genre: ['Idle', 'Incremental', 'Tycoon'], gamePlatform: ['Web browser'], applicationCategory: 'Game',
       operatingSystem: 'Any', playMode: 'SinglePlayer', inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
@@ -208,7 +223,7 @@ export function gamePage(ctx, game, lang) {
 export function toolsIndexPage(ctx, lang) {
   const { site, tools } = ctx;
   return layout({
-    site, lang, path: '/tools/', title: t(lang, 'tools.h1'), description: T(lang, 'tools.lead'),
+    site, lang, path: '/tools/', title: t(lang, 'tools.h1'), description: T(lang, 'tools.metaDescription'),
     ogImage: ogName(lang, 'tools'),
     body: `
 <header class="container page-head">
@@ -222,7 +237,17 @@ export function toolsIndexPage(ctx, lang) {
   <p>${t(lang, 'tools.note1')}</p>
   <p>${T(lang, 'tools.note2', { link: `<a href="${esc(loc('/contact/', lang))}">${t(lang, 'tools.note2Link')}</a>` })}</p>
 </section>`,
-    jsonld: crumbsJson([['Home', '/'], ['Tools', '/tools/']], lang),
+    jsonld: [
+      {
+        '@context': 'https://schema.org', '@type': 'CollectionPage', name: T(lang, 'tools.h1'),
+        url: site.baseUrl + loc('/tools/', lang), inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        mainEntity: {
+          '@type': 'ItemList', inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+          itemListElement: tools.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: pick(x, 'name', lang), url: site.baseUrl + loc(x.path, lang) })),
+        },
+      },
+      crumbsJson([['Home', '/'], ['Tools', '/tools/']], lang),
+    ],
   });
 }
 
@@ -239,7 +264,7 @@ export function toolPage(ctx, tool, lang) {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }, isAccessibleForFree: true, browserRequirements: 'Requires JavaScript',
     },
     {
-      '@context': 'https://schema.org', '@type': 'FAQPage',
+      '@context': 'https://schema.org', '@type': 'FAQPage', inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
       mainEntity: faqItems.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
     crumbsJson([['Home', '/'], ['Tools', '/tools/'], [pick(tool, 'name', lang), tool.path]], lang),
@@ -279,7 +304,14 @@ export function docPage(ctx, slug, doc, lang) {
   const title = pick(doc, 'title', lang);
   return layout({
     site, lang, path: `/${slug}/`, title, description: pick(doc, 'metaDescription', lang), ogType: 'article', ogImage: ogName(lang, slug),
-    jsonld: crumbsJson([['Home', '/'], [title, `/${slug}/`]], lang),
+    jsonld: [
+      {
+        '@context': 'https://schema.org', '@type': 'WebPage', name: title,
+        url: site.baseUrl + loc(`/${slug}/`, lang), inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        description: pick(doc, 'metaDescription', lang),
+      },
+      crumbsJson([['Home', '/'], [title, `/${slug}/`]], lang),
+    ],
     body: `
 <article class="doc-page">
   <header class="container page-head">
@@ -301,17 +333,19 @@ export function notFoundPage(ctx) {
   const lang = 'en';
   const game = games[0];
   return layout({
-    site, lang, path: '/404.html', title: 'Page not found', description: 'That page does not exist. Head back to the games.', robots: 'noindex', noAlternates: true,
+    site, lang, path: '/404.html', title: 'Page not found', description: 'That page does not exist. Head back to the games, or start again from the home page.', robots: 'noindex', noAlternates: true,
     body: `
 <section class="container section notfound">
   <p class="eyebrow">404</p>
   <h1>${t(lang, 'nf.h1')}</h1>
   <p class="lead">${t(lang, 'nf.lead', { brand: site.brand.name })}</p>
+  <!-- One 404 file serves both languages, so Chinese readers get a line they can read
+       without switching the whole page. -->
+  <p class="nf-zh" lang="zh-CN">${t(lang, 'nf.zhLine')} <a href="/zh/" hreflang="zh-CN">${t(lang, 'nf.zhHome')}</a></p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="${esc(game.path)}">${t(lang, 'nf.play', { game: pick(game, 'name', 'en') })}</a>
     <a class="btn" href="/tools/">${t(lang, 'nf.tools')}</a>
     <a class="btn" href="/">${t(lang, 'nf.home')}</a>
-    <a class="btn" href="/zh/" hreflang="zh-CN" lang="zh-CN">中文首页</a>
   </div>
 </section>`,
   });

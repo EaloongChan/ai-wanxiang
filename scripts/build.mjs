@@ -3,7 +3,7 @@
  *
  *   node scripts/build.mjs                  build the site into dist/
  *   node scripts/build.mjs --watch          rebuild when data/ or src/ changes
- *   node scripts/build.mjs --target=portal  build the standalone game packages into dist/portal/
+ *   node scripts/build.mjs --target=portal  build the standalone game packages into build/portal/
  *
  * Everything on the site comes from data/. The build never contains content of its own.
  * It must run on a machine with no network and no browser: image generation lives in
@@ -27,6 +27,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DATA = path.join(ROOT, 'data');
 const DIST = path.join(ROOT, 'dist');
+const PORTAL_OUT = path.join(ROOT, 'build', 'portal');
 const SRC = path.join(ROOT, 'src');
 
 const readJSON = (f) => JSON.parse(fs.readFileSync(path.join(DATA, f), 'utf8'));
@@ -146,12 +147,14 @@ export function build({ quiet = false } = {}) {
   const printCss = readSrc('styles/print.css');
   const gameCss = readSrc('styles/game.css');
   const appJs = readSrc('scripts/app.js');
+  const beaconJs = readSrc('scripts/beacon.js');
 
   const ASSET = {
     css: `main.${hash7(mainCss)}.css`,
     print: `print.${hash7(printCss)}.css`,
     gameCss: `game.${hash7(gameCss)}.css`,
     js: `app.${hash7(appJs)}.js`,
+    beacon: `beacon.${hash7(beaconJs)}.js`,
   };
   site.asset = ASSET;
 
@@ -159,6 +162,9 @@ export function build({ quiet = false } = {}) {
   write('assets/' + ASSET.print, printCss);
   write('assets/' + ASSET.gameCss, gameCss);
   write('assets/' + ASSET.js, appJs);
+  // Shipped always, loaded only when analytics is switched on (see src/lib/beacon.mjs):
+  // an asset that is never requested costs nothing.
+  write('assets/' + ASSET.beacon, beaconJs);
 
   /* ---- games: one script per game per language = config + strings + logic + view + main ----
      A separate bundle per language keeps each one lean and removes any chance of the
@@ -166,6 +172,9 @@ export function build({ quiet = false } = {}) {
      the English bundle. */
   for (const g of games) {
     g.config = readJSON(`games/${g.id}/config.json`);
+    // Achievements are content, not code: the rules read them from the config they already get.
+    const achFile = path.join(DATA, 'games', g.id, 'achievements.json');
+    if (fs.existsSync(achFile)) g.config.achievements = JSON.parse(fs.readFileSync(achFile, 'utf8'));
     g.scripts = {};
     const code = bundle([`game/${g.id}/logic.js`, `game/${g.id}/view.js`, `game/${g.id}/main.js`]);
     for (const lang of LANGS) {
@@ -184,7 +193,8 @@ export function build({ quiet = false } = {}) {
     const files = [`tools/${t.id}/core.js`, 'tools/shared-ui.js', `tools/${t.id}/ui.js`];
     const code = bundle(files);
     for (const lang of LANGS) {
-      let prelude = `const TOOL = ${JSON.stringify(t.client || {})};\nconst STR = ${JSON.stringify(stringsFor(lang, ['tu.', 'err.', 'copy.']))};\n`;
+      // The tool's own id travels with the data so the page can report which tool was used.
+      let prelude = `const TOOL = ${JSON.stringify({ id: t.id, ...(t.client || {}) })};\nconst STR = ${JSON.stringify(stringsFor(lang, ['tu.', 'err.', 'copy.']))};\n`;
       if (t.id === 'prompt-template-builder') {
         // 86 full prompts weigh 33 KB gzipped, which would delay the first paint of this page for
         // data most visitors never scroll through. The script gets the index only and fetches
@@ -212,6 +222,9 @@ export function build({ quiet = false } = {}) {
   const ctx = { site, games, tools, docs, updatedAt };
   const manifest = [];
   const emit = (path_, lang, render, meta = {}) => {
+    // Every caller passes a directory path ("/games/"): without the trailing slash the
+    // pieces would glue together into "gamesindex.html" and nobody would notice until 404s.
+    if (!path_.endsWith('/')) throw new Error(`page path must end with a slash: ${path_}`);
     resetIcons();
     const rel = (lang === 'zh' ? 'zh/' : '') + path_.replace(/^\//, '') + 'index.html';
     write(rel, render());
@@ -382,7 +395,10 @@ export function buildPortal({ quiet = false } = {}) {
     const code = bundle([`game/${g.id}/logic.js`, `game/${g.id}/view.js`, `game/${g.id}/main.js`]);
     // Portals are English-only, so this package carries the English strings.
     const prelude = `const LANG = "en";\nconst CONFIG = ${JSON.stringify(config)};\nconst SAVE_KEY = ${JSON.stringify(`${site.saveKeyPrefix || 'ealoong'}.${g.id}.save`)};\nconst STANDALONE = true;\nconst L10N = ${JSON.stringify(stringsFor('en', ['gr.']))};`;
-    const script = classicScript(code, prelude);
+    // Escaping here is about correctness, not trust: a quote in a game name or a "</script>"
+    // inside the bundle would produce a broken file that still looks fine in an editor.
+    const escHtml = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const script = classicScript(code, prelude).replace(/<\//g, '<\\/');
     // The standalone page has no site shell, so the sprite the game's icons point at must travel with it.
     resetIcons();
     const shell = gameShell(g, { standalone: true, lang: 'en' });
@@ -392,8 +408,8 @@ export function buildPortal({ quiet = false } = {}) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<title>${g.name}</title>
-<meta name="description" content="${g.tagline}">
+<title>${escHtml(g.name)}</title>
+<meta name="description" content="${escHtml(g.tagline)}">
 <meta name="theme-color" content="#0b0e17">
 <style>${gameCss}\n${portalCss}</style>
 </head>
@@ -404,10 +420,13 @@ ${shell}
 </body>
 </html>
 `;
-    fs.mkdirSync(path.join(DIST, 'portal', g.id), { recursive: true });
-    fs.writeFileSync(path.join(DIST, 'portal', g.id, 'index.html'), html);
+    // Deliberately outside dist/: these files are for portal submission, not for visitors.
+    // Deploying them would put a playable copy on our own domain (a real problem for any
+    // portal with web-exclusivity terms) and would need a looser CSP just for them.
+    fs.mkdirSync(path.join(PORTAL_OUT, g.id), { recursive: true });
+    fs.writeFileSync(path.join(PORTAL_OUT, g.id, 'index.html'), html);
     const archive = zip([['index.html', html]]);
-    fs.writeFileSync(path.join(DIST, 'portal', `${g.id}.zip`), archive);
+    fs.writeFileSync(path.join(PORTAL_OUT, `${g.id}.zip`), archive);
     out.push({ id: g.id, html: html.length, zip: archive.length, gzip: zlib.gzipSync(Buffer.from(html)).length });
   }
 
@@ -418,7 +437,7 @@ ${shell}
     for (const o of out) {
       console.log(`  ${o.id.padEnd(18)} index.html ${(o.html / 1024).toFixed(0)} KB  ·  zip ${(o.zip / 1024).toFixed(0)} KB  ·  gzip ${(o.gzip / 1024).toFixed(1)} KB`);
     }
-    console.log(`  Output        dist/portal/`);
+    console.log(`  Output        build/portal/  (not deployed)`);
     console.log('');
   }
   return out;

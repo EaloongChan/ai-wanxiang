@@ -13,6 +13,9 @@
     "check": "node scripts/check.mjs",
     "links": "node scripts/links.mjs",
     "orphans": "node scripts/orphans.mjs",
+    "i18n": "node scripts/check-i18n.mjs",
+    "seo": "node scripts/seo-audit.mjs",
+    "seo:live": "node scripts/seo-audit.mjs --live",
     "unit": "node --test \"src/**/*.test.js\"",
     "sim": "node scripts/sim.mjs --runs=5",
     "perf": "node scripts/perf.mjs",
@@ -20,15 +23,17 @@
     "audit": "node scripts/audit.mjs",
     "audit:shot": "node scripts/audit.mjs --shot",
     "a11y": "node scripts/a11y.mjs",
-    "verify": "node scripts/check.mjs && node --test \"src/**/*.test.js\" && node scripts/build.mjs && node scripts/links.mjs && node scripts/orphans.mjs && node scripts/perf.mjs",
+    "verify": "node scripts/check.mjs && node --test \"src/**/*.test.js\" && node scripts/build.mjs && node scripts/links.mjs && node scripts/orphans.mjs && node scripts/check-i18n.mjs && node scripts/seo-audit.mjs && node scripts/perf.mjs",
     "verify:browser": "node scripts/selftest.mjs && node scripts/audit.mjs && node scripts/a11y.mjs",
+    "verify:live": "node scripts/verify-live.mjs && node scripts/seo-audit.mjs --live",
     "assets": "node scripts/assets.mjs",
     "og": "node scripts/og-images.mjs",
     "og:force": "node scripts/og-images.mjs --force",
     "indexnow": "node scripts/indexnow.mjs",
     "indexnow:seed": "node scripts/indexnow.mjs --seed",
-    "verify:live": "node scripts/verify-live.mjs",
-    "push": "node scripts/deploy-push.mjs"
+    "push": "node scripts/deploy-push.mjs",
+    "worker:deploy": "npx wrangler deploy --config workers/beacon/wrangler.toml",
+    "portal:kit": "node scripts/portal-kit.mjs"
   },
   "engines": {
     "node": ">=18"

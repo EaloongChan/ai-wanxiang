@@ -8,10 +8,11 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { replay, loadConfig } from '../../../scripts/sim.mjs';
+import { replay, loadConfig, PROFILES } from '../../../scripts/sim.mjs';
 import {
-  SAVE_VERSION, advance, applyAction, collectOffline, comboMult, createState, derived, deserialize,
-  formatNumber, formatSeconds, incomePerSecond, offlineGain, prestigeGain, serialize, upgradeCost, upgradeState, zoneYieldRate,
+  SAVE_VERSION, advance, applyAction, claimDaily, collectOffline, comboMult, createState, dailyStatus, dayIndex, derived,
+  deserialize, formatNumber, formatSeconds, incomePerSecond, nextGoal, offlineGain, prestigeGain, serialize, upgradeCost,
+  upgradeState, zoneYieldRate,
 } from './logic.js';
 
 const config = loadConfig();
@@ -333,4 +334,171 @@ test('pacing: numbers stay sane over a long session', () => {
   assert.ok(state.mainsprings > 0);
   assert.ok(state.mainsprings < 1e6, `mainsprings ran away to ${state.mainsprings}`);
   assert.ok(Number.isFinite(state.lifetime) && state.lifetime > 0);
+});
+
+/* ---- retention features ---- */
+
+test('achievements: unlocked once, reported once, never revoked', () => {
+  const s = createState(config, flat);
+  s.clicks = 99;
+  let events = applyAction(s, 'chop', config, flat);
+  assert.ok(s.achievements.includes('clicks-100'), 'the 100th swing unlocks the achievement');
+  assert.equal(events.filter((e) => e.k === 'achieved').length, 1);
+
+  events = applyAction(s, 'chop', config, flat);
+  assert.equal(events.filter((e) => e.k === 'achieved').length, 0, 'no second award');
+
+  s.clicks = 0;
+  applyAction(s, 'chop', config, flat);
+  assert.ok(s.achievements.includes('clicks-100'), 'progress going backwards must not revoke it');
+});
+
+test('achievements: a save cannot smuggle in ids that do not exist', () => {
+  const s = createState(config, flat);
+  s.achievements = ['clicks-100', 'made-up-id'];
+  const loaded = deserialize(serialize(s), config, flat);
+  assert.deepEqual(loaded.achievements, ['clicks-100']);
+});
+
+test('daily: one box per day, with a floor for players who own no choppers', () => {
+  const s = createState(config, flat);
+  const now = 1_800_000_000_000;             // an arbitrary fixed moment
+  const first = dailyStatus(s, now, config);
+  assert.equal(first.available, true);
+  assert.ok(first.amount >= config.daily.minAmount, 'a new player still gets something');
+
+  const claim = claimDaily(s, now, config);
+  assert.equal(claim.ok, true);
+  assert.equal(s.timber, claim.amount);
+  assert.equal(s.lastDailyDay, dayIndex(now));
+
+  assert.equal(dailyStatus(s, now + 3600_000, config).available, false, 'same day: nothing more');
+  assert.equal(claimDaily(s, now + 3600_000, config).ok, false);
+
+  const tomorrow = now + 86_400_000;
+  assert.equal(dailyStatus(s, tomorrow, config).available, true);
+  assert.equal(claimDaily(s, tomorrow, config).ok, true);
+  assert.equal(s.dailyCount, 2);
+});
+
+test('districts pay their gear reward exactly once, on unlock', () => {
+  const s = createState(config, flat);
+  const quarry = config.zones.find((z) => z.id === 'quarry');
+  s.timber = quarry.unlockCost;
+  const events = applyAction(s, { t: 'zone', id: 'quarry' }, config, flat);
+  const unlock = events.find((e) => e.k === 'zone');
+  assert.equal(unlock.gears, quarry.reward.gears);
+  assert.equal(s.gears, quarry.reward.gears);
+  assert.ok(s.zoneRewards.includes('quarry'));
+
+  // Selecting the district again must not pay twice.
+  const again = applyAction(s, { t: 'zone', id: 'quarry' }, config, flat);
+  assert.equal(again.length, 0);
+  assert.equal(s.gears, quarry.reward.gears);
+});
+
+test('next goal: the next district, then the rewind', () => {
+  const s = createState(config, flat);
+  s.timber = 100;
+  let goal = nextGoal(s, config);
+  assert.equal(goal.kind, 'zone');
+  assert.equal(goal.id, 'quarry');
+  assert.equal(goal.progress, 100);
+
+  s.zones = config.zones.map((z) => z.id);
+  s.zone = config.zones[config.zones.length - 1].id;
+  goal = nextGoal(s, config);
+  assert.equal(goal.kind, 'rewind');
+});
+
+test('save: v1 migrates, and a broken district list still owns the first district', () => {
+  const s = createState(config, flat);
+  s.timber = 500;
+  s.up = { axe: 2 };
+  const raw = JSON.parse(serialize(s));
+
+  // A v1 save has none of the v2 fields.
+  const v1 = { ...raw, v: 1 };
+  delete v1.achievements;
+  delete v1.zoneRewards;
+  delete v1.lastDailyDay;
+  delete v1.dailyCount;
+  const migrated = deserialize(JSON.stringify(v1), config, flat);
+  assert.equal(migrated.v, 2);
+  assert.deepEqual(migrated.achievements, []);
+  assert.equal(migrated.lastDailyDay, -1);
+  assert.equal(migrated.timber, 500);
+  assert.equal(migrated.up.axe, 2);
+
+  // A save whose districts match nothing used to leave every district locked.
+  const broken = deserialize(JSON.stringify({ ...raw, zones: ['not-a-district'], zone: 'not-a-district' }), config, flat);
+  assert.deepEqual(broken.zones, [config.zones[0].id]);
+  assert.equal(broken.zone, config.zones[0].id);
+
+  const empty = deserialize(JSON.stringify({ ...raw, zones: [] }), config, flat);
+  assert.deepEqual(empty.zones, [config.zones[0].id]);
+});
+
+test('combo end is reported once and clears the timer', () => {
+  const s = createState(config, flat);
+  applyAction(s, 'chop', config, flat);
+  assert.ok(s.combo > 0 && s.comboTimer > 0);
+  const events = advance(s, config.combo.baseWindow + 0.5, config, flat);
+  assert.ok(events.some((e) => e.k === 'comboend'));
+  assert.equal(s.combo, 0);
+  assert.equal(s.comboTimer, 0);
+});
+
+test('offline: negative, NaN and infinite gaps are clamped', () => {
+  const s = createState(config, flat);
+  s.up = { choppers: 5 };
+  assert.deepEqual(offlineGain(s, -10, config), { seconds: 0, amount: 0 });
+  assert.deepEqual(offlineGain(s, NaN, config), { seconds: 0, amount: 0 });
+  const capped = offlineGain(s, Infinity, config);
+  assert.equal(capped.seconds, derived(s, config).offlineCap);
+});
+
+test('prestige: nothing banked means nothing happens', () => {
+  const s = createState(config, flat);
+  s.zones = config.zones.map((z) => z.id);
+  s.total = 0;
+  assert.equal(prestigeGain(s, config), 0);
+  assert.deepEqual(applyAction(s, 'prestige', config, flat), []);
+  assert.equal(s.prestiges, 0);
+});
+
+test('invalid actions change nothing', () => {
+  const s = createState(config, flat);
+  const before = serialize(s);
+  for (const bad of [null, undefined, 'nonsense', { t: 'nope' }, { t: 'buy', id: 'no-such-upgrade' }, { t: 'zone', id: 'no-such-zone' }]) {
+    assert.deepEqual(applyAction(s, bad, config, flat), []);
+  }
+  assert.equal(serialize(s), before);
+});
+
+test('display: extreme numbers never come back as NaN', () => {
+  assert.equal(formatNumber(NaN), '0');
+  assert.equal(formatNumber(-5), '-5');
+  assert.ok(formatNumber(1e30).endsWith('Oc'), formatNumber(1e30));
+  assert.equal(formatSeconds(59), '59s');
+  assert.equal(formatSeconds(3599), '59m 59s');
+  assert.equal(formatSeconds(86400), '24h 0m');
+  assert.equal(formatSeconds(-5), '-5s');
+});
+
+test('pacing guards: every player model lands inside the same broad bounds', () => {
+  for (const [name, profile] of Object.entries(PROFILES)) {
+    const { marks } = replay(4242, { minutes: 40, config, profile });
+    const at = (prefix) => {
+      const mark = marks.find((m) => m.label.startsWith(prefix));
+      assert.ok(mark, `${name}: ${prefix} never happened`);
+      return mark.t;
+    };
+    const first = at('first upgrade');
+    assert.ok(first >= 5 && first <= 45, `${name}: first upgrade at ${Math.round(first)}s, expected 5-45s`);
+    const district = at('zone quarry');
+    assert.ok(district >= 60 && district <= 420, `${name}: first district at ${Math.round(district)}s, expected 60-420s`);
+    const rewind = at('rewind 1');
+    assert.ok(rewind >= 480 && rewind <= 2400, `${name}: first rewind at ${Math.round(rewind)}s, expected 8-40 min`);
+  }
 });

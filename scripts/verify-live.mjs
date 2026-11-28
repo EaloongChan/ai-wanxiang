@@ -78,6 +78,18 @@ async function main() {
       if (sec.length >= 2) ok('安全响应头已生效', sec.join(', '));
       else bad('安全响应头缺失', `只有 ${sec.join(', ') || '无'}—— vercel.json 的 headers 可能没读到`);
 
+      // Hardening added in the optimisation pass: each one has a specific job, so they are
+      // asserted one by one rather than as a count.
+      const csp = r.headers.get('content-security-policy') || '';
+      if (/script-src 'self'/.test(csp) && /default-src 'self'/.test(csp)) ok('CSP 已生效', csp.slice(0, 64) + '…');
+      else bad('CSP 缺失或过松', csp || '没有 content-security-policy 头');
+      if (/max-age=31536000/.test(r.headers.get('strict-transport-security') || '')) ok('HSTS 已生效', 'max-age=31536000');
+      else bad('HSTS 缺失', r.headers.get('strict-transport-security') || '没有 strict-transport-security 头');
+      if ((r.headers.get('cross-origin-opener-policy') || '') === 'same-origin') ok('COOP 已生效');
+      else bad('COOP 缺失', r.headers.get('cross-origin-opener-policy') || '无');
+      if ((r.headers.get('cross-origin-resource-policy') || '') === 'same-origin') ok('CORP 已生效');
+      else bad('CORP 缺失', r.headers.get('cross-origin-resource-policy') || '无');
+
       if (!/AI 万象|AI WANXIANG/.test(r.body)) ok('首页已无旧站残留');
       else bad('首页仍有旧站内容', '页面上出现了旧站名');
     }

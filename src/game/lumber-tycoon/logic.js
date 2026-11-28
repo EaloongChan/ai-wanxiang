@@ -11,7 +11,9 @@
  *   serialize / deserialize                   save and load
  */
 
-export const SAVE_VERSION = 1;
+// v2 added achievements, the daily box and district rewards. Version 1 saves still load:
+// migrate() fills the new fields with defaults, so nobody loses progress to an update.
+export const SAVE_VERSION = 2;
 
 const IDX = new WeakMap();
 
@@ -40,6 +42,8 @@ export function derived(state, config) {
     if (!up || !n) continue;
     for (const [stat, per] of Object.entries(up.effect)) acc[stat] += per * n;
   }
+  let upgradeLevels = 0;
+  for (const n of Object.values(state.up)) upgradeLevels += n;
   return {
     click: config.baseClick + acc.click,
     crit: Math.min(0.8, acc.crit),
@@ -51,7 +55,75 @@ export function derived(state, config) {
     yieldMult: (1 + acc.value) * (1 + acc.overdrive) * (1 + config.prestige.bonusPerPoint * state.mainsprings),
     offlineEff: Math.min(1, config.offline.baseEfficiency + acc.offline),
     offlineCap: config.offline.baseCapSeconds + acc.offlineCap,
+    upgradeLevels,
   };
+}
+
+/* ---- achievements ----
+   Targets live in data/games/<id>/achievements.json and are merged into the config by the
+   build. Checking them costs one pass over twenty numbers, so it runs after every action
+   and every tick instead of on a timer. */
+
+const METRIC = {
+  felled: (s) => s.felled,
+  clicks: (s) => s.clicks,
+  total: (s) => s.total,
+  lifetime: (s) => s.lifetime,
+  zones: (s) => s.zones.length,
+  prestiges: (s) => s.prestiges,
+  playTime: (s) => s.playTime,
+  upgradeLevels: (s, _c, st) => st.upgradeLevels,
+};
+
+function checkAchievements(state, config, st, events) {
+  const defs = config.achievements;
+  if (!defs || !defs.length) return;
+  const have = new Set(state.achievements);
+  for (const a of defs) {
+    if (have.has(a.id)) continue;
+    const read = METRIC[a.metric];
+    if (!read) continue;
+    if (read(state, config, st) >= a.target) {
+      state.achievements.push(a.id);
+      have.add(a.id);
+      events.push({ k: 'achieved', id: a.id, group: a.group });
+    }
+  }
+}
+
+/* ---- what to do next ----
+   Shown in the HUD. Without it the only visible goal for fifteen minutes is "buy the next
+   thing in the list", which is the main reason a first session ends early. */
+export function nextGoal(state, config) {
+  const next = config.zones.find((z) => !state.zones.includes(z.id));
+  if (next) return { kind: 'zone', id: next.id, target: next.unlockCost, progress: Math.min(state.timber, next.unlockCost) };
+  const gain = prestigeGain(state, config);
+  return { kind: 'rewind', id: config.prestige.requiresZone, target: 1, progress: gain >= 1 ? 1 : 0, gain };
+}
+
+/* ---- daily box ----
+   One box per UTC day, deliberately simple: no streak bookkeeping that can drift across
+   timezones. The value is half an hour of chopper income with a floor, so an early player
+   who has no choppers yet still gets something worth opening the tab for. */
+export const dayIndex = (ms) => Math.floor(ms / 86400000);
+
+export function dailyStatus(state, nowMs, config) {
+  const cfg = config.daily || {};
+  const today = dayIndex(nowMs);
+  const income = incomePerSecond(state, config);
+  const amount = Math.max(cfg.minAmount || 0, income * (cfg.amountSeconds || 1800));
+  return { available: state.lastDailyDay !== today, amount, today, claimedDays: state.dailyCount || 0 };
+}
+
+export function claimDaily(state, nowMs, config) {
+  const status = dailyStatus(state, nowMs, config);
+  if (!status.available) return { ok: false, amount: 0, count: state.dailyCount || 0 };
+  state.lastDailyDay = status.today;
+  state.dailyCount = (state.dailyCount || 0) + 1;
+  state.timber += status.amount;
+  state.total += status.amount;
+  state.lifetime += status.amount;
+  return { ok: true, amount: status.amount, count: state.dailyCount };
 }
 
 /** Multiplier from the current combo: +bonusPerStep for every full `step` clicks, up to maxSteps. */
@@ -126,6 +198,10 @@ export function createState(config, rng = Math.random) {
     felled: 0,
     playTime: 0,
     lastSeen: 0,
+    achievements: [],
+    zoneRewards: [],
+    lastDailyDay: -1,
+    dailyCount: 0,
   };
   spawnTree(s, config, rng);
   return s;
@@ -191,6 +267,12 @@ export function applyAction(state, action, config, rng = Math.random) {
   const idx = configIndex(config);
   const events = [];
   const t = typeof action === 'string' ? action : action && action.t;
+  // Every successful action ends here: achievements are evaluated once, against the state
+  // the action produced, so a purchase can never be reported in the wrong order.
+  const done = () => {
+    checkAchievements(state, config, derived(state, config), events);
+    return events;
+  };
 
   if (t === 'chop') {
     if (!state.tree) return events;             // stump: the swing lands on nothing, combo is not broken
@@ -200,7 +282,7 @@ export function applyAction(state, action, config, rng = Math.random) {
     if (state.combo > state.bestCombo) state.bestCombo = state.combo;
     state.clicks += 1;
     hit(state, st.click * comboMult(state, config, st), rng() < st.crit, config, events);
-    return events;
+    return done();
   }
 
   if (t === 'buy') {
@@ -209,7 +291,7 @@ export function applyAction(state, action, config, rng = Math.random) {
     state[u.currency] -= u.cost;
     state.up[action.id] = u.level + 1;
     events.push({ k: 'buy', id: action.id, level: u.level + 1 });
-    return events;
+    return done();
   }
 
   if (t === 'zone') {
@@ -218,11 +300,18 @@ export function applyAction(state, action, config, rng = Math.random) {
     state.timber -= zone.unlockCost;
     state.zones.push(zone.id);
     state.zone = zone.id;
+    // Unlocking a district pays a one-off gear reward: gears are otherwise gated behind
+    // rare trees, which left the first gear upgrade sixteen minutes away.
+    const gears = (zone.reward && zone.reward.gears) || 0;
+    if (gears) {
+      state.gears += gears;
+      state.zoneRewards.push(zone.id);
+    }
     state.tree = null;
     state.gap = 0;
     spawnTree(state, config, rng);
-    events.push({ k: 'zone', id: zone.id });
-    return events;
+    events.push({ k: 'zone', id: zone.id, gears });
+    return done();
   }
 
   if (t === 'select') {
@@ -250,9 +339,12 @@ export function applyAction(state, action, config, rng = Math.random) {
     state.combo = 0;
     state.comboTimer = 0;
     state.autoAcc = 0;
+    // District rewards and achievements already earned stay earned; the per-run list of
+    // paid districts resets with the run.
+    state.zoneRewards = [];
     spawnTree(state, config, rng);
     events.push({ k: 'prestige', gain });
-    return events;
+    return done();
   }
 
   return events;
@@ -292,6 +384,7 @@ export function advance(state, dt, config, rng = Math.random) {
 
   state.tree && (state.tree.age += dt);
   state.playTime += dt;
+  checkAchievements(state, config, derived(state, config), events);
   return events;
 }
 
@@ -315,9 +408,16 @@ export function collectOffline(state, gain) {
 const num = (v) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 ? v : 0);
 
 function migrate(data) {
-  // SAVE_VERSION 1 is the first shipped format. Future versions branch here:
-  //   if (data.v === 1) { ...transform...; data.v = 2 }
-  if (!data.v || data.v > SAVE_VERSION) return null;
+  if (!data || !data.v || data.v > SAVE_VERSION) return null;
+  if (data.v === 1) {
+    // v1 had no achievements, no daily box and no district rewards. The fields are added
+    // empty rather than guessed, so an old save keeps exactly the progress it had.
+    data.achievements = [];
+    data.zoneRewards = [];
+    data.lastDailyDay = -1;
+    data.dailyCount = 0;
+    data.v = 2;
+  }
   return data;
 }
 
@@ -351,6 +451,9 @@ export function deserialize(json, config, rng = Math.random) {
     if (!owned.includes(z.id)) break;
     zones.push(z.id);
   }
+  // A save whose district list matches nothing would leave the player owning zero districts
+  // and every district in the UI locked. Owning the first one is an invariant, not a bonus.
+  if (!zones.length) zones.push(config.zones[0].id);
 
   const s = createState(config, rng);
   Object.assign(s, {
@@ -368,6 +471,14 @@ export function deserialize(json, config, rng = Math.random) {
     felled: Math.floor(num(data.felled)),
     playTime: num(data.playTime),
     lastSeen: num(data.lastSeen),
+    // Unknown ids are dropped rather than carried: a stale save must not unlock achievements
+    // that no longer exist, and it must not create districts the config has never heard of.
+    achievements: Array.isArray(data.achievements)
+      ? data.achievements.filter((id) => (config.achievements || []).some((a) => a.id === id))
+      : [],
+    zoneRewards: Array.isArray(data.zoneRewards) ? data.zoneRewards.filter((id) => idx.zone.has(id)) : [],
+    lastDailyDay: Number.isFinite(data.lastDailyDay) ? Math.floor(data.lastDailyDay) : -1,
+    dailyCount: Math.floor(num(data.dailyCount)),
   });
   return s;
 }

@@ -1,0 +1,13 @@
+# Cloudflare Worker that receives the site's anonymous events.
+# Deploy with: npm run worker:deploy   (needs `npx wrangler login` once)
+# The dataset appears under Workers → Analytics Engine once the first event arrives.
+name = "ealoong-beacon"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[[analytics_engine_datasets]]
+binding = "EVENTS"
+dataset = "ealoong_events"
+
+[vars]
+ALLOWED_ORIGINS = "https://www.ealoongchan.top"

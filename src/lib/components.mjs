@@ -49,12 +49,14 @@ export function gameShell(game, { standalone = false, lang = 'en' } = {}) {
     <div class="hud-res hud-timber"><span class="hud-ic" aria-hidden="true">${icon('tree', 16)}</span><b id="hudTimber">0</b><small id="hudRate">0/s</small></div>
     <div class="hud-res hud-gears" id="hudGearsWrap" hidden><span class="hud-ic" aria-hidden="true">${icon('gear', 16)}</span><b id="hudGears">0</b></div>
     <div class="hud-res hud-ms" id="hudMsWrap" hidden><span class="hud-ic" aria-hidden="true">${icon('bolt', 16)}</span><b id="hudMainsprings">0</b></div>
-    <div class="combo" id="combo" hidden><b id="comboN">0</b><span>combo ×<b id="comboX">1.0</b></span></div>
+    <div class="combo" id="combo" hidden><b id="comboN">0</b><span>${t('gr.combo')} ×<b id="comboX">1.0</b></span></div>
     <button class="icon-btn hud-btn" id="settingsBtn" aria-label="${t('gr.settings')}">${icon('gear', 20)}</button>
   </div>
 
   <div class="tree-info"><span id="treeName">${tree0 ? esc(pick(tree0, 'name', lang)) : ''}</span><small id="treeTier"></small><div class="hp" role="progressbar" aria-label="${t('gr.hpAria')}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><i id="hpBar"></i></div></div>
-  <p class="game-hint" id="gameHint">${icon('axe', 18)} ${t('gr.hint')}</p>
+  <p class="game-hint" id="gameHint">${icon('axe', 18)} <span id="hintText">${t('gr.hint')}</span></p>
+  <p class="game-goal" id="gameGoal" hidden></p>
+  <div class="ach-toast" id="achToast" role="status" aria-live="polite" hidden><b>${t('gr.achievement')}</b><span id="achToastName"></span></div>
 
   <button class="drawer-toggle" id="drawerToggle" aria-expanded="false" aria-controls="drawer">${icon('axe', 18)} ${t('gr.upgrades')} <b id="drawerHint" hidden></b>${icon('chevron-up', 18)}</button>
 
@@ -81,6 +83,10 @@ export function gameShell(game, { standalone = false, lang = 'en' } = {}) {
       <p class="sheet-note" id="importMsg" role="status" hidden></p>
       <button class="row-btn" id="importBtn" type="button">${t('gr.import')}</button>
       <p class="sheet-note">${t('gr.saveNote')}</p>
+      <details class="ach-box" id="achDetails">
+        <summary><span>${t('gr.achTitle')}</span><span class="ach-count" id="achCount"></span></summary>
+        <ul class="ach-list" id="achList"></ul>
+      </details>
       <button class="row-btn danger" id="resetBtn" type="button">${t('gr.reset')}</button>
       <button class="btn btn-primary" value="close">${t('gr.close')}</button>
     </form>
@@ -92,6 +98,15 @@ export function gameShell(game, { standalone = false, lang = 'en' } = {}) {
       <p class="sheet-big" id="offlineAmount"></p>
       <p class="sheet-note" id="offlineDetail"></p>
       <button class="btn btn-primary" id="offlineCollect">${t('gr.collect')}</button>
+    </div>
+  </dialog>
+
+  <dialog class="sheet" id="dailyDialog" aria-labelledby="dailyTitle">
+    <div class="sheet-body">
+      <h2 id="dailyTitle">${t('gr.dailyTitle')}</h2>
+      <p class="sheet-big" id="dailyAmount"></p>
+      <p class="sheet-note" id="dailyBody"></p>
+      <button class="btn btn-primary" id="dailyClaim">${t('gr.claim')}</button>
     </div>
   </dialog>
 

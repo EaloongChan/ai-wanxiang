@@ -28,7 +28,7 @@
     "tips": [
       "Overkill counts. A swing that deals 40 damage to a 10-health tree is paid for all 40, so axe upgrades never stop being worth it.",
       "The first chopper costs very little and starts earning on its own. Buy one early even if you are still clicking.",
-      "Choppers keep working while the tab is closed, at {{offlineEff}} efficiency for up to {{offlineCap}}. The Wind-up Reserve and Long Spring upgrades raise both limits.",
+      "Choppers keep working while the tab is closed, at {{offlineEff}} efficiency for up to {{offlineCapHours}} hours. The Wind-up Reserve and Long Spring upgrades raise both limits.",
       "Your progress is saved in this browser. Open Settings to export a save code before clearing site data or switching devices."
     ],
     "faq": [
@@ -63,7 +63,7 @@
       "tips": [
         "溢出伤害照样算钱。一斧 40 伤害砸在只剩 10 点耐久的树上，40 全给。所以斧头升级永远不亏。",
         "第一台砍伐机很便宜，而且会自己开始赚钱。哪怕你还在手动点，也尽早买一台。",
-        "关掉标签页后砍伐机还在工作，效率 {{offlineEff}}，最多 {{offlineCap}}。「发条储备」和「长发条」能提高这两个上限。",
+        "关掉标签页后砍伐机还在工作，效率 {{offlineEff}}，最多 {{offlineCapHours}} 小时。「发条储备」和「长发条」能提高这两个上限。",
         "进度存在这个浏览器里。清除站点数据或换设备之前，先打开设置导出一份存档码。"
       ],
       "faq": [
