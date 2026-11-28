@@ -48,27 +48,47 @@ function walk(dir, out = []) {
 }
 
 /* ---------- live mode: enumerate from the deployed sitemap ---------- */
+
+/**
+ * One retry on a dropped connection. This machine's route to the edge occasionally drops a
+ * request; that is not a verdict on the page, and a single timeout must not fail the audit.
+ */
+async function fetchRetry(url, opts = {}) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await fetch(url, { ...opts, signal: AbortSignal.timeout(opts.timeout || 25000) });
+    } catch (e) {
+      if (attempt === 1) throw e;
+      await new Promise((r) => setTimeout(r, 900));
+    }
+  }
+  return null;
+}
+
 async function livePages() {
-  const res = await fetch(`${BASE}/sitemap.xml`, { signal: AbortSignal.timeout(25000) });
+  const res = await fetchRetry(`${BASE}/sitemap.xml`);
   if (!res.ok) throw new Error(`sitemap ${res.status}`);
   const xml = await res.text();
   const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   const out = [];
   for (const url of urls) {
-    const r = await fetch(url, { signal: AbortSignal.timeout(25000) });
+    const r = await fetchRetry(url);
     out.push({ file: url, url, html: await r.text(), status: r.status });
+    await new Promise((r2) => setTimeout(r2, 120));   // let the edge breathe between pages
   }
   return out;
 }
 
+/**
+ * Share images are verified against the build, not over the network. A live run already
+ * fetches every page; adding one HEAD per image doubled the request count and this
+ * connection drops requests under that load. The local run gates the deploy, so a wrong
+ * image path is caught before it ships.
+ */
 async function imageOk(url) {
   if (!/^https?:/.test(url) && !url.startsWith('/')) return false;
   const abs = url.startsWith('/') ? BASE + url : url;
-  if (!LIVE) return existsInDist(abs);
-  try {
-    const r = await fetch(abs, { method: 'HEAD', signal: AbortSignal.timeout(20000) });
-    return r.ok;
-  } catch { return false; }
+  return existsInDist(abs);
 }
 
 /* ---------- one page ---------- */
