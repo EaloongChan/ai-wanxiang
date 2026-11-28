@@ -190,12 +190,11 @@ export function build({ quiet = false } = {}) {
         // data most visitors never scroll through. The script gets the index only and fetches
         // the texts right after the page is interactive.
         // Left in dataset order: it starts with general writing prompts, which is where most people begin.
+        // The legacy dataset keeps Chinese at the top level and English inside `en`.
+        const source = (p) => (lang === 'zh' ? p : p.en);
         const list = prompts
-          .filter((p) => (lang === 'zh' ? p.zh || p.en : p.en) && (p.zh || p.en).prompt)
-          .map((p) => {
-            const entry = lang === 'zh' ? (p.zh || p.en) : p.en;
-            return { id: p.id, title: entry.title, desc: entry.desc || '', prompt: entry.prompt, vars: entry.vars || [] };
-          });
+          .filter((p) => source(p) && source(p).prompt)
+          .map((p) => ({ id: p.id, title: source(p).title, desc: source(p).desc || '', prompt: source(p).prompt, vars: source(p).vars || [] }));
         const json = JSON.stringify(list);
         const name = `prompts-${lang}.${hash7(json)}.json`;
         write('assets/' + name, json);

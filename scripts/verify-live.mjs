@@ -27,20 +27,32 @@ const ok = (name, detail = '') => results.push({ pass: true, name, detail });
 const bad = (name, detail = '') => results.push({ pass: false, name, detail });
 const line = (s = '') => console.log(s);
 
+/**
+ * One request, retried once on a network failure. This machine's link to the edge is
+ * occasionally slow enough that a 20 s request is dropped; that is not a verdict on the
+ * deployed site, so a single failure must not be reported as one.
+ */
 async function req(pathname, opts = {}) {
-  const ctl = new AbortController();
-  const timer = setTimeout(() => ctl.abort(), opts.timeout || 20000);
-  try {
-    const res = await fetch(BASE + pathname, {
-      redirect: 'manual',
-      headers: { 'User-Agent': UA, ...(opts.headers || {}) },
-      signal: ctl.signal,
-    });
-    const body = opts.head ? '' : await res.text();
-    return { status: res.status, headers: res.headers, body };
-  } finally {
-    clearTimeout(timer);
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), opts.timeout || 25000);
+    try {
+      const res = await fetch(BASE + pathname, {
+        redirect: 'manual',
+        headers: { 'User-Agent': UA, ...(opts.headers || {}) },
+        signal: ctl.signal,
+      });
+      const body = opts.head ? '' : await res.text();
+      return { status: res.status, headers: res.headers, body };
+    } catch (e) {
+      lastError = e;
+      if (attempt === 0) await new Promise((r) => setTimeout(r, 1200));
+    } finally {
+      clearTimeout(timer);
+    }
   }
+  throw lastError;
 }
 
 async function main() {

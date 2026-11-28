@@ -244,6 +244,21 @@ if (enabledFlags.has('analytics') && !privacy.some((s) => s.flag === 'analytics'
   if (!missing.length) good(`strings.mjs: ${Object.keys(S).length} 条界面文案均为中英双语`);
 }
 
+/* ---------------- 旧提示词数据集：中英都要有 ---------------- */
+{
+  const file = path.join(DATA, 'legacy', 'prompts.json');
+  if (fs.existsSync(file)) {
+    const prompts = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const zhOk = prompts.filter((p) => p.prompt).length;
+    const enOk = prompts.filter((p) => p.en && p.en.prompt).length;
+    if (zhOk !== prompts.length || enOk !== prompts.length) {
+      bad(`data/legacy/prompts.json: ${prompts.length} 条里只有 ${zhOk} 条有中文正文、${enOk} 条有英文正文 —— 缺的那一半会让提示词工具显示成另一种语言`);
+    } else {
+      good(`data/legacy/prompts.json: ${prompts.length} 条提示词中英正文齐全`);
+    }
+  }
+}
+
 /* ---------------- legacy dataset is still shipped ---------------- */
 const legacyDir = path.join(DATA, 'legacy');
 const legacyCount = fs.readdirSync(legacyDir).filter((f) => f.endsWith('.json')).length;
