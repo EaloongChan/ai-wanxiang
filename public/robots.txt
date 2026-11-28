@@ -1,7 +1,10 @@
 # Search engines may crawl everything. Sitemap: see the last line.
-# Note for the site owner: if "AI crawl control" is on in the Cloudflare dashboard it
-# appends its own block below this file, which blocks GPTBot, ClaudeBot and other
-# assistants. That setting lives in Cloudflare, not here.
+#
+# Note for whoever maintains this file: this is the whole robots.txt. Cloudflare can
+# prepend its own block (content signals plus a list of blocked AI crawlers) when
+# "Bot Preference Sync" is on under AI Crawl Control, and that block wins because it
+# comes first. It is currently off, so what you read here is what crawlers get.
+# Blocking or allowing AI assistants is a separate edge policy, not this file.
 
 User-agent: *
 Allow: /
